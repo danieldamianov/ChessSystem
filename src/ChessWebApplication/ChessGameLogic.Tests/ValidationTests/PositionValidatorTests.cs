@@ -22,10 +22,9 @@ namespace ChessGameLogic.Tests.ValidationTests
         [TestCase('d', 8, true)]
         public void TestValidatePosition(char horizontal, int verticlal, bool isValid)
         {
-            var positionValidator = Assembly.GetAssembly(typeof(ChessGame))
-                .GetType("ChessGameLogic.Validations.PositionValidator");
+            var positionValidatorType = ChessGameLogicProvider.GetType("ChessGameLogic.Validations.PositionValidator");
 
-            var methodValidatePostition = positionValidator.GetMethod("ValidatePosition", BindingFlags.Static | BindingFlags.NonPublic);
+            var methodValidatePostition = positionValidatorType.GetMethod("ValidatePosition", BindingFlags.Static | BindingFlags.NonPublic);
 
             var actualValidationResult = (bool)methodValidatePostition
                 .Invoke(null, new object[] { horizontal, verticlal });
