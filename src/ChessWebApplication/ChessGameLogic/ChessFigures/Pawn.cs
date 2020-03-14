@@ -13,7 +13,7 @@ namespace ChessGameLogic.ChessFigures
         {
         }
 
-        public bool IsAttackingMovePossible(NormalChessMovePositions move)
+        internal bool IsAttackingMovePossible(NormalChessMovePositions move)
         {
             if (this.Color == ChessColors.White)
             {
@@ -38,7 +38,7 @@ namespace ChessGameLogic.ChessFigures
 
             return false;
         }
-        public bool isPositionProducable(ChessBoardPosition positionOnTheBoard)
+        internal bool isPositionProducable(ChessBoardPosition positionOnTheBoard)
         {
             if (this.Color == ChessColors.White)
             {
