@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ChessGameLogic.Enums
 {
-    internal enum ChessColors
+    public enum ChessColors
     {
         Black,
         White
