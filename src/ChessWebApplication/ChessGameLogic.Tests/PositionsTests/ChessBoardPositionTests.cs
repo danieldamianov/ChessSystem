@@ -5,7 +5,6 @@ using System.Reflection;
 
 namespace ChessGameLogic.Tests.PositionsTests
 {
-
     [TestFixture]
     public class ChessBoardPositionTests
     {
