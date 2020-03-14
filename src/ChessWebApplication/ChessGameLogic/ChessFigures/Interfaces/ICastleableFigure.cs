@@ -6,6 +6,8 @@ namespace ChessGameLogic.ChessFigures.Interfaces
 {
     internal interface ICastleableFigure
     {
-        bool HasBeenMovedFromTheStartOfTheGame { get; set; }
+        bool HasBeenMovedFromTheStartOfTheGame { get; }
+
+        void Move();
     }
 }
