@@ -6,5 +6,6 @@ namespace ChessGameLogic
 {
     public class ChessGame
     {
+
     }
 }
