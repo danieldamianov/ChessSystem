@@ -15,6 +15,16 @@ namespace ChessGameLogic.ChessFigures
 
         internal bool IsAttackingMovePossible(NormalChessMovePositions move)
         {
+            if (this.Color == ChessColors.White && move.InitialPosition.Vertical == 1)
+            {
+                return false;
+            }
+
+            if (this.Color == ChessColors.Black && move.InitialPosition.Vertical == 8)
+            {
+                return false;
+            }
+
             if (this.Color == ChessColors.White)
             {
                 int differenceInHorizontal = Math.Abs(move.InitialPosition.Horizontal - move.TargetPosition.Horizontal);
@@ -54,6 +64,16 @@ namespace ChessGameLogic.ChessFigures
         {
             int differenceInHorizontal = Math.Abs(normalMove.InitialPosition.Horizontal - normalMove.TargetPosition.Horizontal);
             int differenceInVertical = Math.Abs(normalMove.InitialPosition.Vertical - normalMove.TargetPosition.Vertical);
+
+            if (this.Color == ChessColors.White && normalMove.InitialPosition.Vertical == 1)
+            {
+                return false;
+            }
+
+            if (this.Color == ChessColors.Black && normalMove.InitialPosition.Vertical == 8)
+            {
+                return false;
+            }
 
             if (differenceInHorizontal == 0 && (differenceInVertical == 1 || differenceInVertical == 2))
             {

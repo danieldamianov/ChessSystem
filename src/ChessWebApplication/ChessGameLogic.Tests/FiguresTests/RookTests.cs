@@ -152,7 +152,7 @@ namespace ChessGameLogic.Tests.FiguresTests
         }
 
         [Test]
-        public void TestMoveMehtod()
+        public void TestMoveMethod()
         {
             var hasBeenMovedFromTheStartOfTheGameProperty = this.RookType.GetProperty("HasBeenMovedFromTheStartOfTheGame", BindingFlags.Instance | BindingFlags.Public);
             var initialValue = (bool)hasBeenMovedFromTheStartOfTheGameProperty.GetValue(this.RookInstance);
