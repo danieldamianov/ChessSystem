@@ -1,7 +1,9 @@
 ﻿using ChessGameLogic.ChessFigures;
 using ChessGameLogic.ChessFigures.Interfaces;
+using ChessGameLogic.ChessMoves;
 using ChessGameLogic.Enums;
 using ChessGameLogic.Exceptions;
+using System;
 
 namespace ChessGameLogic
 {
@@ -84,6 +86,67 @@ namespace ChessGameLogic
             this.board[7, 7] = new Rook(ChessColors.White);
             this.board[0, 7] = new Rook(ChessColors.Black);
             this.board[7, 0] = new Rook(ChessColors.White);
+        }
+
+        internal void RemoveFigureOnPosition(ChessBoardPosition positionOnTheBoard)
+        {
+            board[8 - positionOnTheBoard.Vertical, positionOnTheBoard.Horizontal - 'a'] = null;
+        }
+
+        internal IFigure GetFigureOnPosition(ChessBoardPosition positionOnTheBoard)
+        {
+            return board[8 - positionOnTheBoard.Vertical, positionOnTheBoard.Horizontal - 'a'];
+        }
+
+        internal void PutFigureOnPosition(ChessBoardPosition positionOnTheBoard, IFigure figure)
+        {
+            if (figure == null)
+            {
+                throw new ArgumentNullException(nameof(figure));
+            }
+
+            board[8 - positionOnTheBoard.Vertical, positionOnTheBoard.Horizontal - 'a'] = figure;
+
+            if (figure is ICastleableFigure)
+            {
+                ((ICastleableFigure)figure).Move();
+            }
+        }
+
+        internal void PutFigureOnPositionWithoutMovingItActualy(ChessBoardPosition positionOnTheBoard, IFigure figure)
+        {
+            if (figure == null)
+            {
+                throw new ArgumentNullException(nameof(figure));
+            }
+
+            board[8 - positionOnTheBoard.Vertical, positionOnTheBoard.Horizontal - 'a'] = figure;
+        }
+
+        internal ChessBoard GetVirtualChessBoardAfterMove(NormalChessMovePositions normalMove)
+        {
+            ChessBoard chessBoard = CopyCurrentChessBoard();
+            var figure = chessBoard.GetFigureOnPosition(normalMove.InitialPosition);
+            chessBoard.RemoveFigureOnPosition(normalMove.InitialPosition);
+            chessBoard.PutFigureOnPositionWithoutMovingItActualy(normalMove.TargetPosition, figure);
+
+            return chessBoard;
+        }
+
+        private ChessBoard CopyCurrentChessBoard()
+        {
+            IFigure[,] newFigures = new IFigure[8, 8];
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    newFigures[i, j] = this.board[i, j];
+                }
+            }
+
+            ChessBoard chessBoard = new ChessBoard(newFigures);
+
+            return chessBoard;
         }
     }
 }
