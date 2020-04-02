@@ -10,6 +10,7 @@ namespace ChessGameLogic
 {
     public class ChessGame
     {
+        private bool gameHasEnded;
         private ChessBoard chessBoard;
         private ChessColors playerOnTurn;
 
@@ -128,6 +129,37 @@ namespace ChessGameLogic
             return false;
         }
 
+        private bool CheckIfPlayerHasNoValidMove(ChessColors Color)
+        {
+            for (char i = 'a'; i <= 'h'; i++)
+            {
+                for (int j = 1; j <= 8; j++)
+                {
+                    IFigure figureFromDefensiveSide = this.chessBoard.GetFigureOnPosition(new ChessBoardPosition(i, j));
+
+                    if (figureFromDefensiveSide == null || figureFromDefensiveSide.Color == this.GetOppositeColor(Color))
+                    {
+                        continue;
+                    }
+
+                    for (char horizontal = 'a'; horizontal <= 'h'; horizontal++)
+                    {
+                        for (int vertical = 1; vertical <= 8; vertical++)
+                        {
+                            if (this.ValidateMove(new NormalChessMovePositions(i, j
+                                , horizontal, vertical),
+                                figureFromDefensiveSide.GetType()
+                        , Color) == NormalChessMoveValidationResult.ValidMove)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
         private List<ChessBoardPosition> PossiblePositionsMovement(Type figure, ChessBoardPosition position, ChessColors colors, ChessBoard chessBoardParam)
         {
             List<ChessBoardPosition> positions = new List<ChessBoardPosition>();
@@ -222,6 +254,7 @@ namespace ChessGameLogic
             this.EndGameHandleFunction = endGameHandleFunction;
         }
         public ChessColors PlayerOnTurn => this.playerOnTurn;
+        public bool GameHasEnded => this.gameHasEnded;
 
     }
 }
