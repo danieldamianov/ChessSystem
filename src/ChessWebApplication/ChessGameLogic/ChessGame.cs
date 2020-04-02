@@ -5,7 +5,6 @@ using ChessGameLogic.ClientInteractionEntities;
 using ChessGameLogic.Enums;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ChessGameLogic
 {
@@ -13,6 +12,9 @@ namespace ChessGameLogic
     {
         private ChessBoard chessBoard;
         private ChessColors playerOnTurn;
+
+        private readonly Func<ChessFigureProductionType> ChooseFigureToProduceFunction; 
+        private readonly Action<EndGameResult> EndGameHandleFunction;
 
         private ChessColors GetOppositeColor(ChessColors color)
         {
@@ -131,10 +133,22 @@ namespace ChessGameLogic
             throw new NotImplementedException();
         }
 
-        public ChessGame()
+        public ChessGame(Func<ChessFigureProductionType> chooseFigureToProduceFunction, Action<EndGameResult> endGameHandleFunction)
         {
+            if (chooseFigureToProduceFunction == null)
+            {
+                throw new ArgumentNullException(nameof(chooseFigureToProduceFunction));
+            }
+
+            if (endGameHandleFunction == null)
+            {
+                throw new ArgumentNullException(nameof(endGameHandleFunction));
+            }
+
             this.playerOnTurn = ChessColors.White;
             this.chessBoard = new ChessBoard();
+            this.ChooseFigureToProduceFunction = chooseFigureToProduceFunction;
+            this.EndGameHandleFunction = endGameHandleFunction;
         }
         public ChessColors PlayerOnTurn => this.playerOnTurn;
 
