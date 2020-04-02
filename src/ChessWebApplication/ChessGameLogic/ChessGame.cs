@@ -14,7 +14,7 @@ namespace ChessGameLogic
         private ChessBoard chessBoard;
         private ChessColors playerOnTurn;
 
-        private readonly Func<ChessFigureProductionType> ChooseFigureToProduceFunction; 
+        private readonly Func<ChessFigureProductionType> ChooseFigureToProduceFunction;
         private readonly Action<EndGameResult> EndGameHandleFunction;
 
         private ChessColors GetOppositeColor(ChessColors color)
@@ -98,32 +98,52 @@ namespace ChessGameLogic
 
         }
 
-        private bool CheckForCheck(ChessBoard chessBoard, ChessColors color)
+        private bool CheckForCheck(ChessBoard chessBoard, ChessColors defensiveColor)
         {
             for (char horizontal = 'a'; horizontal <= 'h'; horizontal++)
             {
                 for (int vertical = 1; vertical <= 8; vertical++)
                 {
                     var figure = chessBoard.GetFigureOnPosition(new ChessBoardPosition(horizontal, vertical));
-                    if (figure == null || figure.Color == color)
+                    if (figure == null || figure.Color == defensiveColor)
                     {
                         continue;
                     }
 
                     List<ChessBoardPosition> positionsAttacked =
-                        this.PossiblePositionsMovement(figure.GetType(), new ChessBoardPosition(horizontal, vertical), GetOppositeColor(color)
+                        this.PossiblePositionsMovement(figure.GetType(), new ChessBoardPosition(horizontal, vertical), GetOppositeColor(defensiveColor)
                         , chessBoard)
                         ;
 
                     foreach (var position in positionsAttacked)
                     {
                         IFigure gifureOnPosition = chessBoard.GetFigureOnPosition(position);
-                        if (gifureOnPosition is King && gifureOnPosition.Color == color)
+                        if (gifureOnPosition is King && gifureOnPosition.Color == defensiveColor)
                         {
                             return true;
                         }
                     }
                 }
+            }
+
+            return false;
+        }
+
+        private bool CheckForMate(ChessColors AttackingColor)
+        {
+            ChessColors defensiveColor = this.GetOppositeColor(AttackingColor);
+            return this.CheckIfPlayerHasNoValidMove(defensiveColor) && this.CheckForCheck(this.chessBoard, defensiveColor);
+        }
+
+        private bool CheckForDraw()
+        {
+            if (this.CheckIfPlayerHasNoValidMove(ChessColors.Black) && (this.CheckForCheck(this.chessBoard, ChessColors.Black) == false))
+            {
+                return true;
+            }
+            if (this.CheckIfPlayerHasNoValidMove(ChessColors.White) && (this.CheckForCheck(this.chessBoard, ChessColors.White) == false))
+            {
+                return true;
             }
 
             return false;
