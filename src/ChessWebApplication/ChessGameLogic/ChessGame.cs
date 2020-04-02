@@ -128,9 +128,80 @@ namespace ChessGameLogic
             return false;
         }
 
-        private List<ChessBoardPosition> PossiblePositionsMovement(Type type, ChessBoardPosition chessBoardPosition, ChessColors chessColors, ChessBoard chessBoard)
+        private List<ChessBoardPosition> PossiblePositionsMovement(Type figure, ChessBoardPosition position, ChessColors colors, ChessBoard chessBoardParam)
         {
-            throw new NotImplementedException();
+            List<ChessBoardPosition> positions = new List<ChessBoardPosition>();
+            for (char horizontal = 'a'; horizontal <= 'h'; horizontal++)
+            {
+                for (int vertical = 1; vertical <= 8; vertical++)
+                {
+                    if (this.ValidateMoveWithoutCheck(new NormalChessMovePositions(position.Horizontal, position.Vertical, horizontal, vertical)
+                        , figure, colors, chessBoardParam) == NormalChessMoveValidationResult.ValidMove)
+                    {
+                        positions.Add(new ChessBoardPosition(horizontal, vertical));
+                    }
+                }
+            }
+
+            return positions;
+        }
+
+        private NormalChessMoveValidationResult ValidateMoveWithoutCheck(NormalChessMovePositions positions, Type FigureType, ChessColors color, ChessBoard chessBoardParam)
+        {
+            IFigure figureToMove = chessBoardParam.GetFigureOnPosition(positions.InitialPosition);
+            IFigure figureOnTargetPosition = chessBoardParam.GetFigureOnPosition(positions.TargetPosition);
+            if (figureToMove == null || figureToMove.GetType() != FigureType || figureToMove.Color != color)
+            {
+                return NormalChessMoveValidationResult.ThereIsntSuchFigureAndColorOnTheGivenPosition;
+            }
+            if (figureOnTargetPosition != null &&
+                (figureOnTargetPosition.Color == figureToMove.Color))
+            {
+                return NormalChessMoveValidationResult.TheFigureOnTheTargetPositionIsFriendlyOrEnemyKing;
+            }
+
+            if (figureToMove is Pawn)
+            {
+
+                if (((Pawn)figureToMove).AreMovePositionsPossible(positions) == true
+                    && figureOnTargetPosition != null)
+                {
+                    return NormalChessMoveValidationResult.MovePositionsAreNotValid;
+                }
+
+                if (
+                        ((((Pawn)figureToMove).AreMovePositionsPossible(positions) == false &&
+                    ((Pawn)figureToMove).IsAttackingMovePossible(positions) == false) ||
+                            (
+                                ((Pawn)figureToMove).IsAttackingMovePossible(positions) &&
+                                (figureOnTargetPosition == null
+                                || figureOnTargetPosition.Color == figureToMove.Color)
+                            )
+                       ))
+                {
+                    return NormalChessMoveValidationResult.MovePositionsAreNotValid;
+                }
+            }
+            else
+            {
+                if (figureToMove.AreMovePositionsPossible(positions) == false)
+                {
+                    return NormalChessMoveValidationResult.MovePositionsAreNotValid;
+                }
+            }
+
+            if (figureToMove is IUnableToJumpFigure)
+            {
+                foreach (var position in ((IUnableToJumpFigure)figureToMove).GetPositionsInTheWayOfMove(positions))
+                {
+                    if (chessBoardParam.GetFigureOnPosition(position) != null)
+                    {
+                        return NormalChessMoveValidationResult.ThereAreOtherPiecesOnTheWay;
+                    }
+                }
+            }
+
+            return NormalChessMoveValidationResult.ValidMove;
         }
 
         public ChessGame(Func<ChessFigureProductionType> chooseFigureToProduceFunction, Action<EndGameResult> endGameHandleFunction)
