@@ -1,14 +1,17 @@
-﻿using ChessGameLogic.Enums;
-using NUnit.Framework;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-
+﻿/// <summary>
+///     Tests for the pawn class
+/// </summary>
 namespace ChessGameLogic.Tests.FiguresTests
 {
+    using ChessGameLogic.Enums;
+    using NUnit.Framework;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text;
+
     [TestFixture]
     public class PawnTests
     {
