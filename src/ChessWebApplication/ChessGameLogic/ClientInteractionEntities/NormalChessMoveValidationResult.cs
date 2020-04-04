@@ -4,6 +4,7 @@
     {
         ValidMove,
         GameHasEnded,
+        PlayerIsNotOnTurn,
         ThereIsntSuchFigureAndColorOnTheGivenPosition,
         TheFigureOnTheTargetPositionIsFriendlyOrEnemyKing,
         MovePositionsAreNotValid,
