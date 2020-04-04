@@ -11,13 +11,12 @@
 
     public class ChessGame
     {
-        private bool gameHasEnded;
+        private ChessGameProgressInfo progressInfo;
         private ChessBoard chessBoard;
         private ChessColors playerOnTurn;
 
         private readonly Func<ChessFigureProductionType> chooseFigureToProduceFunction;
         private readonly Action<EndGameResult> endGameHandleFunction;
-
 
         public ChessGame(Func<ChessFigureProductionType> chooseFigureToProduceFunction, Action<EndGameResult> endGameHandleFunction)
         {
@@ -38,6 +37,56 @@
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="initialPositionHorizontal"></param>
+        /// <param name="initialPositionVertical"></param>
+        /// <param name="targetPositionHorizontal"></param>
+        /// <param name="targetPositionVertical"></param>
+        /// <param name="figureType"></param>
+        /// <param name="color"></param>
+        /// <returns></returns>
+        public NormalChessMoveValidationResult NormalMove(
+            char initialPositionHorizontal,
+            int initialPositionVertical,
+            char targetPositionHorizontal,
+            int targetPositionVertical,
+            ChessFigureType figureType,
+            ChessColors color)
+        {
+            NormalChessMovePositions move = new NormalChessMovePositions(
+                initialPositionHorizontal,
+                initialPositionVertical,
+                targetPositionHorizontal,
+                targetPositionVertical);
+
+            IFigure figure = this.chessBoard.GetFigureOnPosition(move.InitialPosition);
+
+            Type actualFigureType = this.ConvertFromFigureTypeEnumToActualType(figureType);
+
+            NormalChessMoveValidationResult validationResult = this.ValidateMove(move, actualFigureType, color);
+
+            if (validationResult == NormalChessMoveValidationResult.ValidMove)
+            {
+                this.chessBoard.RemoveFigureOnPosition(move.InitialPosition);
+                this.chessBoard.PutFigureOnPosition(move.TargetPosition, figure);
+
+                if (figure is Pawn && ((Pawn)figure).isPositionProducable(move.TargetPosition))
+                {
+                    ChessFigureProductionType chessFigureProductionType = this.chooseFigureToProduceFunction();
+
+                    Type figureToProduceType = this.ConvertFromChessFigureProductionTypeEnumToActualType(chessFigureProductionType);
+
+                    this.ProducePawn(move.TargetPosition, figureToProduceType, color);
+                }
+
+                this.ChangePlayer();
+            }
+
+            return validationResult;
+        }
+
+        /// <summary>
         /// Method that gets all possible positions of placing the given figure.
         /// </summary>
         /// <param name="horizontal">The horizontal dimension of the chess board - letter from 'a' to 'h'.</param>
@@ -51,7 +100,7 @@
             ChessFigureType figureType,
             ChessColors chessFigureColor)
         {
-            Type actualFigureType = this.GetType().Assembly.GetType($"ChessGameLogic.ChessFigures.{figureType.ToString()}");
+            Type actualFigureType = this.ConvertFromFigureTypeEnumToActualType(figureType);
 
             ChessBoardPosition chessBoardPosition = new ChessBoardPosition(horizontal, vertical);
 
@@ -84,7 +133,7 @@
 
         public ChessColors PlayerOnTurn => this.playerOnTurn;
 
-        public bool GameHasEnded => this.gameHasEnded;
+        public ChessGameProgressInfo GameProgressInfo => this.progressInfo;
 
         private ChessColors GetOppositeColor(ChessColors color)
         {
@@ -325,10 +374,20 @@
             return NormalChessMoveValidationResult.ValidMove;
         }
 
-        private void ProducePawn(ChessBoardPosition positionOnTheBoard, Figure producedFigure)
+        private void ProducePawn(ChessBoardPosition positionOnTheBoard, Type producedFigureType, ChessColors color)
         {
-            this.chessBoard.PutFigureOnPosition(positionOnTheBoard, producedFigure);
+            IFigure figure = (IFigure)Activator.CreateInstance(producedFigureType, color);
+            this.chessBoard.PutFigureOnPosition(positionOnTheBoard, figure);
         }
 
+        private Type ConvertFromFigureTypeEnumToActualType(ChessFigureType chessFigureType)
+        {
+            return this.GetType().Assembly.GetType($"ChessGameLogic.ChessFigures.{chessFigureType}");
+        }
+
+        private Type ConvertFromChessFigureProductionTypeEnumToActualType(ChessFigureProductionType chessFigureType)
+        {
+            return this.GetType().Assembly.GetType($"ChessGameLogic.ChessFigures.{chessFigureType}");
+        }
     }
 }

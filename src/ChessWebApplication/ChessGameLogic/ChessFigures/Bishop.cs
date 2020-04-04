@@ -8,7 +8,7 @@
 
     internal class Bishop : Figure, IUnableToJumpFigure
     {
-        internal Bishop(ChessColors color) 
+        internal Bishop(ChessColors color)
             : base(color)
         {
         }
