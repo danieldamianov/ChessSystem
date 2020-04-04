@@ -1,15 +1,16 @@
-﻿using ChessGameLogic.ChessFigures.Interfaces;
-using ChessGameLogic.ChessMoves;
-using ChessGameLogic.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessGameLogic.ChessFigures
+﻿namespace ChessGameLogic.ChessFigures
 {
-    internal class Rook : Figure , IUnableToJumpFigure, ICastleableFigure
+    using System;
+    using System.Collections.Generic;
+
+    using ChessGameLogic.ChessFigures.Interfaces;
+    using ChessGameLogic.ChessMoves;
+    using ChessGameLogic.Enums;
+
+    internal class Rook : Figure, IUnableToJumpFigure, ICastleableFigure
     {
-        internal Rook(ChessColors color) : base(color)
+        internal Rook(ChessColors color)
+            : base(color)
         {
         }
 

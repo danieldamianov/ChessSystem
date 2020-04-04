@@ -1,11 +1,8 @@
 ﻿using ChessGameLogic.Enums;
 using NUnit.Framework;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace ChessGameLogic.Tests.FiguresTests
 {
@@ -21,9 +18,9 @@ namespace ChessGameLogic.Tests.FiguresTests
                 .Invoke(new object[] { ChessColors.White });
         }
 
-        public Type KnightType;
+        public Type KnightType { get; set; }
 
-        public object KnightInstance;
+        public object KnightInstance { get; set; }
 
         [Test]
         public void TestIfColorIsSetCorrectly()

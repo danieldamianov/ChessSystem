@@ -1,13 +1,14 @@
-﻿using ChessGameLogic.ChessFigures;
-using ChessGameLogic.ChessFigures.Interfaces;
-using ChessGameLogic.ChessMoves;
-using ChessGameLogic.ClientInteractionEntities;
-using ChessGameLogic.Enums;
-using System;
-using System.Collections.Generic;
-
-namespace ChessGameLogic
+﻿namespace ChessGameLogic
 {
+    using System;
+    using System.Collections.Generic;
+
+    using ChessGameLogic.ChessFigures;
+    using ChessGameLogic.ChessFigures.Interfaces;
+    using ChessGameLogic.ChessMoves;
+    using ChessGameLogic.ClientInteractionEntities;
+    using ChessGameLogic.Enums;
+
     public class ChessGame
     {
         private bool gameHasEnded;
@@ -89,7 +90,7 @@ namespace ChessGameLogic
 
             ChessBoard chessBoard = this.chessBoard.GetVirtualChessBoardAfterMove(positions);
 
-            if (CheckForCheck(chessBoard, color))
+            if (this.CheckForCheck(chessBoard, color))
             {
                 return NormalChessMoveValidationResult.MovementResultsInCheckOfTheFriendlyKing;
             }
@@ -111,7 +112,7 @@ namespace ChessGameLogic
                     }
 
                     List<ChessBoardPosition> positionsAttacked =
-                        this.PossiblePositionsMovement(figure.GetType(), new ChessBoardPosition(horizontal, vertical), GetOppositeColor(defensiveColor)
+                        this.PossiblePositionsMovement(figure.GetType(), new ChessBoardPosition(horizontal, vertical), this.GetOppositeColor(defensiveColor)
                         , chessBoard)
                         ;
 

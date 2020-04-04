@@ -1,9 +1,6 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace ChessGameLogic.Tests.ChessMovesTests
 {
@@ -11,13 +8,13 @@ namespace ChessGameLogic.Tests.ChessMovesTests
     public class NormalChessMoveTests
     {
         [Test]
-        [TestCase('a',1,'b',2,true)]
-        [TestCase('*',1,'b',2,false)]
-        [TestCase('t',0,'b',2,false)]
-        [TestCase('a',1,'l',2,false)]
-        [TestCase('a',1,'b',123,false)]
+        [TestCase('a', 1, 'b', 2, true)]
+        [TestCase('*', 1, 'b', 2, false)]
+        [TestCase('t', 0, 'b', 2, false)]
+        [TestCase('a', 1, 'l', 2, false)]
+        [TestCase('a', 1, 'b', 123, false)]
         public void TestNormalChessMoveSettingPositionsCorrect(char initialPositionHorizontal, int initialPositionVertical
-                , char targetPositionHorizontal, int targetPositionVertical,bool isValid)
+                , char targetPositionHorizontal, int targetPositionVertical, bool isValid)
         {
             var normalChessMoveType = ChessGameLogicProvider.GetType("ChessGameLogic.ChessMoves.NormalChessMovePositions");
             var chessBoardPositionType = ChessGameLogicProvider.GetType("ChessGameLogic.ChessBoardPosition");
@@ -41,7 +38,7 @@ namespace ChessGameLogic.Tests.ChessMovesTests
                     .GetProperty("TargetPosition", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(normalChessMoveInstance);
 
                 var chessBoardPositionEqualsMethod = chessBoardPositionType.GetMethods()
-                .Where(m => FilterMethod(m))
+                .Where(m => this.FilterMethod(m))
                 .First();
 
                 Assert.That((bool)chessBoardPositionEqualsMethod.Invoke(initialPosition, new object[] {

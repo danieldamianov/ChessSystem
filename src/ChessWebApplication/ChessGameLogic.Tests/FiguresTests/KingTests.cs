@@ -17,9 +17,9 @@
                 .Invoke(new object[] { ChessColors.White });
         }
 
-        public Type KingType;
+        public Type KingType { get; set; }
 
-        public object KingInstance;
+        public object KingInstance { get; set; }
 
         [Test]
         public void TestIfColorIsSetCorrectly()

@@ -1,11 +1,9 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-
-namespace ChessGameLogic.Tests.ValidationTests
+﻿namespace ChessGameLogic.Tests.ValidationTests
 {
+    using System.Reflection;
+
+    using NUnit.Framework;
+
     [TestFixture]
     public class PositionValidatorTests
     {

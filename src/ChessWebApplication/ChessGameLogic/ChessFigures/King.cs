@@ -1,15 +1,15 @@
-﻿using ChessGameLogic.ChessFigures.Interfaces;
-using ChessGameLogic.ChessMoves;
-using ChessGameLogic.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessGameLogic.ChessFigures
+﻿namespace ChessGameLogic.ChessFigures
 {
+    using System;
+
+    using ChessGameLogic.ChessFigures.Interfaces;
+    using ChessGameLogic.ChessMoves;
+    using ChessGameLogic.Enums;
+
     internal class King : Figure, ICastleableFigure
     {
-        internal King(ChessColors color) : base(color)
+        internal King(ChessColors color) 
+            : base(color)
         {
             this.HasBeenMovedFromTheStartOfTheGame = false;
         }

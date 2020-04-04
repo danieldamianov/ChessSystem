@@ -1,14 +1,14 @@
-﻿using ChessGameLogic.ChessMoves;
-using ChessGameLogic.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessGameLogic.ChessFigures
+﻿namespace ChessGameLogic.ChessFigures
 {
+    using System;
+
+    using ChessGameLogic.ChessMoves;
+    using ChessGameLogic.Enums;
+
     internal class Knight : Figure
     {
-        internal Knight(ChessColors color) : base(color)
+        internal Knight(ChessColors color)
+            : base(color)
         {
         }
 

@@ -1,15 +1,14 @@
-﻿using ChessGameLogic.ChessFigures.Interfaces;
-using ChessGameLogic.ChessMoves;
-using ChessGameLogic.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessGameLogic.ChessFigures
+﻿namespace ChessGameLogic.ChessFigures
 {
+    using ChessGameLogic.ChessFigures.Interfaces;
+    using ChessGameLogic.ChessMoves;
+    using ChessGameLogic.Enums;
+    using System.Collections.Generic;
+
     internal class Queen : Figure, IUnableToJumpFigure
     {
-        internal Queen(ChessColors color) : base(color)
+        internal Queen(ChessColors color) 
+            : base(color)
         {
         }
 

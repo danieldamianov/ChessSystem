@@ -1,15 +1,16 @@
-﻿using ChessGameLogic.ChessFigures.Interfaces;
-using ChessGameLogic.ChessMoves;
-using ChessGameLogic.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessGameLogic.ChessFigures
+﻿namespace ChessGameLogic.ChessFigures
 {
+    using System;
+    using System.Collections.Generic;
+
+    using ChessGameLogic.ChessFigures.Interfaces;
+    using ChessGameLogic.ChessMoves;
+    using ChessGameLogic.Enums;
+
     internal class Pawn : Figure, IUnableToJumpFigure
     {
-        internal Pawn(ChessColors color) : base(color)
+        internal Pawn(ChessColors color)
+            : base(color)
         {
         }
 
@@ -48,6 +49,7 @@ namespace ChessGameLogic.ChessFigures
 
             return false;
         }
+
         internal bool isPositionProducable(ChessBoardPosition positionOnTheBoard)
         {
             if (this.Color == ChessColors.White)
@@ -96,7 +98,6 @@ namespace ChessGameLogic.ChessFigures
                 {
                     return true;
                 }
-
             }
 
             return false;
@@ -108,10 +109,12 @@ namespace ChessGameLogic.ChessFigures
             {
                 return null;
             }
+
             if (this.IsAttackingMovePossible(normalMove))
             {
                 return new List<ChessBoardPosition>();
             }
+
             int differenceInHorizontal = Math.Abs(normalMove.InitialPosition.Horizontal - normalMove.TargetPosition.Horizontal);
             int differenceInVertical = Math.Abs(normalMove.InitialPosition.Vertical - normalMove.TargetPosition.Vertical);
 
@@ -125,8 +128,6 @@ namespace ChessGameLogic.ChessFigures
             {
                 return new List<ChessBoardPosition>() { new ChessBoardPosition(normalMove.InitialPosition.Horizontal, 6) };
             }
-
-
 
             return new List<ChessBoardPosition>();
         }

@@ -1,12 +1,13 @@
-﻿using ChessGameLogic.ChessFigures;
-using ChessGameLogic.ChessFigures.Interfaces;
-using ChessGameLogic.ChessMoves;
-using ChessGameLogic.Enums;
-using ChessGameLogic.Exceptions;
-using System;
-
-namespace ChessGameLogic
+﻿namespace ChessGameLogic
 {
+    using System;
+
+    using ChessGameLogic.ChessFigures;
+    using ChessGameLogic.ChessFigures.Interfaces;
+    using ChessGameLogic.ChessMoves;
+    using ChessGameLogic.Enums;
+    using ChessGameLogic.Exceptions;
+
     internal class ChessBoard
     {
         private readonly IFigure[,] board;
@@ -29,14 +30,14 @@ namespace ChessGameLogic
 
         private void InitializeBoard()
         {
-            InitializeRooks();
-            InitializeKnights();
-            InializeBishops();
+            this.InitializeRooks();
+            this.InitializeKnights();
+            this.InializeBishops();
 
-            InitializeQueens();
-            InitializeKings();
+            this.InitializeQueens();
+            this.InitializeKings();
 
-            InitializePawns();
+            this.InitializePawns();
         }
 
         private void InitializePawns()
@@ -90,12 +91,12 @@ namespace ChessGameLogic
 
         internal void RemoveFigureOnPosition(ChessBoardPosition positionOnTheBoard)
         {
-            board[8 - positionOnTheBoard.Vertical, positionOnTheBoard.Horizontal - 'a'] = null;
+            this.board[8 - positionOnTheBoard.Vertical, positionOnTheBoard.Horizontal - 'a'] = null;
         }
 
         internal IFigure GetFigureOnPosition(ChessBoardPosition positionOnTheBoard)
         {
-            return board[8 - positionOnTheBoard.Vertical, positionOnTheBoard.Horizontal - 'a'];
+            return this.board[8 - positionOnTheBoard.Vertical, positionOnTheBoard.Horizontal - 'a'];
         }
 
         internal void PutFigureOnPosition(ChessBoardPosition positionOnTheBoard, IFigure figure)
@@ -105,7 +106,7 @@ namespace ChessGameLogic
                 throw new ArgumentNullException(nameof(figure));
             }
 
-            board[8 - positionOnTheBoard.Vertical, positionOnTheBoard.Horizontal - 'a'] = figure;
+            this.board[8 - positionOnTheBoard.Vertical, positionOnTheBoard.Horizontal - 'a'] = figure;
 
             if (figure is ICastleableFigure)
             {
@@ -120,12 +121,12 @@ namespace ChessGameLogic
                 throw new ArgumentNullException(nameof(figure));
             }
 
-            board[8 - positionOnTheBoard.Vertical, positionOnTheBoard.Horizontal - 'a'] = figure;
+            this.board[8 - positionOnTheBoard.Vertical, positionOnTheBoard.Horizontal - 'a'] = figure;
         }
 
         internal ChessBoard GetVirtualChessBoardAfterMove(NormalChessMovePositions normalMove)
         {
-            ChessBoard chessBoard = CopyCurrentChessBoard();
+            ChessBoard chessBoard = this.CopyCurrentChessBoard();
             var figure = chessBoard.GetFigureOnPosition(normalMove.InitialPosition);
             chessBoard.RemoveFigureOnPosition(normalMove.InitialPosition);
             chessBoard.PutFigureOnPositionWithoutMovingItActualy(normalMove.TargetPosition, figure);

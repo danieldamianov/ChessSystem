@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace ChessGameLogic.Tests.FiguresTests
 {
@@ -21,9 +20,9 @@ namespace ChessGameLogic.Tests.FiguresTests
                 .Invoke(new object[] { ChessColors.White });
         }
 
-        public Type QueenType;
+        public Type QueenType { get; set; }
 
-        public object QueenInstance;
+        public object QueenInstance { get; set; }
 
         [Test]
         public void TestIfColorIsSetCorrectly()
@@ -146,9 +145,8 @@ namespace ChessGameLogic.Tests.FiguresTests
             var normalChessMoveType = ChessGameLogicProvider.GetType("ChessGameLogic.ChessMoves.NormalChessMovePositions");
             var chessBoardPositionType = ChessGameLogicProvider.GetType("ChessGameLogic.ChessBoardPosition");
 
-            var move = normalChessMoveType.GetConstructors(BindingFlags.Instance
-                | BindingFlags.NonPublic)[0].Invoke(new object[] { initialHorizontal,initialVertical
-                , targetHorizontal, targetVertical });
+            var move = normalChessMoveType.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)[0]
+                .Invoke(new object[] { initialHorizontal, initialVertical, targetHorizontal, targetVertical, });
 
             var actualPositionsInTheWayOfMove = (ICollection)getPositionsInTheWayOfMoveMethod.Invoke(this.QueenInstance, new object[] { move });
 

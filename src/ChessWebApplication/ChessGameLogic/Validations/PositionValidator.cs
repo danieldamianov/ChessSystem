@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessGameLogic.Validations
+﻿namespace ChessGameLogic.Validations
 {
     internal static class PositionValidator
     {

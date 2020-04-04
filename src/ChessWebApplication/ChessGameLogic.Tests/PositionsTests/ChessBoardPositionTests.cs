@@ -8,7 +8,7 @@ namespace ChessGameLogic.Tests.PositionsTests
     [TestFixture]
     public class ChessBoardPositionTests
     {
-        public Type ChessBoardPositionType = ChessGameLogicProvider.GetType("ChessGameLogic.ChessBoardPosition");
+        public Type ChessBoardPositionType { get; set; } = ChessGameLogicProvider.GetType("ChessGameLogic.ChessBoardPosition");
 
         [Test]
         [TestCase('a', 0, false)]
@@ -21,13 +21,13 @@ namespace ChessGameLogic.Tests.PositionsTests
         [TestCase('b', 2, true)]
         [TestCase('h', 1, true)]
         [TestCase('d', 8, true)]
-        public void TestChessBoardPositionInitialization(char horizontal,int vertical,bool isValid)
+        public void TestChessBoardPositionInitialization(char horizontal, int vertical, bool isValid)
         {
             if (isValid == false)
             {
                 Assert.That(() => this.ChessBoardPositionType.GetConstructors(System.Reflection.BindingFlags.Instance
                     | System.Reflection.BindingFlags.NonPublic)[0].Invoke(new object[] { horizontal, vertical }),
-                        Throws.InnerException.InstanceOf(ChessGameLogicProvider.GetType("ChessGameLogic.Exceptions.PositionOutOfBoardException"))); 
+                        Throws.InnerException.InstanceOf(ChessGameLogicProvider.GetType("ChessGameLogic.Exceptions.PositionOutOfBoardException")));
             }
             else
             {
@@ -45,10 +45,10 @@ namespace ChessGameLogic.Tests.PositionsTests
         }
 
         [Test]
-        [TestCase('a',1,true)]
-        [TestCase('a',2,false)]
-        [TestCase('b',1,false)]
-        [TestCase('d',8,false)]
+        [TestCase('a', 1, true)]
+        [TestCase('a', 2, false)]
+        [TestCase('b', 1, false)]
+        [TestCase('d', 8, false)]
         public void TestChessBoardPostitionEqualityMethod(char horizontal, int vertical, bool areEqualExpected)
         {
             var chessBoardPositionInstance = this.ChessBoardPositionType.GetConstructors(BindingFlags.Instance
@@ -58,7 +58,7 @@ namespace ChessGameLogic.Tests.PositionsTests
                     | BindingFlags.NonPublic)[0].Invoke(new object[] { horizontal, vertical });
 
             var chessBoardPositionEqualsMethod = this.ChessBoardPositionType.GetMethods()
-                .Where(m => FilterMethod(m))
+                .Where(m => this.FilterMethod(m))
                 .First();
 
             var actualEqualityResult = chessBoardPositionEqualsMethod.Invoke(chessBoardPositionInstance, new object[] { chessBoardPositionInstanceToCompareWith });

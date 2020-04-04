@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace ChessGameLogic.Tests.FiguresTests
 {
@@ -20,9 +19,9 @@ namespace ChessGameLogic.Tests.FiguresTests
                 .Invoke(new object[] { ChessColors.White });
         }
 
-        public Type RookType;
+        public Type RookType { get; set; }
 
-        public object RookInstance;
+        public object RookInstance { get; set; }
 
         [Test]
         public void TestIfColorIsSetCorrectly()
@@ -161,7 +160,7 @@ namespace ChessGameLogic.Tests.FiguresTests
 
             var moveMethod = this.RookType.GetMethod("Move");
 
-            moveMethod.Invoke(this.RookInstance,new object[] { });
+            moveMethod.Invoke(this.RookInstance, new object[] { });
 
             var finalValue = (bool)hasBeenMovedFromTheStartOfTheGameProperty.GetValue(this.RookInstance);
 

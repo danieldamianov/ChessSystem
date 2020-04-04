@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessGameLogic.ChessMoves
+﻿namespace ChessGameLogic.ChessMoves
 {
     internal class NormalChessMovePositions
     {
@@ -19,14 +15,14 @@ namespace ChessGameLogic.ChessMoves
 
         internal ChessBoardPosition InitialPosition
         {
-            get { return initialPosition; }
-            private set { initialPosition = value; }
+            get { return this.initialPosition; }
+            private set { this.initialPosition = value; }
         }
 
         internal ChessBoardPosition TargetPosition
         {
-            get { return targetPosition; }
-            private set { targetPosition = value; }
+            get { return this.targetPosition; }
+            private set { this.targetPosition = value; }
         }
     }
 }

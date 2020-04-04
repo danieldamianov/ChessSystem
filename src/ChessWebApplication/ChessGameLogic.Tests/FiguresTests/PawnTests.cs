@@ -1,17 +1,17 @@
-﻿/// <summary>
-///     Tests for the pawn class
-/// </summary>
-namespace ChessGameLogic.Tests.FiguresTests
+﻿namespace ChessGameLogic.Tests.FiguresTests
 {
-    using ChessGameLogic.Enums;
-    using NUnit.Framework;
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Text;
 
+    using ChessGameLogic.Enums;
+    using NUnit.Framework;
+
+    /// <summary>
+    /// Tests for the pawn class.
+    /// </summary>
     [TestFixture]
     public class PawnTests
     {
@@ -29,11 +29,11 @@ namespace ChessGameLogic.Tests.FiguresTests
                 .Invoke(new object[] { ChessColors.Black });
         }
 
-        public Type PawnType;
+        public Type PawnType { get; set; }
 
-        public object BlackPawnInstance;
+        public object BlackPawnInstance { get; set; }
 
-        public object WhitePawnInstance;
+        public object WhitePawnInstance { get; set; }
 
         [Test]
         public void TestIfColorIsSetCorrectly()

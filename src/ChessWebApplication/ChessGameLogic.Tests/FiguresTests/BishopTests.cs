@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace ChessGameLogic.Tests.FiguresTests
 {
@@ -21,9 +20,9 @@ namespace ChessGameLogic.Tests.FiguresTests
                 .Invoke(new object[] { ChessColors.White });
         }
 
-        public Type BishopType;
+        public Type BishopType { get; set; }
 
-        public object BishopInstance;
+        public object BishopInstance { get; set; }
 
         [Test]
         public void TestIfColorIsSetCorrectly()
@@ -95,8 +94,7 @@ namespace ChessGameLogic.Tests.FiguresTests
             int initialVertical,
             char targetHorizontal,
             int targetVertical,
-            object[] positionsInTheWayOfMove
-            )
+            object[] positionsInTheWayOfMove)
         {
             List<Tuple<char, int>> positions = new List<Tuple<char, int>>();
 
@@ -108,7 +106,7 @@ namespace ChessGameLogic.Tests.FiguresTests
                     {
                         positions.Add(new Tuple<char, int>((char)positionsInTheWayOfMove[i], (int)positionsInTheWayOfMove[i + 1]));
                     }
-                } 
+                }
             }
 
             var getPositionsInTheWayOfMoveMethod = this.BishopType.GetMethod("GetPositionsInTheWayOfMove");
