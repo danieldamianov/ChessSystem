@@ -1,10 +1,11 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using ChessWebApplication.Models;
-
-namespace ChessWebApplication.Controllers
+﻿namespace ChessWebApplication.Controllers
 {
+    using System.Diagnostics;
+
+    using ChessWebApplication.Models;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

@@ -1,10 +1,11 @@
-﻿using NUnit.Framework;
-using System;
-using System.Linq;
-using System.Reflection;
-
-namespace ChessGameLogic.Tests.PositionsTests
+﻿namespace ChessGameLogic.Tests.PositionsTests
 {
+    using System;
+    using System.Linq;
+    using System.Reflection;
+
+    using NUnit.Framework;
+
     [TestFixture]
     public class ChessBoardPositionTests
     {

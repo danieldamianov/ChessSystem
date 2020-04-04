@@ -1,9 +1,10 @@
-﻿using ChessGameLogic.Exceptions;
-using ChessGameLogic.Validations;
-using System;
-
-namespace ChessGameLogic
+﻿namespace ChessGameLogic
 {
+    using System;
+
+    using ChessGameLogic.Exceptions;
+    using ChessGameLogic.Validations;
+
     internal class ChessBoardPosition : IEquatable<ChessBoardPosition>
     {
         private char horizontal;

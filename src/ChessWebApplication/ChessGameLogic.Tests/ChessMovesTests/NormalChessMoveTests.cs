@@ -1,9 +1,10 @@
-﻿using NUnit.Framework;
-using System.Linq;
-using System.Reflection;
-
-namespace ChessGameLogic.Tests.ChessMovesTests
+﻿namespace ChessGameLogic.Tests.ChessMovesTests
 {
+    using System.Linq;
+    using System.Reflection;
+
+    using NUnit.Framework;
+
     [TestFixture]
     public class NormalChessMoveTests
     {

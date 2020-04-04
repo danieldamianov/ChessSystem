@@ -1,10 +1,11 @@
 ﻿namespace ChessGameLogic.Tests.FiguresTests
 {
-    using ChessGameLogic.Enums;
-    using NUnit.Framework;
     using System;
     using System.Linq;
     using System.Reflection;
+
+    using ChessGameLogic.Enums;
+    using NUnit.Framework;
 
     [TestFixture]
     public class KingTests

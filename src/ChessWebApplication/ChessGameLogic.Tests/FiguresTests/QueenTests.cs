@@ -1,13 +1,14 @@
-﻿using ChessGameLogic.Enums;
-using NUnit.Framework;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-
-namespace ChessGameLogic.Tests.FiguresTests
+﻿namespace ChessGameLogic.Tests.FiguresTests
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
+    using ChessGameLogic.Enums;
+    using NUnit.Framework;
+
     [TestFixture]
     public class QueenTests
     {
