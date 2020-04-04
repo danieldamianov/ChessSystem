@@ -15,8 +15,76 @@
         private ChessBoard chessBoard;
         private ChessColors playerOnTurn;
 
-        private readonly Func<ChessFigureProductionType> ChooseFigureToProduceFunction;
-        private readonly Action<EndGameResult> EndGameHandleFunction;
+        private readonly Func<ChessFigureProductionType> chooseFigureToProduceFunction;
+        private readonly Action<EndGameResult> endGameHandleFunction;
+
+
+        public ChessGame(Func<ChessFigureProductionType> chooseFigureToProduceFunction, Action<EndGameResult> endGameHandleFunction)
+        {
+            if (chooseFigureToProduceFunction == null)
+            {
+                throw new ArgumentNullException(nameof(chooseFigureToProduceFunction));
+            }
+
+            if (endGameHandleFunction == null)
+            {
+                throw new ArgumentNullException(nameof(endGameHandleFunction));
+            }
+
+            this.playerOnTurn = ChessColors.White;
+            this.chessBoard = new ChessBoard();
+            this.chooseFigureToProduceFunction = chooseFigureToProduceFunction;
+            this.endGameHandleFunction = endGameHandleFunction;
+        }
+
+        /// <summary>
+        /// Method that gets all possible positions of placing the given figure.
+        /// </summary>
+        /// <param name="horizontal">The horizontal dimension of the chess board - letter from 'a' to 'h'.</param>
+        /// <param name="vertical">The vertical dimension of the chess board - number from 1 to 8.</param>
+        /// <param name="figureType">The type of the figure to move.</param>
+        /// <param name="chessFigureColor">The color of the figure to move.</param>
+        /// <returns>List of all possible positions.</returns>
+        public List<Position> GetAllPossiblePositionsOfPlacingTheFigure(
+            char horizontal,
+            int vertical,
+            ChessFigureType figureType,
+            ChessColors chessFigureColor)
+        {
+            Type actualFigureType = this.GetType().Assembly.GetType($"ChessGameLogic.ChessFigures.{figureType.ToString()}");
+
+            ChessBoardPosition chessBoardPosition = new ChessBoardPosition(horizontal, vertical);
+
+            List<Position> attackingPos = new List<Position>();
+
+            for (char horizontalIterator = 'a'; horizontalIterator <= 'h'; horizontalIterator++)
+            {
+                for (int verticalIterator = 1; verticalIterator <= 8; verticalIterator++)
+                {
+                    NormalChessMovePositions move = new NormalChessMovePositions(
+                        chessBoardPosition.Horizontal,
+                        chessBoardPosition.Vertical,
+                        horizontalIterator,
+                        verticalIterator);
+
+                    NormalChessMoveValidationResult validationResult = this.ValidateMove(
+                        move,
+                        actualFigureType,
+                        chessFigureColor);
+
+                    if (validationResult == NormalChessMoveValidationResult.ValidMove)
+                    {
+                        attackingPos.Add(new Position(horizontalIterator, verticalIterator));
+                    }
+                }
+            }
+
+            return attackingPos;
+        }
+
+        public ChessColors PlayerOnTurn => this.playerOnTurn;
+
+        public bool GameHasEnded => this.gameHasEnded;
 
         private ChessColors GetOppositeColor(ChessColors color)
         {
@@ -257,25 +325,10 @@
             return NormalChessMoveValidationResult.ValidMove;
         }
 
-        public ChessGame(Func<ChessFigureProductionType> chooseFigureToProduceFunction, Action<EndGameResult> endGameHandleFunction)
+        private void ProducePawn(ChessBoardPosition positionOnTheBoard, Figure producedFigure)
         {
-            if (chooseFigureToProduceFunction == null)
-            {
-                throw new ArgumentNullException(nameof(chooseFigureToProduceFunction));
-            }
-
-            if (endGameHandleFunction == null)
-            {
-                throw new ArgumentNullException(nameof(endGameHandleFunction));
-            }
-
-            this.playerOnTurn = ChessColors.White;
-            this.chessBoard = new ChessBoard();
-            this.ChooseFigureToProduceFunction = chooseFigureToProduceFunction;
-            this.EndGameHandleFunction = endGameHandleFunction;
+            this.chessBoard.PutFigureOnPosition(positionOnTheBoard, producedFigure);
         }
-        public ChessColors PlayerOnTurn => this.playerOnTurn;
-        public bool GameHasEnded => this.gameHasEnded;
 
     }
 }
