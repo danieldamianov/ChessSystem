@@ -11,12 +11,12 @@
 
     public class ChessGame
     {
+        private readonly Func<ChessFigureProductionType> chooseFigureToProduceFunction;
+        private readonly Action<EndGameResult> endGameHandleFunction;
+
         private ChessGameProgressInfo progressInfo;
         private ChessBoard chessBoard;
         private ChessColors playerOnTurn;
-
-        private readonly Func<ChessFigureProductionType> chooseFigureToProduceFunction;
-        private readonly Action<EndGameResult> endGameHandleFunction;
 
         public ChessGame(Func<ChessFigureProductionType> chooseFigureToProduceFunction, Action<EndGameResult> endGameHandleFunction)
         {
@@ -32,9 +32,15 @@
 
             this.playerOnTurn = ChessColors.White;
             this.chessBoard = new ChessBoard();
+            this.progressInfo = ChessGameProgressInfo.InProgressWithoutCheck;
+
             this.chooseFigureToProduceFunction = chooseFigureToProduceFunction;
             this.endGameHandleFunction = endGameHandleFunction;
         }
+
+        public ChessColors PlayerOnTurn => this.playerOnTurn;
+
+        public ChessGameProgressInfo GameProgressInfo => this.progressInfo;
 
         /// <summary>
         /// 
@@ -54,6 +60,13 @@
             ChessFigureType figureType,
             ChessColors color)
         {
+            if (this.progressInfo == ChessGameProgressInfo.WhiteHaveWon
+                || this.progressInfo == ChessGameProgressInfo.BlackHaveWon
+                || this.progressInfo == ChessGameProgressInfo.GameHasEndedDraw)
+            {
+                return NormalChessMoveValidationResult.GameHasEnded;
+            }
+
             NormalChessMovePositions move = new NormalChessMovePositions(
                 initialPositionHorizontal,
                 initialPositionVertical,
@@ -78,6 +91,37 @@
                     Type figureToProduceType = this.ConvertFromChessFigureProductionTypeEnumToActualType(chessFigureProductionType);
 
                     this.ProducePawn(move.TargetPosition, figureToProduceType, color);
+                }
+
+                if (this.CheckForCheck(this.chessBoard, ChessColors.White))
+                {
+                    this.progressInfo = ChessGameProgressInfo.WhiteAreUnderCheck;
+                }
+                else if (this.CheckForCheck(this.chessBoard, ChessColors.Black))
+                {
+                    this.progressInfo = ChessGameProgressInfo.BlackAreUnderCheck;
+                }
+                else
+                {
+                    this.progressInfo = ChessGameProgressInfo.InProgressWithoutCheck;
+                }
+
+                if (this.CheckForDraw())
+                {
+                    this.endGameHandleFunction(EndGameResult.Draw);
+                    this.progressInfo = ChessGameProgressInfo.GameHasEndedDraw;
+                }
+
+                if (this.CheckForMate(ChessColors.Black))
+                {
+                    this.endGameHandleFunction(EndGameResult.BlackWin);
+                    this.progressInfo = ChessGameProgressInfo.BlackHaveWon;
+                }
+
+                if (this.CheckForMate(ChessColors.White))
+                {
+                    this.endGameHandleFunction(EndGameResult.WhiteWin);
+                    this.progressInfo = ChessGameProgressInfo.WhiteHaveWon;
                 }
 
                 this.ChangePlayer();
@@ -130,10 +174,6 @@
 
             return attackingPos;
         }
-
-        public ChessColors PlayerOnTurn => this.playerOnTurn;
-
-        public ChessGameProgressInfo GameProgressInfo => this.progressInfo;
 
         private ChessColors GetOppositeColor(ChessColors color)
         {
@@ -377,6 +417,12 @@
         private void ProducePawn(ChessBoardPosition positionOnTheBoard, Type producedFigureType, ChessColors color)
         {
             IFigure figure = (IFigure)Activator.CreateInstance(producedFigureType, color);
+
+            if (figure is ICastleableFigure)
+            {
+                ((ICastleableFigure)figure).Move();
+            }
+
             this.chessBoard.PutFigureOnPosition(positionOnTheBoard, figure);
         }
 

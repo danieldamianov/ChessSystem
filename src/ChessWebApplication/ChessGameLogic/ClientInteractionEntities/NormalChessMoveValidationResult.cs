@@ -3,6 +3,7 @@
     public enum NormalChessMoveValidationResult
     {
         ValidMove,
+        GameHasEnded,
         ThereIsntSuchFigureAndColorOnTheGivenPosition,
         TheFigureOnTheTargetPositionIsFriendlyOrEnemyKing,
         MovePositionsAreNotValid,
