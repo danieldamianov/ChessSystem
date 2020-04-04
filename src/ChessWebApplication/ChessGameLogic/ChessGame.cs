@@ -118,8 +118,8 @@
 
                     foreach (var position in positionsAttacked)
                     {
-                        IFigure gifureOnPosition = chessBoard.GetFigureOnPosition(position);
-                        if (gifureOnPosition is King && gifureOnPosition.Color == defensiveColor)
+                        IFigure figureOnPosition = chessBoard.GetFigureOnPosition(position);
+                        if (figureOnPosition is King && figureOnPosition.Color == defensiveColor)
                         {
                             return true;
                         }
