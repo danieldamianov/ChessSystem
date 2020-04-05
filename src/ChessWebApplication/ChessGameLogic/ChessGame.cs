@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using ChessGameLogic.ChessFigures;
     using ChessGameLogic.ChessFigures.Interfaces;
@@ -195,6 +196,122 @@
             }
 
             return attackingPos;
+        }
+
+        private List<ChessBoardPosition> GetAllPossiblePositionsOfRookWhenCastlingTheKing(
+             ChessBoardPosition kingPosition,
+             ChessColors kingFigureColor)
+        {
+            List<ChessBoardPosition> rookPositions = new List<ChessBoardPosition>();
+
+            if (this.IsValidCastling(kingPosition, new ChessBoardPosition('a', 1), kingFigureColor))
+            {
+                rookPositions.Add(new ChessBoardPosition('a', 1));
+            }
+
+            if (this.IsValidCastling(kingPosition, new ChessBoardPosition('h', 1), kingFigureColor))
+            {
+                rookPositions.Add(new ChessBoardPosition('h', 1));
+            }
+
+            if (this.IsValidCastling(kingPosition, new ChessBoardPosition('a', 8), kingFigureColor))
+            {
+                rookPositions.Add(new ChessBoardPosition('a', 8));
+            }
+
+            if (this.IsValidCastling(kingPosition, new ChessBoardPosition('h', 8), kingFigureColor))
+            {
+                rookPositions.Add(new ChessBoardPosition('h', 8));
+            }
+
+            return rookPositions;
+        }
+
+        private ChessBoardPosition GetPossiblePositionOfKingWhenCastlingTheRook(
+            ChessBoardPosition rookPosition,
+            ChessColors rookFigureColor)
+        {
+            if (rookFigureColor == ChessColors.White)
+            {
+                if (this.IsValidCastling(new ChessBoardPosition('e', 1), rookPosition, rookFigureColor))
+                {
+                    return new ChessBoardPosition('e', 1);
+                }
+            }
+            else if (rookFigureColor == ChessColors.Black)
+            {
+                if (this.IsValidCastling(new ChessBoardPosition('e', 8), rookPosition, rookFigureColor))
+                {
+                    return new ChessBoardPosition('e', 8);
+                }
+            }
+
+            return null;
+        }
+
+        private bool IsValidCastling(
+            ChessBoardPosition kingPosition,
+            ChessBoardPosition rookPosition,
+            ChessColors colorOfTheFigures)
+        {
+            IFigure kingFigure = this.chessBoard.GetFigureOnPosition(kingPosition);
+            IFigure rookFigure = this.chessBoard.GetFigureOnPosition(rookPosition);
+            Type actualKingFigureType = kingFigure?.GetType();
+            Type actualRookFigureType = rookFigure?.GetType();
+
+            if (kingFigure == null || actualKingFigureType.FullName != typeof(King).FullName || kingFigure.Color != colorOfTheFigures)
+            {
+                return false;
+            }
+
+            if (rookFigure == null || actualRookFigureType.FullName != typeof(Rook).FullName || rookFigure.Color != colorOfTheFigures)
+            {
+                return false;
+            }
+
+            if (((King)kingFigure).HasBeenMovedFromTheStartOfTheGame || ((Rook)rookFigure).HasBeenMovedFromTheStartOfTheGame)
+            {
+                return false;
+            }
+
+            if (this.CheckForCheck(this.chessBoard, colorOfTheFigures))
+            {
+                return false;
+            }
+
+            List<ChessBoardPosition> positionOnTheBoardBetweenRookAndKingAndRookPosition = ((Rook)rookFigure)
+                .GetPositionsInTheWayOfMove(new NormalChessMovePositions(
+                    rookPosition.Horizontal,
+                    rookPosition.Vertical,
+                    kingPosition.Horizontal,
+                    kingPosition.Vertical))
+                .ToList();
+
+            positionOnTheBoardBetweenRookAndKingAndRookPosition.Add(rookPosition);
+
+            foreach (var pos in positionOnTheBoardBetweenRookAndKingAndRookPosition)
+            {
+                if (pos.Equals(rookPosition) == false)
+                {
+                    if (this.chessBoard.GetFigureOnPosition(pos) != null)
+                    {
+                        return false;
+                    }
+                }
+
+                var virtualBoard = this.chessBoard.GetVirtualChessBoardAfterMove(new NormalChessMovePositions(
+                    kingPosition.Horizontal,
+                    kingPosition.Vertical,
+                    pos.Horizontal,
+                    pos.Vertical));
+
+                if (this.CheckForCheck(virtualBoard, colorOfTheFigures))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private ChessColors GetOppositeColor(ChessColors color)
