@@ -198,7 +198,7 @@
             if (actualFigureType.FullName == typeof(King).FullName)
             {
                 attackingPos.AddRange(this.GetAllPossiblePositionsOfRookWhenCastlingTheKing(chessBoardPosition, chessFigureColor)
-                    .Select(position => new Position(position.Horizontal,position.Vertical)));
+                    .Select(position => new Position(position.Horizontal, position.Vertical)));
             }
 
             if (actualFigureType.FullName == typeof(Rook).FullName)
@@ -290,6 +290,33 @@
             this.ChangePlayer();
 
             return castlingMoveValidationResult;
+        }
+
+        /// <summary>
+        /// Gets information about the figure placed on the given position.
+        /// </summary>
+        /// <param name="horizontal">The horizontal dimension of the chess board - letter from 'a' to 'h'.</param>
+        /// <param name="vertical">The vertical dimension of the chess board - number from 1 to 8.</param>
+        /// <returns>ChessFigureOnPositionInfo, containing info about the figure, null if there isn't such figure.</returns>
+        public ChessFigureOnPositionInfo GetFihureOnPositionInfo(char horizontal, int vertical)
+        {
+            IFigure figure = this.chessBoard.GetFigureOnPosition(new ChessBoardPosition(horizontal, vertical));
+
+            if (figure == null)
+            {
+                return null;
+            }
+
+            var figureType = figure.GetType();
+
+            var figureTypeAsEnum = this.ConvertFromActualFigureTypeToFigureTypeEnum(figureType);
+
+            return new ChessFigureOnPositionInfo(figureTypeAsEnum, figure.Color);
+        }
+
+        private ChessFigureType ConvertFromActualFigureTypeToFigureTypeEnum(Type figureType)
+        {
+            throw new NotImplementedException();
         }
 
         private List<ChessBoardPosition> GetAllPossiblePositionsOfRookWhenCastlingTheKing(
