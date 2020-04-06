@@ -28,10 +28,15 @@
         public ChessGameTestForm()
         {
             this.boardPanel = new FlowLayoutPanel();
+            this.Controls.Add(this.boardPanel);
             this.InitializeComponent();
             this.ConfigureBoardPanel();
             this.chessGame = new ChessGame(this.ChooseFigureToProduce, this.HandleGameEnd);
             this.InitialzeBoard(this.chessGame);
+
+            this.Location = new Point(0, 0);
+            this.Size = new Size(600, 600);
+            this.ClientSize = new Size(600, 600);
         }
 
         private void HandleGameEnd(EndGameResult endGameResult)
@@ -87,10 +92,10 @@
 
         private void ConfigureBoardPanel()
         {
-            this.boardPanel.Location = new Point(608, 18);
+            this.boardPanel.Location = new Point(0, 0);
             this.boardPanel.Margin = new Padding(0);
             this.boardPanel.Name = "BoardPanel";
-            this.boardPanel.Size = new Size(747, 685);
+            this.boardPanel.Size = new Size(600, 600);
             this.boardPanel.TabIndex = 3;
 
             this.boardPanel.Visible = true;
@@ -150,27 +155,31 @@
                     targetField.positionOnTheBoard.Horizontal,
                     targetField.positionOnTheBoard.Vertical);
 
-                if (figureOnInitialPosition.figureType == ChessFigureType.King
-                    && figureOnTargetPosition.figureType == ChessFigureType.Bishop)
+                if (figureOnTargetPosition != null)
                 {
-                    this.chessGame.MakeCastling(
-                        this.chessFieldSelected.positionOnTheBoard.Horizontal,
-                        this.chessFieldSelected.positionOnTheBoard.Vertical,
-                        targetField.positionOnTheBoard.Horizontal,
-                        targetField.positionOnTheBoard.Vertical,
-                        figureOnInitialPosition.figureColor);
+                    if (figureOnInitialPosition.figureType == ChessFigureType.King
+                        && figureOnTargetPosition.figureType == ChessFigureType.Bishop)
+                    {
+                        this.chessGame.MakeCastling(
+                            this.chessFieldSelected.positionOnTheBoard.Horizontal,
+                            this.chessFieldSelected.positionOnTheBoard.Vertical,
+                            targetField.positionOnTheBoard.Horizontal,
+                            targetField.positionOnTheBoard.Vertical,
+                            figureOnInitialPosition.figureColor);
+                    }
+
+                    if (figureOnInitialPosition.figureType == ChessFigureType.Bishop
+                        && figureOnTargetPosition.figureType == ChessFigureType.King)
+                    {
+                        this.chessGame.MakeCastling(
+                            targetField.positionOnTheBoard.Horizontal,
+                            targetField.positionOnTheBoard.Vertical,
+                            this.chessFieldSelected.positionOnTheBoard.Horizontal,
+                            this.chessFieldSelected.positionOnTheBoard.Vertical,
+                            figureOnInitialPosition.figureColor);
+                    }
                 }
 
-                if (figureOnInitialPosition.figureType == ChessFigureType.Bishop
-                    && figureOnTargetPosition.figureType == ChessFigureType.King)
-                {
-                    this.chessGame.MakeCastling(
-                        targetField.positionOnTheBoard.Horizontal,
-                        targetField.positionOnTheBoard.Vertical,
-                        this.chessFieldSelected.positionOnTheBoard.Horizontal,
-                        this.chessFieldSelected.positionOnTheBoard.Vertical,
-                        figureOnInitialPosition.figureColor);
-                }
 
                 this.chessGame.NormalMove(
                     this.chessFieldSelected.positionOnTheBoard.Horizontal,

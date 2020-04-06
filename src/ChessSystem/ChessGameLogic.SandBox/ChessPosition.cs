@@ -1,9 +1,13 @@
-﻿namespace ChessGameLogic.SandBox
+﻿using ChessGameLogic.ClientInteractionEntities;
+using System;
+using System.Diagnostics.CodeAnalysis;
+
+namespace ChessGameLogic.SandBox
 {
     /// <summary>
     /// Class that represents a classic chess board position with standart chess notation.
     /// </summary>
-    public class ChessPosition
+    public class ChessPosition : IEquatable<Position>
     {
         public ChessPosition(char horizontal, int vertical)
         {
@@ -20,5 +24,11 @@
         /// Gets the vertical - number from 1 to 8.
         /// </summary>
         public int Vertical { get; }
+
+        public bool Equals(Position other)
+        {
+            return this.Horizontal == other.Horizontal
+                && this.Vertical == other.Vertical;
+        }
     }
 }

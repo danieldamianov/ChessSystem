@@ -117,4 +117,77 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="BishopBlackDarkGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\BishopBlackDarkGray.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BishopBlackWhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\BishopBlackWhite.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BishopWhiteDarkGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\BishopWhiteDarkGray.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BishopWhiteWhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\BishopWhiteWhite.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KingBlackDarkGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\KingBlackDarkGray.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KingBlackWhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\KingBlackWhite.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KingWhiteDarkGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\KingWhiteDarkGray.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KingWhiteWhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\KingWhiteWhite.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KnightBlackDarkGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\KnightBlackDarkGray.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KnightBlackWhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\KnightBlackWhite.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KnightWhiteDarkGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\KnightWhiteDarkGray.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KnightWhiteWhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\KnightWhiteWhite.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PawnBlackDarkGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\PawnBlackDarkGray.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PawnBlackWhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\PawnBlackWhite.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PawnWhiteDarkGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\PawnWhiteDarkGray.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PawnWhiteWhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\PawnWhiteWhite.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="QueenBlackDarkGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\QueenBlackDarkGray.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="QueenBlackWhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\QueenBlackWhite.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="QueenWhiteDarkGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\QueenWhiteDarkGray.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="QueenWhiteWhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\QueenWhiteWhite.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RookBlackDarkGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\RookBlackDarkGray.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RookBlackWhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\RookBlackWhite.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RookWhiteDarkGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\RookWhiteDarkGray.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RookWhiteWhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ImagesForFigures\RookWhiteWhite.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
