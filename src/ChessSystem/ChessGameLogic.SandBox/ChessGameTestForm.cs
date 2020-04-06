@@ -147,39 +147,39 @@
             {
                 var targetField = (ChessField)sender;
 
-                var figureOnInitialPosition = this.chessGame.GetFihureOnPositionInfo(
+                var figureOnInitialPosition = this.chessGame.GetFigureOnPositionInfo(
                     this.chessFieldSelected.positionOnTheBoard.Horizontal,
                     this.chessFieldSelected.positionOnTheBoard.Vertical);
 
-                var figureOnTargetPosition = this.chessGame.GetFihureOnPositionInfo(
+                var firstCastingValidationResult = this.chessGame.MakeCastling(
                     targetField.positionOnTheBoard.Horizontal,
-                    targetField.positionOnTheBoard.Vertical);
+                    targetField.positionOnTheBoard.Vertical,
+                    this.chessFieldSelected.positionOnTheBoard.Horizontal,
+                    this.chessFieldSelected.positionOnTheBoard.Vertical,
+                    figureOnInitialPosition.figureColor);
 
-                if (figureOnTargetPosition != null)
+                if (firstCastingValidationResult == CastlingMoveValidationResult.ValidCastling)
                 {
-                    if (figureOnInitialPosition.figureType == ChessFigureType.King
-                        && figureOnTargetPosition.figureType == ChessFigureType.Bishop)
-                    {
-                        this.chessGame.MakeCastling(
-                            this.chessFieldSelected.positionOnTheBoard.Horizontal,
-                            this.chessFieldSelected.positionOnTheBoard.Vertical,
-                            targetField.positionOnTheBoard.Horizontal,
-                            targetField.positionOnTheBoard.Vertical,
-                            figureOnInitialPosition.figureColor);
-                    }
+                    this.InitialzeBoard(this.chessGame);
+                    this.chessFieldSelected = null;
 
-                    if (figureOnInitialPosition.figureType == ChessFigureType.Bishop
-                        && figureOnTargetPosition.figureType == ChessFigureType.King)
-                    {
-                        this.chessGame.MakeCastling(
-                            targetField.positionOnTheBoard.Horizontal,
-                            targetField.positionOnTheBoard.Vertical,
-                            this.chessFieldSelected.positionOnTheBoard.Horizontal,
-                            this.chessFieldSelected.positionOnTheBoard.Vertical,
-                            figureOnInitialPosition.figureColor);
-                    }
+                    return;
                 }
 
+                var secondCastingValidationResult = this.chessGame.MakeCastling(
+                    this.chessFieldSelected.positionOnTheBoard.Horizontal,
+                    this.chessFieldSelected.positionOnTheBoard.Vertical,
+                    targetField.positionOnTheBoard.Horizontal,
+                    targetField.positionOnTheBoard.Vertical,
+                    figureOnInitialPosition.figureColor);
+
+                if (secondCastingValidationResult == CastlingMoveValidationResult.ValidCastling)
+                {
+                    this.InitialzeBoard(this.chessGame);
+                    this.chessFieldSelected = null;
+
+                    return;
+                }
 
                 this.chessGame.NormalMove(
                     this.chessFieldSelected.positionOnTheBoard.Horizontal,
@@ -190,7 +190,6 @@
                     (ChessColors)this.chessFieldSelected.chessFigureColor);
 
                 this.InitialzeBoard(this.chessGame);
-
                 this.chessFieldSelected = null;
             }
         }
@@ -214,7 +213,7 @@
                 for (int j = 0; j < 8; j++)
                 {
                     this.board[i, j].BackColor = color;
-                    ChessFigureOnPositionInfo chessFigureOnPositionInfo = chessGame.GetFihureOnPositionInfo(Convert.ToChar('a' + j), 8 - i);
+                    ChessFigureOnPositionInfo chessFigureOnPositionInfo = chessGame.GetFigureOnPositionInfo(Convert.ToChar('a' + j), 8 - i);
                     if (chessFigureOnPositionInfo != null)
                     {
                         this.board[i, j].Image =

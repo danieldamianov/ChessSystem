@@ -2,8 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
-
+    using System.Reflection;
     using ChessGameLogic.ChessFigures;
     using ChessGameLogic.ChessFigures.Interfaces;
     using ChessGameLogic.ChessMoves;
@@ -298,7 +299,7 @@
         /// <param name="horizontal">The horizontal dimension of the chess board - letter from 'a' to 'h'.</param>
         /// <param name="vertical">The vertical dimension of the chess board - number from 1 to 8.</param>
         /// <returns>ChessFigureOnPositionInfo, containing info about the figure, null if there isn't such figure.</returns>
-        public ChessFigureOnPositionInfo GetFihureOnPositionInfo(char horizontal, int vertical)
+        public ChessFigureOnPositionInfo GetFigureOnPositionInfo(char horizontal, int vertical)
         {
             IFigure figure = this.chessBoard.GetFigureOnPosition(new ChessBoardPosition(horizontal, vertical));
 
@@ -688,7 +689,12 @@
 
         private void ProducePawn(ChessBoardPosition positionOnTheBoard, Type producedFigureType, ChessColors color)
         {
-            IFigure figure = (IFigure)Activator.CreateInstance(producedFigureType, color);
+            IFigure figure = (IFigure)Activator.CreateInstance(
+                producedFigureType,
+                BindingFlags.Instance | BindingFlags.NonPublic,
+                null,
+                new object[] { color },
+                null);
 
             if (figure is ICastleableFigure)
             {
