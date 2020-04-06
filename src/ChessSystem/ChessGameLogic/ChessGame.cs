@@ -316,7 +316,9 @@
 
         private ChessFigureType ConvertFromActualFigureTypeToFigureTypeEnum(Type figureType)
         {
-            throw new NotImplementedException();
+            var figureName = figureType.Name;
+
+            return (ChessFigureType)Enum.Parse(typeof(ChessFigureType), figureName);
         }
 
         private List<ChessBoardPosition> GetAllPossiblePositionsOfRookWhenCastlingTheKing(
