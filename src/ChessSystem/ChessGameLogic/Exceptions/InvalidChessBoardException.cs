@@ -4,7 +4,7 @@ namespace ChessGameLogic.Exceptions
 {
     public class InvalidChessBoardException : Exception
     {
-        public InvalidChessBoardException(string message) 
+        public InvalidChessBoardException(string message)
             : base(message)
         {
         }

@@ -11,7 +11,6 @@
     using ChessGameLogic.Enums;
     using ChessGameLogic.SandBox.Properties;
 
-
     /// <summary>
     /// Test form for a chess game.
     /// </summary>
@@ -74,7 +73,6 @@
                 }
                 else
                 {
-
                     DialogResult dialogResult3 = MessageBox.Show("Do you want to get a BISHOP?", string.Empty, MessageBoxButtons.YesNo);
                     if (dialogResult3 == DialogResult.Yes)
                     {
@@ -107,7 +105,7 @@
                 {
                     this.board[i, j] = new ChessField();
                     this.board[i, j].Click += new EventHandler(this.MoveHandler);
-                    ((ChessField)this.board[i, j]).positionOnTheBoard = new ChessPosition(Convert.ToChar(j + 'a'), 8 - i);
+                    ((ChessField)this.board[i, j]).PositionOnTheBoard = new ChessPosition(Convert.ToChar(j + 'a'), 8 - i);
                     this.board[i, j].FlatStyle = FlatStyle.Flat;
                     this.board[i, j].FlatAppearance.BorderSize = 0;
                     this.board[i, j].Size = new System.Drawing.Size(70, 70);
@@ -125,15 +123,15 @@
 
                 List<Position> attackingPos =
                     this.chessGame.GetAllPossiblePositionsOfPlacingTheFigure(
-                        this.chessFieldSelected.positionOnTheBoard.Horizontal,
-                        this.chessFieldSelected.positionOnTheBoard.Vertical,
-                        (ChessFigureType)this.chessFieldSelected.chessFigure,
-                        (ChessColors)this.chessFieldSelected.chessFigureColor);
+                        this.chessFieldSelected.PositionOnTheBoard.Horizontal,
+                        this.chessFieldSelected.PositionOnTheBoard.Vertical,
+                        (ChessFigureType)this.chessFieldSelected.ChessFigure,
+                        (ChessColors)this.chessFieldSelected.ChessFigureColor);
 
                 foreach (var field in this.board)
                 {
-                    if (((ChessField)field).positionOnTheBoard.Equals(this.chessFieldSelected.positionOnTheBoard) == false
-                        && attackingPos.Any(ap => ((ChessField)field).positionOnTheBoard.Equals(ap)) == false)
+                    if (((ChessField)field).PositionOnTheBoard.Equals(this.chessFieldSelected.PositionOnTheBoard) == false
+                        && attackingPos.Any(ap => ((ChessField)field).PositionOnTheBoard.Equals(ap)) == false)
                     {
                         field.Enabled = false;
                     }
@@ -148,14 +146,14 @@
                 var targetField = (ChessField)sender;
 
                 var figureOnInitialPosition = this.chessGame.GetFigureOnPositionInfo(
-                    this.chessFieldSelected.positionOnTheBoard.Horizontal,
-                    this.chessFieldSelected.positionOnTheBoard.Vertical);
+                    this.chessFieldSelected.PositionOnTheBoard.Horizontal,
+                    this.chessFieldSelected.PositionOnTheBoard.Vertical);
 
                 var firstCastingValidationResult = this.chessGame.MakeCastling(
-                    targetField.positionOnTheBoard.Horizontal,
-                    targetField.positionOnTheBoard.Vertical,
-                    this.chessFieldSelected.positionOnTheBoard.Horizontal,
-                    this.chessFieldSelected.positionOnTheBoard.Vertical,
+                    targetField.PositionOnTheBoard.Horizontal,
+                    targetField.PositionOnTheBoard.Vertical,
+                    this.chessFieldSelected.PositionOnTheBoard.Horizontal,
+                    this.chessFieldSelected.PositionOnTheBoard.Vertical,
                     figureOnInitialPosition.figureColor);
 
                 if (firstCastingValidationResult == CastlingMoveValidationResult.ValidCastling)
@@ -167,10 +165,10 @@
                 }
 
                 var secondCastingValidationResult = this.chessGame.MakeCastling(
-                    this.chessFieldSelected.positionOnTheBoard.Horizontal,
-                    this.chessFieldSelected.positionOnTheBoard.Vertical,
-                    targetField.positionOnTheBoard.Horizontal,
-                    targetField.positionOnTheBoard.Vertical,
+                    this.chessFieldSelected.PositionOnTheBoard.Horizontal,
+                    this.chessFieldSelected.PositionOnTheBoard.Vertical,
+                    targetField.PositionOnTheBoard.Horizontal,
+                    targetField.PositionOnTheBoard.Vertical,
                     figureOnInitialPosition.figureColor);
 
                 if (secondCastingValidationResult == CastlingMoveValidationResult.ValidCastling)
@@ -182,12 +180,12 @@
                 }
 
                 this.chessGame.NormalMove(
-                    this.chessFieldSelected.positionOnTheBoard.Horizontal,
-                    this.chessFieldSelected.positionOnTheBoard.Vertical,
-                    ((ChessField)sender).positionOnTheBoard.Horizontal,
-                    ((ChessField)sender).positionOnTheBoard.Vertical,
-                    (ChessFigureType)this.chessFieldSelected.chessFigure,
-                    (ChessColors)this.chessFieldSelected.chessFigureColor);
+                    this.chessFieldSelected.PositionOnTheBoard.Horizontal,
+                    this.chessFieldSelected.PositionOnTheBoard.Vertical,
+                    ((ChessField)sender).PositionOnTheBoard.Horizontal,
+                    ((ChessField)sender).PositionOnTheBoard.Vertical,
+                    (ChessFigureType)this.chessFieldSelected.ChessFigure,
+                    (ChessColors)this.chessFieldSelected.ChessFigureColor);
 
                 this.InitialzeBoard(this.chessGame);
                 this.chessFieldSelected = null;
@@ -218,18 +216,18 @@
                     {
                         this.board[i, j].Image =
                             (Image)typeof(Resources)
-                            .GetProperty($"{chessFigureOnPositionInfo.figureType}{chessFigureOnPositionInfo.figureColor}{color.Name}", BindingFlags.Static | BindingFlags.Public | System.Reflection.BindingFlags.NonPublic).GetValue(null); //= chessBoard.board[i, j].GetFigureSymbol().ToString(); 
-                        ((ChessField)this.board[i, j]).chessFigure = chessFigureOnPositionInfo.figureType;
-                        ((ChessField)this.board[i, j]).chessFigureColor = chessFigureOnPositionInfo.figureColor;
+                            .GetProperty($"{chessFigureOnPositionInfo.figureType}{chessFigureOnPositionInfo.figureColor}{color.Name}", BindingFlags.Static | BindingFlags.Public | System.Reflection.BindingFlags.NonPublic).GetValue(null);
+                        ((ChessField)this.board[i, j]).ChessFigure = chessFigureOnPositionInfo.figureType;
+                        ((ChessField)this.board[i, j]).ChessFigureColor = chessFigureOnPositionInfo.figureColor;
                     }
                     else
                     {
                         this.board[i, j].Image = null;
-                        ((ChessField)this.board[i, j]).chessFigure = null;
-                        ((ChessField)this.board[i, j]).chessFigureColor = null;
+                        ((ChessField)this.board[i, j]).ChessFigure = null;
+                        ((ChessField)this.board[i, j]).ChessFigureColor = null;
                     }
 
-                    if (((ChessField)this.board[i, j]).chessFigureColor != this.chessGame.PlayerOnTurn)
+                    if (((ChessField)this.board[i, j]).ChessFigureColor != this.chessGame.PlayerOnTurn)
                     {
                         this.board[i, j].Enabled = false;
                     }

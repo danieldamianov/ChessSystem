@@ -52,17 +52,25 @@
         [TestCase('h', 3, 'a', 1, false)]
         [TestCase('c', 7, 'g', 5, false)]
         [TestCase('b', 3, 'g', 7, false)]
-        public void TestAreMovePositionsPossibleMethod(char initialHorizontal,
-            int initialVertical, char targetHorizontal, int targetVertical, bool isValid)
+        public void TestAreMovePositionsPossibleMethod(
+            char initialHorizontal,
+            int initialVertical,
+            char targetHorizontal,
+            int targetVertical,
+            bool isValid)
         {
             var arePositionsPossibleMethod = this.RookType.GetMethod("AreMovePositionsPossible");
 
             var normalChessMoveType = ChessGameLogicProvider.GetType("ChessGameLogic.ChessMoves.NormalChessMovePositions");
 
-            var move = normalChessMoveType.GetConstructors(BindingFlags.Instance
-                | BindingFlags.NonPublic)[0].Invoke(new object[] { initialHorizontal,initialVertical
-                , targetHorizontal, targetVertical });
-
+            var move = normalChessMoveType.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)[0]
+                .Invoke(new object[]
+                {
+                    initialHorizontal,
+                    initialVertical,
+                    targetHorizontal,
+                    targetVertical,
+                });
 
             var actualResult = arePositionsPossibleMethod.Invoke(this.RookInstance, new object[] { move });
 
@@ -93,8 +101,7 @@
             int initialVertical,
             char targetHorizontal,
             int targetVertical,
-            object[] positionsInTheWayOfMove
-            )
+            object[] positionsInTheWayOfMove)
         {
             List<Tuple<char, int>> positions = new List<Tuple<char, int>>();
 

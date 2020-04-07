@@ -7,8 +7,10 @@
 
     public class ChessField : Button
     {
-        public ChessPosition positionOnTheBoard;
-        public ChessFigureType? chessFigure;
-        public ChessColors? chessFigureColor;
+        public ChessPosition PositionOnTheBoard { get; set; }
+
+        public ChessFigureType? ChessFigure { get; set; }
+
+        public ChessColors? ChessFigureColor { get; set; }
     }
 }

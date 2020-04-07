@@ -14,54 +14,6 @@
         {
         }
 
-        internal bool IsAttackingMovePossible(NormalChessMovePositions move)
-        {
-            if (this.Color == ChessColors.White && move.InitialPosition.Vertical == 1)
-            {
-                return false;
-            }
-
-            if (this.Color == ChessColors.Black && move.InitialPosition.Vertical == 8)
-            {
-                return false;
-            }
-
-            if (this.Color == ChessColors.White)
-            {
-                int differenceInHorizontal = Math.Abs(move.InitialPosition.Horizontal - move.TargetPosition.Horizontal);
-                int differenceInVertical = move.InitialPosition.Vertical - move.TargetPosition.Vertical;
-
-                if (differenceInHorizontal == 1 && differenceInVertical == -1)
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                int differenceInHorizontal = Math.Abs(move.InitialPosition.Horizontal - move.TargetPosition.Horizontal);
-                int differenceInVertical = move.InitialPosition.Vertical - move.TargetPosition.Vertical;
-
-                if (differenceInHorizontal == 1 && differenceInVertical == 1)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        internal bool isPositionProducable(ChessBoardPosition positionOnTheBoard)
-        {
-            if (this.Color == ChessColors.White)
-            {
-                return positionOnTheBoard.Vertical == 8;
-            }
-            else
-            {
-                return positionOnTheBoard.Vertical == 1;
-            }
-        }
-
         public override bool AreMovePositionsPossible(NormalChessMovePositions normalMove)
         {
             int differenceInHorizontal = Math.Abs(normalMove.InitialPosition.Horizontal - normalMove.TargetPosition.Horizontal);
@@ -118,7 +70,6 @@
             int differenceInHorizontal = Math.Abs(normalMove.InitialPosition.Horizontal - normalMove.TargetPosition.Horizontal);
             int differenceInVertical = Math.Abs(normalMove.InitialPosition.Vertical - normalMove.TargetPosition.Vertical);
 
-
             if (this.Color == ChessColors.White && normalMove.InitialPosition.Vertical == 2 && normalMove.TargetPosition.Vertical == 4)
             {
                 return new List<ChessBoardPosition>() { new ChessBoardPosition(normalMove.InitialPosition.Horizontal, 3) };
@@ -130,6 +81,54 @@
             }
 
             return new List<ChessBoardPosition>();
+        }
+
+        internal bool IsAttackingMovePossible(NormalChessMovePositions move)
+        {
+            if (this.Color == ChessColors.White && move.InitialPosition.Vertical == 1)
+            {
+                return false;
+            }
+
+            if (this.Color == ChessColors.Black && move.InitialPosition.Vertical == 8)
+            {
+                return false;
+            }
+
+            if (this.Color == ChessColors.White)
+            {
+                int differenceInHorizontal = Math.Abs(move.InitialPosition.Horizontal - move.TargetPosition.Horizontal);
+                int differenceInVertical = move.InitialPosition.Vertical - move.TargetPosition.Vertical;
+
+                if (differenceInHorizontal == 1 && differenceInVertical == -1)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                int differenceInHorizontal = Math.Abs(move.InitialPosition.Horizontal - move.TargetPosition.Horizontal);
+                int differenceInVertical = move.InitialPosition.Vertical - move.TargetPosition.Vertical;
+
+                if (differenceInHorizontal == 1 && differenceInVertical == 1)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        internal bool IsPositionProducable(ChessBoardPosition positionOnTheBoard)
+        {
+            if (this.Color == ChessColors.White)
+            {
+                return positionOnTheBoard.Vertical == 8;
+            }
+            else
+            {
+                return positionOnTheBoard.Vertical == 1;
+            }
         }
     }
 }

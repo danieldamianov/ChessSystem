@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+
     using ChessGameLogic.ChessFigures.Interfaces;
     using ChessGameLogic.ChessMoves;
     using ChessGameLogic.Enums;
@@ -44,14 +45,17 @@
                 {
                     positionsOnTheBoard.Add(new ChessBoardPosition((char)(normalMove.InitialPosition.Horizontal - i), normalMove.InitialPosition.Vertical - i));
                 }
+
                 if (differenceInHorizontal < 0 && differenceInVertical > 0)
                 {
                     positionsOnTheBoard.Add(new ChessBoardPosition((char)(normalMove.InitialPosition.Horizontal + i), normalMove.InitialPosition.Vertical - i));
                 }
+
                 if (differenceInHorizontal > 0 && differenceInVertical < 0)
                 {
                     positionsOnTheBoard.Add(new ChessBoardPosition((char)(normalMove.InitialPosition.Horizontal - i), normalMove.InitialPosition.Vertical + i));
                 }
+
                 if (differenceInHorizontal < 0 && differenceInVertical < 0)
                 {
                     positionsOnTheBoard.Add(new ChessBoardPosition((char)(normalMove.InitialPosition.Horizontal + i), normalMove.InitialPosition.Vertical + i));

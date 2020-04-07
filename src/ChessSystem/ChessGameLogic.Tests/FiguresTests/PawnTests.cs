@@ -79,18 +79,27 @@
 
         [TestCase('d', 5, 'd', 7, ChessColors.White, false)]
         [TestCase('f', 4, 'f', 2, ChessColors.Black, false)]
-        public void TestAreMovePositionsPossibleMethod(char initialHorizontal,
-            int initialVertical, char targetHorizontal, int targetVertical, ChessColors pawnColor, bool isValid)
+        public void TestAreMovePositionsPossibleMethod(
+            char initialHorizontal,
+            int initialVertical,
+            char targetHorizontal,
+            int targetVertical,
+            ChessColors pawnColor,
+            bool isValid)
         {
             var arePositionsPossibleMethod = this.PawnType.GetMethod("AreMovePositionsPossible");
 
             var normalChessMoveType = ChessGameLogicProvider.GetType("ChessGameLogic.ChessMoves.NormalChessMovePositions");
             var chessBoardPositionType = ChessGameLogicProvider.GetType("ChessGameLogic.ChessBoardPosition");
 
-            var move = normalChessMoveType.GetConstructors(BindingFlags.Instance
-                | BindingFlags.NonPublic)[0].Invoke(new object[] { initialHorizontal,initialVertical
-                , targetHorizontal, targetVertical });
-
+            var move = normalChessMoveType.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)[0]
+                .Invoke(new object[]
+                {
+                    initialHorizontal,
+                    initialVertical,
+                    targetHorizontal,
+                    targetVertical,
+                });
 
             bool actualResult;
 
@@ -144,15 +153,20 @@
             ChessColors pawnColor,
             bool isValid)
         {
-            var isAttackingMovePossibleMethod = this.PawnType.GetMethod("IsAttackingMovePossible",
+            var isAttackingMovePossibleMethod = this.PawnType.GetMethod(
+                "IsAttackingMovePossible",
                 BindingFlags.Instance | BindingFlags.NonPublic);
 
             var normalChessMoveType = ChessGameLogicProvider.GetType("ChessGameLogic.ChessMoves.NormalChessMovePositions");
 
-            var move = normalChessMoveType.GetConstructors(BindingFlags.Instance
-                | BindingFlags.NonPublic)[0].Invoke(new object[] { initialHorizontal,initialVertical
-                , targetHorizontal, targetVertical });
-
+            var move = normalChessMoveType.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)[0]
+                .Invoke(new object[]
+                {
+                    initialHorizontal,
+                    initialVertical,
+                    targetHorizontal,
+                    targetVertical,
+                });
 
             bool actualResult;
 
@@ -200,8 +214,7 @@
         [TestCase('d', 5, 'd', 7, ChessColors.White, null)]
         [TestCase('f', 4, 'f', 2, ChessColors.Black, null)]
 
-
-
+        // Logically seaprated.
         [TestCase('d', 1, 'c', 2, ChessColors.White, null)]
         [TestCase('d', 1, 'd', 2, ChessColors.White, null)]
         [TestCase('a', 2, 'a', 3, ChessColors.White, new object[] { })]
@@ -258,9 +271,14 @@
             var normalChessMoveType = ChessGameLogicProvider.GetType("ChessGameLogic.ChessMoves.NormalChessMovePositions");
             var chessBoardPositionType = ChessGameLogicProvider.GetType("ChessGameLogic.ChessBoardPosition");
 
-            var move = normalChessMoveType.GetConstructors(BindingFlags.Instance
-                | BindingFlags.NonPublic)[0].Invoke(new object[] { initialHorizontal,initialVertical
-                , targetHorizontal, targetVertical });
+            var move = normalChessMoveType.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)[0]
+                .Invoke(new object[] 
+                { 
+                    initialHorizontal,
+                    initialVertical,
+                    targetHorizontal,
+                    targetVertical,
+                });
 
             ICollection actualPositionsInTheWayOfMove = null;
 

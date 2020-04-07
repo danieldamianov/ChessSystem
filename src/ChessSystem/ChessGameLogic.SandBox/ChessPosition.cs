@@ -1,9 +1,9 @@
-﻿using ChessGameLogic.ClientInteractionEntities;
-using System;
-using System.Diagnostics.CodeAnalysis;
-
-namespace ChessGameLogic.SandBox
+﻿namespace ChessGameLogic.SandBox
 {
+    using System;
+
+    using ChessGameLogic.ClientInteractionEntities;
+
     /// <summary>
     /// Class that represents a classic chess board position with standart chess notation.
     /// </summary>

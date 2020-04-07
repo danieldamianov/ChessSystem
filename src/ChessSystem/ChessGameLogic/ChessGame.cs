@@ -2,9 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using System.Reflection;
+
     using ChessGameLogic.ChessFigures;
     using ChessGameLogic.ChessFigures.Interfaces;
     using ChessGameLogic.ChessMoves;
@@ -108,7 +108,7 @@
                 this.chessBoard.RemoveFigureOnPosition(move.InitialPosition);
                 this.chessBoard.PutFigureOnPosition(move.TargetPosition, figure);
 
-                if (figure is Pawn && ((Pawn)figure).isPositionProducable(move.TargetPosition))
+                if (figure is Pawn && ((Pawn)figure).IsPositionProducable(move.TargetPosition))
                 {
                     ChessFigureProductionType chessFigureProductionType = this.chooseFigureToProduceFunction();
 

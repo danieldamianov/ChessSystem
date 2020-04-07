@@ -18,6 +18,52 @@
             this.InitializeBoard();
         }
 
+        internal void RemoveFigureOnPosition(ChessBoardPosition positionOnTheBoard)
+        {
+            this.board[8 - positionOnTheBoard.Vertical, positionOnTheBoard.Horizontal - 'a'] = null;
+        }
+
+        internal IFigure GetFigureOnPosition(ChessBoardPosition positionOnTheBoard)
+        {
+            return this.board[8 - positionOnTheBoard.Vertical, positionOnTheBoard.Horizontal - 'a'];
+        }
+
+        internal void PutFigureOnPosition(ChessBoardPosition positionOnTheBoard, IFigure figure)
+        {
+            if (figure == null)
+            {
+                throw new ArgumentNullException(nameof(figure));
+            }
+
+            this.board[8 - positionOnTheBoard.Vertical, positionOnTheBoard.Horizontal - 'a'] = figure;
+
+            if (figure is ICastleableFigure)
+            {
+                ((ICastleableFigure)figure).Move();
+            }
+        }
+
+        internal void PutFigureOnPositionWithoutMovingItActualy(ChessBoardPosition positionOnTheBoard, IFigure figure)
+        {
+            if (figure == null)
+            {
+                throw new ArgumentNullException(nameof(figure));
+            }
+
+            this.board[8 - positionOnTheBoard.Vertical, positionOnTheBoard.Horizontal - 'a'] = figure;
+        }
+
+        internal ChessBoard GetVirtualChessBoardAfterMove(NormalChessMovePositions normalMove)
+        {
+            ChessBoard chessBoard = this.CopyCurrentChessBoard();
+            var figure = chessBoard.GetFigureOnPosition(normalMove.InitialPosition);
+            chessBoard.RemoveFigureOnPosition(normalMove.InitialPosition);
+            chessBoard.PutFigureOnPositionWithoutMovingItActualy(normalMove.TargetPosition, figure);
+
+            return chessBoard;
+        }
+
+
         internal ChessBoard(IFigure[,] figures)
         {
             if (figures.GetLength(0) != 8 && figures.GetLength(1) != 8)
@@ -89,50 +135,6 @@
             this.board[7, 0] = new Rook(ChessColors.White);
         }
 
-        internal void RemoveFigureOnPosition(ChessBoardPosition positionOnTheBoard)
-        {
-            this.board[8 - positionOnTheBoard.Vertical, positionOnTheBoard.Horizontal - 'a'] = null;
-        }
-
-        internal IFigure GetFigureOnPosition(ChessBoardPosition positionOnTheBoard)
-        {
-            return this.board[8 - positionOnTheBoard.Vertical, positionOnTheBoard.Horizontal - 'a'];
-        }
-
-        internal void PutFigureOnPosition(ChessBoardPosition positionOnTheBoard, IFigure figure)
-        {
-            if (figure == null)
-            {
-                throw new ArgumentNullException(nameof(figure));
-            }
-
-            this.board[8 - positionOnTheBoard.Vertical, positionOnTheBoard.Horizontal - 'a'] = figure;
-
-            if (figure is ICastleableFigure)
-            {
-                ((ICastleableFigure)figure).Move();
-            }
-        }
-
-        internal void PutFigureOnPositionWithoutMovingItActualy(ChessBoardPosition positionOnTheBoard, IFigure figure)
-        {
-            if (figure == null)
-            {
-                throw new ArgumentNullException(nameof(figure));
-            }
-
-            this.board[8 - positionOnTheBoard.Vertical, positionOnTheBoard.Horizontal - 'a'] = figure;
-        }
-
-        internal ChessBoard GetVirtualChessBoardAfterMove(NormalChessMovePositions normalMove)
-        {
-            ChessBoard chessBoard = this.CopyCurrentChessBoard();
-            var figure = chessBoard.GetFigureOnPosition(normalMove.InitialPosition);
-            chessBoard.RemoveFigureOnPosition(normalMove.InitialPosition);
-            chessBoard.PutFigureOnPositionWithoutMovingItActualy(normalMove.TargetPosition, figure);
-
-            return chessBoard;
-        }
 
         private ChessBoard CopyCurrentChessBoard()
         {

@@ -68,18 +68,26 @@
         [TestCase('d', 3, 'a', 3, true)]
         [TestCase('a', 1, 'h', 7, false)]
         [TestCase('d', 1, 'b', 2, false)]
-        public void TestAreMovePositionsPossibleMethod(char initialHorizontal,
-            int initialVertical, char targetHorizontal, int targetVertical, bool isValid)
+        public void TestAreMovePositionsPossibleMethod(
+            char initialHorizontal,
+            int initialVertical,
+            char targetHorizontal,
+            int targetVertical,
+            bool isValid)
         {
             var arePositionsPossibleMethod = this.QueenType.GetMethod("AreMovePositionsPossible");
 
             var normalChessMoveType = ChessGameLogicProvider.GetType("ChessGameLogic.ChessMoves.NormalChessMovePositions");
             var chessBoardPositionType = ChessGameLogicProvider.GetType("ChessGameLogic.ChessBoardPosition");
 
-            var move = normalChessMoveType.GetConstructors(BindingFlags.Instance
-                | BindingFlags.NonPublic)[0].Invoke(new object[] { initialHorizontal,initialVertical
-                , targetHorizontal, targetVertical });
-
+            var move = normalChessMoveType.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)[0]
+                .Invoke(new object[] 
+                { 
+                    initialHorizontal,
+                    initialVertical,
+                    targetHorizontal,
+                    targetVertical,
+                });
 
             var actualResult = arePositionsPossibleMethod.Invoke(this.QueenInstance, new object[] { move });
 

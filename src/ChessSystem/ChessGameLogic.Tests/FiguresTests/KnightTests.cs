@@ -50,8 +50,12 @@
         [TestCase('e', 5, 'e', 7, false)]
         [TestCase('e', 5, 'g', 5, false)]
         [TestCase('e', 5, 'd', 2, false)]
-        public void TestAreMovePositionsPossibleMethod(char initialHorizontal,
-            int initialVertical, char targetHorizontal, int targetVertical, bool isValid)
+        public void TestAreMovePositionsPossibleMethod(
+            char initialHorizontal,
+            int initialVertical,
+            char targetHorizontal,
+            int targetVertical,
+            bool isValid)
         {
             var arePositionsPossibleMethod = this.KnightType.GetMethod("AreMovePositionsPossible");
 
@@ -59,7 +63,6 @@
 
             var move = normalChessMoveType.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)[0]
                 .Invoke(new object[] { initialHorizontal, initialVertical, targetHorizontal, targetVertical });
-
 
             var actualResult = arePositionsPossibleMethod.Invoke(this.KnightInstance, new object[] { move });
 

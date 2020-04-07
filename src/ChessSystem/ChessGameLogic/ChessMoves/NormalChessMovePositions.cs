@@ -6,8 +6,11 @@
 
         private ChessBoardPosition targetPosition;
 
-        internal NormalChessMovePositions(char initialPositionHorizontal, int initialPositionVertical
-                , char targetPositionHorizontal, int targetPositionVertical)
+        internal NormalChessMovePositions(
+            char initialPositionHorizontal,
+            int initialPositionVertical,
+            char targetPositionHorizontal,
+            int targetPositionVertical)
         {
             this.InitialPosition = new ChessBoardPosition(initialPositionHorizontal, initialPositionVertical);
             this.TargetPosition = new ChessBoardPosition(targetPositionHorizontal, targetPositionVertical);

@@ -1,8 +1,8 @@
-﻿using ChessGameLogic.ChessMoves;
-using ChessGameLogic.Enums;
-
-namespace ChessGameLogic.ChessFigures.Interfaces
+﻿namespace ChessGameLogic.ChessFigures.Interfaces
 {
+    using ChessGameLogic.ChessMoves;
+    using ChessGameLogic.Enums;
+
     internal interface IFigure
     {
         bool AreMovePositionsPossible(NormalChessMovePositions normalMove);

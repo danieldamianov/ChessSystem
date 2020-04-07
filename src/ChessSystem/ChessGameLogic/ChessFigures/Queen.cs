@@ -1,9 +1,10 @@
 ﻿namespace ChessGameLogic.ChessFigures
 {
+    using System.Collections.Generic;
+
     using ChessGameLogic.ChessFigures.Interfaces;
     using ChessGameLogic.ChessMoves;
     using ChessGameLogic.Enums;
-    using System.Collections.Generic;
 
     internal class Queen : Figure, IUnableToJumpFigure
     {

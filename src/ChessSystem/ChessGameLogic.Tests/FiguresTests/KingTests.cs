@@ -45,17 +45,25 @@
         [TestCase('f', 5, 'a', 1, false)]
         [TestCase('f', 5, 'g', 8, false)]
         [TestCase('f', 5, 'g', 7, false)]
-        public void TestAreMovePositionsPossibleMethod(char initialHorizontal,
-            int initialVertical, char targetHorizontal, int targetVertical, bool isValid)
+        public void TestAreMovePositionsPossibleMethod(
+            char initialHorizontal,
+            int initialVertical,
+            char targetHorizontal,
+            int targetVertical,
+            bool isValid)
         {
             var arePositionsPossibleMethod = this.KingType.GetMethod("AreMovePositionsPossible");
 
             var normalChessMoveType = ChessGameLogicProvider.GetType("ChessGameLogic.ChessMoves.NormalChessMovePositions");
 
-            var move = normalChessMoveType.GetConstructors(BindingFlags.Instance
-                | BindingFlags.NonPublic)[0].Invoke(new object[] { initialHorizontal,initialVertical
-                , targetHorizontal, targetVertical });
-
+            var move = normalChessMoveType.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)[0]
+                .Invoke(new object[]
+                {
+                    initialHorizontal,
+                    initialVertical,
+                    targetHorizontal,
+                    targetVertical,
+                });
 
             var actualResult = arePositionsPossibleMethod.Invoke(this.KingInstance, new object[] { move });
 
