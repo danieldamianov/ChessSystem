@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessGameLogic", "ChessGame
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessGameLogic.Tests", "ChessGameLogic.Tests\ChessGameLogic.Tests.csproj", "{2406BEBF-AD2D-4EDB-A927-5D36DA0510DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessGameLogic.SandBox", "ChessGameLogic.SandBox\ChessGameLogic.SandBox.csproj", "{ABDA042D-70A4-4880-8A9E-5254588518FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessGameLogic.SandBox", "ChessGameLogic.SandBox\ChessGameLogic.SandBox.csproj", "{ABDA042D-70A4-4880-8A9E-5254588518FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
