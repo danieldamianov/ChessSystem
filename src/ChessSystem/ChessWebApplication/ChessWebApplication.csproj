@@ -9,6 +9,33 @@
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\ImagesForFigures\BishopBlackDarkGray.PNG" />
+    <None Include="wwwroot\ImagesForFigures\BishopBlackWhite.PNG" />
+    <None Include="wwwroot\ImagesForFigures\BishopWhiteDarkGray.jpg" />
+    <None Include="wwwroot\ImagesForFigures\BishopWhiteWhite.jpg" />
+    <None Include="wwwroot\ImagesForFigures\KingBlackDarkGray.PNG" />
+    <None Include="wwwroot\ImagesForFigures\KingBlackWhite.jpg" />
+    <None Include="wwwroot\ImagesForFigures\KingWhiteDarkGray.jpg" />
+    <None Include="wwwroot\ImagesForFigures\KingWhiteWhite.jpg" />
+    <None Include="wwwroot\ImagesForFigures\KnightBlackDarkGray.PNG" />
+    <None Include="wwwroot\ImagesForFigures\KnightBlackWhite.PNG" />
+    <None Include="wwwroot\ImagesForFigures\KnightWhiteDarkGray.jpg" />
+    <None Include="wwwroot\ImagesForFigures\KnightWhiteWhite.jpg" />
+    <None Include="wwwroot\ImagesForFigures\PawnBlackDarkGray.jpg" />
+    <None Include="wwwroot\ImagesForFigures\PawnBlackWhite.jpg" />
+    <None Include="wwwroot\ImagesForFigures\PawnWhiteDarkGray.jpg" />
+    <None Include="wwwroot\ImagesForFigures\PawnWhiteWhite.jpg" />
+    <None Include="wwwroot\ImagesForFigures\QueenBlackDarkGray.jpg" />
+    <None Include="wwwroot\ImagesForFigures\QueenBlackWhite.jpg" />
+    <None Include="wwwroot\ImagesForFigures\QueenWhiteDarkGray.jpg" />
+    <None Include="wwwroot\ImagesForFigures\QueenWhiteWhite.jpg" />
+    <None Include="wwwroot\ImagesForFigures\RookBlackDarkGray.PNG" />
+    <None Include="wwwroot\ImagesForFigures\RookBlackWhite.jpg" />
+    <None Include="wwwroot\ImagesForFigures\RookWhiteDarkGray.jpg" />
+    <None Include="wwwroot\ImagesForFigures\RookWhiteWhite.jpg" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />
