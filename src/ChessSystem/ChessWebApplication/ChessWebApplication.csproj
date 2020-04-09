@@ -49,4 +49,9 @@
     </PackageReference>
   </ItemGroup>
 
+
+  <ItemGroup>
+    <ProjectReference Include="..\ChessGameLogic\ChessGameLogic.csproj" />
+  </ItemGroup>
+
 </Project>

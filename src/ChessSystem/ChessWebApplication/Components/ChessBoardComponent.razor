@@ -6,21 +6,41 @@
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.JSInterop
 
-<h3>Component @Name</h3>
+@using ChessGameLogic
+@using ChessGameLogic.ClientInteractionEntities
 
-@for (int i = 0; i < 8; i++)
+<h3>Chess board</h3>
+
+@for (int vertical = 1; vertical <= 8; vertical++)
 {
-    for (int j = 0; j < 8; j++)
+    for (char horizontal = 'a'; horizontal <= 'h'; horizontal++)
     {
+        var figureInfo = this.chessGame.GetFigureOnPositionInfo(horizontal, vertical);
+        @if (figureInfo != null)
+        {
+            <img height="30" width="30" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{"White"}").jpg" alt="Alternate Text" />
+
+        }
 
     }
+    <br />
 }
 
 @code {
-    public string Name { get; set; } = "dani";
+    private ChessGame chessGame = new ChessGame(ChooseFigureToProduce, HandleGameEnding);
 
-    public void Func()
+    public ChessBoardComponent()
     {
-        this.Name = "Martina";
+        this.chessGame = new ChessGame(ChooseFigureToProduce, HandleGameEnding);
+    }
+
+    private static ChessFigureProductionType ChooseFigureToProduce()
+    {
+        return ChessFigureProductionType.Queen;
+    }
+
+    private static void HandleGameEnding(EndGameResult endGameResult)
+    {
+
     }
 }
