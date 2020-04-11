@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sanbox", "Sanbox", "{49F7FB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{E8426221-8CA3-4997-B228-D3D1610BD6B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessSysytem.Domain", "ChessSysytem.Domain\ChessSysytem.Domain.csproj", "{A3CCD5D6-3649-4B6D-9F5F-7BD6C231EEF3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessSystem.Domain", "ChessSysytem.Domain\ChessSystem.Domain.csproj", "{A3CCD5D6-3649-4B6D-9F5F-7BD6C231EEF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
