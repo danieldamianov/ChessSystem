@@ -1,9 +1,9 @@
-﻿namespace ChessSystem.Domain.BaseModels
+﻿namespace ChessSystem.Domain.BaseEntities
 {
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public abstract class BaseModel<TKey> : IAuditInfo
+    public abstract class BaseEntitiy<TKey> : IAuditInfo
     {
         [Key]
         public TKey Id { get; set; }

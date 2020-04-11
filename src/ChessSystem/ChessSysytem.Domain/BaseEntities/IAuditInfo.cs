@@ -1,4 +1,4 @@
-﻿namespace ChessSystem.Domain.BaseModels
+﻿namespace ChessSystem.Domain.BaseEntities
 {
     using System;
 
