@@ -1,4 +1,4 @@
-﻿namespace ChessSystem.Application.Models
+﻿namespace ChessSystem.Application.Common.Models
 {
     using System;
     using System.Collections.Generic;
@@ -8,8 +8,8 @@
     {
         internal Result(bool succeeded, IEnumerable<string> errors)
         {
-            this.Succeeded = succeeded;
-            this.Errors = errors.ToArray();
+            Succeeded = succeeded;
+            Errors = errors.ToArray();
         }
 
         public static Result Success
