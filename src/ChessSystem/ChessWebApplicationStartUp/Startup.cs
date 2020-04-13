@@ -1,8 +1,12 @@
-namespace ChessWebApplication
+namespace ChessWebApplicationStartUp
 {
+    using ChessSystem.Application;
+    using Infrastructure;
+    using Infrastructure.Persistence;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -20,11 +24,26 @@ namespace ChessWebApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    this.Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services
+                .AddApplication()
+                .AddInfrastructure(this.Configuration)
+                .AddWebComponents();
+
+            services
+                .AddHealthChecks()
+                .AddDbContextCheck<ChessApplicationDbContext>();
+
+            services
+                .AddControllers()
+                .AddFluentValidation(options => options
+                    .RegisterValidatorsFromAssemblyContaining<IBlogData>())
+                .AddNewtonsoftJson();
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddServerSideBlazor();
@@ -33,6 +52,15 @@ namespace ChessWebApplication
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCustomExceptionHandler();
+            app.UseHealthChecks("/health");
+
+            app.UseIdentityServer();
+
+
+
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
