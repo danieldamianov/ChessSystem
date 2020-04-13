@@ -52,6 +52,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ChessGameLogic\ChessGameLogic.csproj" />
+    <ProjectReference Include="..\ChessWebApplication\ChessWebApplication.csproj" />
   </ItemGroup>
 
 </Project>

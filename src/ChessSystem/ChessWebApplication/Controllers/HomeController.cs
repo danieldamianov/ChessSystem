@@ -1,8 +1,8 @@
-﻿namespace ChessWebApplicationStartUp.Controllers
+﻿namespace ChessWebApplication.Controllers
 {
     using System.Diagnostics;
 
-    using ChessWebApplicationStartUp.Models;
+    using ChessWebApplication.Models;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
