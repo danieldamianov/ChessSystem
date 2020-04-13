@@ -1,4 +1,4 @@
-﻿namespace ChessWebApplication.Data.Migrations
+﻿namespace ChessWebApplicationStartUp.Data.Migrations
 {
     using System;
 

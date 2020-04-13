@@ -1,6 +1,6 @@
-namespace ChessWebApplication
+namespace ChessWebApplicationStartUp
 {
-    using ChessWebApplication.Data;
+    using ChessWebApplicationStartUp.Data;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;

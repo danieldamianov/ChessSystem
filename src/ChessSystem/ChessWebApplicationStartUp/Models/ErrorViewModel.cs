@@ -1,4 +1,4 @@
-namespace ChessWebApplication.Models
+namespace ChessWebApplicationStartUp.Models
 {
     public class ErrorViewModel
     {
