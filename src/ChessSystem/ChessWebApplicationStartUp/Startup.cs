@@ -1,6 +1,10 @@
 namespace ChessWebApplicationStartUp
 {
     using ChessSystem.Application;
+    using ChessSystem.Application.Common.Interfaces;
+    using ChessWebApplication;
+    using ChessWebApplication.Middlewares;
+    using FluentValidation.AspNetCore;
     using Infrastructure;
     using Infrastructure.Persistence;
     using Microsoft.AspNetCore.Builder;
@@ -36,7 +40,7 @@ namespace ChessWebApplicationStartUp
             services
                 .AddControllers()
                 .AddFluentValidation(options => options
-                    .RegisterValidatorsFromAssemblyContaining<IBlogData>())
+                    .RegisterValidatorsFromAssemblyContaining<IChessApplicationData>())
                 .AddNewtonsoftJson();
 
             services.Configure<ApiBehaviorOptions>(options =>
@@ -52,15 +56,6 @@ namespace ChessWebApplicationStartUp
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCustomExceptionHandler();
-            app.UseHealthChecks("/health");
-
-            app.UseIdentityServer();
-
-
-
-
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -74,12 +69,16 @@ namespace ChessWebApplicationStartUp
                 app.UseHsts();
             }
 
+            //app.UseCustomExceptionHandler();
+            app.UseHealthChecks("/health");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthentication();
+            app.UseIdentityServer();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

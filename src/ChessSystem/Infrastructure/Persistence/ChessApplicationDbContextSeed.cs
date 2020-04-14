@@ -8,7 +8,6 @@ namespace Infrastructure.Persistence
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
-    using Domain.Entities;
     using Identity;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
