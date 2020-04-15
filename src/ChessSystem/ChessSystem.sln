@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessWebApplication", "Ches
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{CB32C1E7-7631-4016-8FA0-0BC048B66DDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{5D094695-EDB1-4088-98FC-66E9F7538570}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{5D094695-EDB1-4088-98FC-66E9F7538570}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

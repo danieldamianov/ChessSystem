@@ -1,5 +1,6 @@
 ﻿using ChessSystem.Application.Common.Interfaces;
 using ChessSystem.Domain.BaseEntities;
+using ChessSystem.Domain.Entities;
 using IdentityServer4.EntityFramework.Options;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;

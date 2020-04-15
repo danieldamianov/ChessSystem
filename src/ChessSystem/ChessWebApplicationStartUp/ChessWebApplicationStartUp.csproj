@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-ChessWebApplication-F2C783F3-B168-4BF8-9797-642B5D50C187</UserSecretsId>
+    <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
 
   <ItemGroup>
@@ -55,6 +56,11 @@
     <ProjectReference Include="..\ChessSystem.Application\ChessSystem.Application.csproj" />
     <ProjectReference Include="..\ChessWebApplication\ChessWebApplication.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Components\" />
   </ItemGroup>
 
 </Project>

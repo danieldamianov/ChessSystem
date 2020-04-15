@@ -3,7 +3,9 @@ namespace ChessWebApplicationStartUp
     using ChessSystem.Application;
     using ChessSystem.Application.Common.Interfaces;
     using ChessWebApplication;
+    using ChessWebApplication.Controllers;
     using ChessWebApplication.Middlewares;
+    using ChessWebApplication.Services;
     using FluentValidation.AspNetCore;
     using Infrastructure;
     using Infrastructure.Persistence;
@@ -48,7 +50,9 @@ namespace ChessWebApplicationStartUp
                 options.SuppressModelStateInvalidFilter = true;
             });
 
-            services.AddControllersWithViews();
+            var assembly = typeof(HomeController).Assembly;
+            services.AddControllersWithViews()
+                .AddApplicationPart(assembly);
             services.AddRazorPages();
             services.AddServerSideBlazor();
         }
@@ -65,11 +69,11 @@ namespace ChessWebApplicationStartUp
             {
                 app.UseExceptionHandler("/Home/Error");
 
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
-            //app.UseCustomExceptionHandler();
+            app.UseCustomExceptionHandler();
+
             app.UseHealthChecks("/health");
 
             app.UseHttpsRedirection();
@@ -78,7 +82,6 @@ namespace ChessWebApplicationStartUp
             app.UseRouting();
 
             app.UseAuthentication();
-            app.UseIdentityServer();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

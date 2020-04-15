@@ -28,19 +28,7 @@
                 .AddEntityFrameworkStores<ChessApplicationDbContext>();
 
             services
-                .AddIdentityServer()
-                .AddApiAuthorization<ChessAppUser, ChessApplicationDbContext>();
-
-            services
                 .AddConventionalServices(typeof(ServiceRegistration).Assembly);
-
-            // services
-            //    .AddTransient<IDateTime, DateTimeService>()
-            //    .AddTransient<IIdentity, IdentityService>();
-
-            services
-                .AddAuthentication()
-                .AddIdentityServerJwt();
 
             return services;
         }
