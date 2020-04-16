@@ -3,10 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChessSystem.Domain.Entities
+namespace ChessSystem.Domain.Entities.Moves
 {
-    public class NormalChessMove : BaseEntitiy<string>
+    public class NormalMove : BaseMove
     {
+        public NormalMove()
+            : base()
+        { }
+
         public string InitialPositionId { get; set; }
 
         public ChessBoardPosition InitialPosition { get; set; }

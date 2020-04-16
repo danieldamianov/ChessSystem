@@ -1,4 +1,5 @@
 ﻿using ChessSystem.Domain.BaseEntities;
+using ChessSystem.Domain.Entities.Moves;
 using ChessSystem.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace ChessSystem.Domain.Entities
 
         public string NormalChessMoveId { get; set; }
 
-        public NormalChessMove NormalChessMove { get; set; }
+        public NormalMove NormalChessMove { get; set; }
 
         public ChessBoardPosition(char horizontal, int vertical)
         {
@@ -52,5 +53,4 @@ namespace ChessSystem.Domain.Entities
             }
         }
     }
-}
 }
