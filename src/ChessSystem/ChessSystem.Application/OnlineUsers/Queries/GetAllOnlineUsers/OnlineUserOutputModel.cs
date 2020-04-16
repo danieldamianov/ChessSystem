@@ -10,6 +10,8 @@ namespace ChessSystem.Application.OnlineUsers.Queries.GetAllOnlineUsers
     {
         public string UserId { get; set; }
 
+        public string Username { get; set; }
+
         public DateTime OnlineSince { get; set; }
     }
 }

@@ -13,6 +13,8 @@ namespace ChessSystem.Application.OnlineUsers.Commands.AddOnlineUser
     {
         public string UserId { get; set; }
 
+        public string Username { get; set; }
+
         public class AddOnlineUserCommandHandler : AsyncRequestHandler<AddOnlineUserCommand>
         {
             private readonly IChessApplicationData chessApplicationData;
@@ -28,6 +30,7 @@ namespace ChessSystem.Application.OnlineUsers.Commands.AddOnlineUser
                 {
                     UserId = request.UserId,
                     OnlineSince = DateTime.UtcNow,
+                    Username = request.Username,
                 });
 
                 await this.chessApplicationData.SaveChanges(cancellationToken);
