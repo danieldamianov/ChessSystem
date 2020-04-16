@@ -31,6 +31,8 @@ namespace Infrastructure.Persistence
             this.dateTime = dateTime;
         }
 
+        public DbSet<OnlineUser> LogedInUsers { get; set; }
+
         public Task<int> SaveChanges(CancellationToken cancellationToken = new CancellationToken())
             => this.SaveChangesAsync(cancellationToken);
 

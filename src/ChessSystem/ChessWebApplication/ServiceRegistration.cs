@@ -15,6 +15,7 @@ namespace ChessWebApplication
         {
             services.AddHttpContextAccessor();
             services.AddConventionalServices(typeof(ServiceRegistration).Assembly);
+
             return services;
         }
     }

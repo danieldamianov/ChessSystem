@@ -8,5 +8,9 @@
     public interface IChessApplicationData
     {
         Task<int> SaveChanges(CancellationToken cancellationToken);
+
+        public DbSet<OnlineUser> LogedInUsers { get; set; }
+
+        OnlineUser Single();
     }
 }

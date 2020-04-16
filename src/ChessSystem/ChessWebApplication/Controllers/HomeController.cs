@@ -6,21 +6,26 @@
     using System.Threading.Tasks;
     using ChessSystem.Application.Common.Interfaces;
     using ChessWebApplication.Common;
+    using ChessWebApplication.Hubs;
     using ChessWebApplication.Models;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.SignalR;
     using Microsoft.Extensions.Logging;
 
     public class HomeController : MediatorController
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ICurrentUser currentUser;
+        private readonly IHubContext<ChessGameHub> hubContext;
 
         public HomeController(ILogger<HomeController> logger,
-            ICurrentUser currentUser)
+            ICurrentUser currentUser,
+            IHubContext<ChessGameHub> hubContext)
         {
             this._logger = logger;
             this.currentUser = currentUser;
+            this.hubContext = hubContext;
         }
 
         [Authorize]
