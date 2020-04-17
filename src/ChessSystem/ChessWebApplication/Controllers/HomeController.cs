@@ -5,6 +5,7 @@
     using System.Security.Claims;
     using System.Threading.Tasks;
     using ChessSystem.Application.Common.Interfaces;
+    using ChessSystem.Application.OnlineUsers.Queries.CheckIfUserIsOnline;
     using ChessWebApplication.Common;
     using ChessWebApplication.Hubs;
     using ChessWebApplication.Models;
@@ -32,8 +33,13 @@
         }
 
         [Authorize]
-        public IActionResult SeeOnlineUsers()
+        public async Task<IActionResult> SeeOnlineUsers()
         {
+            if(await this.Mediator.Send(new CheckIfUsersIsOnlineCommand(this.currentUser.UserId)))
+            {
+                return this.Redirect("/");
+            }
+
             return this.View();
         }
 

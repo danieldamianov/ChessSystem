@@ -14,14 +14,6 @@ setupConnection = () => {
         document.getElementById(user.userId).remove();
     });
 
-    connection.on("UserAlreadyOnline", function (user) {
-        alert("user already connected");
-        window.location.href = "/";
-    });
-
-    
-
-
     connection.start()
         .catch(err => console.error(err.toString()));
 };
