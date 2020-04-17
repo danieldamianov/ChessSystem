@@ -17,19 +17,22 @@
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ICurrentUser currentUser;
-        private readonly IHubContext<ChessGameHub> hubContext;
 
         public HomeController(ILogger<HomeController> logger,
-            ICurrentUser currentUser,
-            IHubContext<ChessGameHub> hubContext)
+            ICurrentUser currentUser)
         {
             this._logger = logger;
             this.currentUser = currentUser;
-            this.hubContext = hubContext;
         }
 
         [Authorize]
         public IActionResult Index()
+        {
+            return this.View();
+        }
+
+        [Authorize]
+        public IActionResult SeeOnlineUsers()
         {
             return this.View();
         }

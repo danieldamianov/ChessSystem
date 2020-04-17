@@ -1,6 +1,7 @@
 ﻿using ChessSystem.Application.Common.Interfaces;
 using ChessSystem.Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,6 +12,12 @@ namespace ChessSystem.Application.OnlineUsers.Commands.AddOnlineUser
 {
     public class AddOnlineUserCommand : IRequest
     {
+        public AddOnlineUserCommand(string userId, string username)
+        {
+            UserId = userId;
+            Username = username;
+        }
+
         public string UserId { get; set; }
 
         public string Username { get; set; }
@@ -26,12 +33,14 @@ namespace ChessSystem.Application.OnlineUsers.Commands.AddOnlineUser
 
             protected async override Task Handle(AddOnlineUserCommand request, CancellationToken cancellationToken)
             {
-                this.chessApplicationData.LogedInUsers.Add(new OnlineUser()
+                OnlineUser onlineUser = new OnlineUser()
                 {
                     UserId = request.UserId,
                     OnlineSince = DateTime.UtcNow,
                     Username = request.Username,
-                });
+                };
+
+                await this.chessApplicationData.LogedInUsers.AddAsync(onlineUser);
 
                 await this.chessApplicationData.SaveChanges(cancellationToken);
             }

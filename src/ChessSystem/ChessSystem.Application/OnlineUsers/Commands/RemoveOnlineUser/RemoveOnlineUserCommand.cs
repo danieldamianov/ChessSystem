@@ -1,6 +1,8 @@
 ﻿using ChessSystem.Application.Common.Interfaces;
 using ChessSystem.Domain.Entities;
+using ChessSystem.Domain.Exceptions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +14,14 @@ namespace ChessSystem.Application.OnlineUsers.Commands.RemoveOnlineUser
 {
     public class RemoveOnlineUserCommand : IRequest<bool>
     {
+        public RemoveOnlineUserCommand(string userId)
+        {
+            UserId = userId;
+        }
+
         public string UserId { get; set; }
 
-        public class RemoveOnlineUserCommandHandler : IRequestHandler<RemoveOnlineUserCommand,bool>
+        public class RemoveOnlineUserCommandHandler : IRequestHandler<RemoveOnlineUserCommand, bool>
         {
             private readonly IChessApplicationData chessApplicationData;
 
@@ -25,10 +32,14 @@ namespace ChessSystem.Application.OnlineUsers.Commands.RemoveOnlineUser
 
             public async Task<bool> Handle(RemoveOnlineUserCommand request, CancellationToken cancellationToken)
             {
-                this.chessApplicationData.LogedInUsers
-                    .Remove(
-                        this.chessApplicationData.LogedInUsers.Single(user => user.UserId == request.UserId)
-                    );
+                OnlineUser onlineUser = await this.chessApplicationData.LogedInUsers
+                    .SingleOrDefaultAsync(user => user.UserId == request.UserId);
+
+                if (onlineUser == null)
+                {
+                    throw new CannotSetOfflineUserWhichIsOfflineException();
+                }
+                this.chessApplicationData.LogedInUsers.Remove(onlineUser);
 
                 await this.chessApplicationData.SaveChanges(cancellationToken);
 

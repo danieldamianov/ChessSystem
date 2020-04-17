@@ -5,6 +5,7 @@ namespace ChessWebApplicationStartUp
     using ChessWebApplication;
     using ChessWebApplication.Controllers;
     using ChessWebApplication.Hubs;
+    using ChessWebApplication.Hubs.OnlineUsers;
     using ChessWebApplication.Middlewares;
     using ChessWebApplication.Services;
     using FluentValidation.AspNetCore;
@@ -58,6 +59,7 @@ namespace ChessWebApplicationStartUp
 
             services.AddServerSideBlazor();
             services.AddSignalR();
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -94,7 +96,7 @@ namespace ChessWebApplicationStartUp
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
                 endpoints.MapBlazorHub();
-                endpoints.MapHub<ChessGameHub>("/Users");
+                endpoints.MapHub<OnlineUsersHub>("/Users");
             });
         }
     }
