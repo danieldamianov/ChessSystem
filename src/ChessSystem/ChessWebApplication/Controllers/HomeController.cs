@@ -37,6 +37,7 @@
         {
             if(await this.Mediator.Send(new CheckIfUsersIsOnlineCommand(this.currentUser.UserId)))
             {
+                this.TempData.Add("message", "User already logged in!");
                 return this.Redirect("/");
             }
 

@@ -1,1 +1,12 @@
-﻿<a href="/Home/SeeOnlineUsers">SeeOnlineUsers</a>
+﻿
+<a href="/Home/SeeOnlineUsers">SeeOnlineUsers</a>
+
+@section Scripts{
+    @if (this.TempData.ContainsKey("message"))
+    {
+        <script>
+                alert('@this.TempData["message"]');
+                @this.TempData.Remove("message");
+        </script>
+    }
+}
