@@ -12,6 +12,7 @@ using ChessSystem.Application.OnlineUsers.Queries.GetAllOnlineUsers;
 using ChessSystem.Application.OnlineUsers.Commands.RemoveOnlineUser;
 using ChessSystem.Application.OnlineUsers.Queries.CheckIfUserIsOnline;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ChessWebApplication.Hubs.OnlineUsers
 {
@@ -65,6 +66,15 @@ namespace ChessWebApplication.Hubs.OnlineUsers
             await this.Clients.All.SendAsync("UserDisconnected", new OnlineUserSocketModel(this.Context.User.Identity.Name,
             this.currentUser.UserId));
 
+        }
+
+
+
+
+        [Authorize]
+        public async Task InvitedUser(string invitedId)
+        {
+            await this.Clients.User(invitedId).SendAsync("HandleInvitation",this.currentUser.UserId);
         }
     }
 }
