@@ -26,14 +26,13 @@
             this.currentUser = currentUser;
         }
 
-        [Authorize]
         public IActionResult Index()
         {
             return this.View();
         }
 
         [Authorize]
-        public async Task<IActionResult> SeeOnlineUsers()
+        public async Task<IActionResult> OnlineUsers()
         {
             if(await this.Mediator.Send(new CheckIfUsersIsOnlineCommand(this.currentUser.UserId)))
             {

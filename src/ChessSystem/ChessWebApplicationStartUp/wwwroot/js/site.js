@@ -2,11 +2,15 @@
 
 setupConnection = () => {
     connection = new signalR.HubConnectionBuilder()
-        .withUrl("/Users")
+        .withUrl("/OnlineUsers")
         .build();
 
     connection.on("NewUser", function (user) {
-        document.getElementById("usersLoggedIn").innerHTML += `<p id="${user.userId}">New user: ${user.username}</p>`;
+        document.getElementById("usersLoggedIn").innerHTML +=
+            `<li id="${user.userId}" class="list-group-item d-flex justify-content-between align-items-center">
+                    ${user.username}
+                    <span class="badge badge-primary badge-pill">Challenge</span>
+             </li>`;
     });
 
     

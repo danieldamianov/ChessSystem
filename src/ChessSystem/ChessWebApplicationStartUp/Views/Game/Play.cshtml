@@ -1,0 +1,8 @@
+﻿@using ChessWebApplicationStartUp.Components
+@using ChessGameLogic.Enums
+
+<component type="typeof(ChessBoardComponent)" render-mode="ServerPrerendered" param-chessColor ="@ChessColors.White" />
+
+@section Scripts{
+    <script src="_framework/blazor.server.js"></script>
+}
