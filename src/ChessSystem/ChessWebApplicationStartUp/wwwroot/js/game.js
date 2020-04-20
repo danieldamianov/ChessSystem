@@ -36,3 +36,8 @@ function SendMove(initialPositionHorizontal,
         figureType,
         figureColor);
 }
+
+function disableButtons(buttons) {
+    
+    buttons.forEach(element => { var id = `${element.horizontal}${element.vertical}field`; document.getElementById(id).disabled = false });
+    }

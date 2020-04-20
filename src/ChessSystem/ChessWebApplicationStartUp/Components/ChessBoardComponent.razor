@@ -11,6 +11,7 @@
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.JSInterop
 
+@inject IJSRuntime JSRuntime
 
 <h3>Chess board</h3>
 <br />
@@ -37,21 +38,43 @@
 
                 }
                 var figureInfo = this.chessGame.GetFigureOnPositionInfo(horizontal, vertical);
-                <button style="margin:0px; border: none; width: 70px; height:70px; background-color: @color">
-                    @if (figureInfo != null)
+                string disabled = null;
+                @if (figureInfo != null)
+                {
+                    var parsedColor = color == "white" ? "White" : "DarkGray";
+                    disabled = figureInfo.figureColor == this.chessColor ? "" : "disabled";
+                    if (disabled == "")
                     {
-                        var parsedColor = color == "white" ? "White" : "DarkGray";
-                        <img style="width: 50px; height:50px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{parsedColor}").jpg" alt="Alternate Text" />
+                        char hor = horizontal;
+                        int ver = vertical;
+                        ChessFigureType figUnfo = figureInfo.figureType;
+                        ChessColors figColor = figureInfo.figureColor;
+
+                        <button id="@(horizontal.ToString() + vertical)field"
+                                @onclick="@(e => HandleFieldPressed(e,hor,ver,figUnfo,figColor))" style="margin:0px; border: none; width: 70px; height:70px; background-color: @color">
+
+                            <img style="width: 50px; height:50px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{parsedColor}").jpg" alt="Alternate Text" />
+                        </button>
                     }
-                </button>
+                    else
+                    {
+                        <button id="@(horizontal.ToString() + vertical)field" disabled style="margin:0px; border: none; width: 70px; height:70px; background-color: @color">
+
+                            <img style="width: 50px; height:50px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{parsedColor}").jpg" alt="Alternate Text" />
+                        </button>
+                    }
+                }
+                else
+                {
+                    <button id="@(horizontal.ToString() + vertical)field" disabled style="margin:0px; border: none; width: 70px; height:70px; background-color: @color">
+                    </button>
+                }
             }
             <br />
         }
     }
     else
     {
-
-
         @for (int vertical = 1; vertical <= 8; vertical++)
         {
             for (char horizontal = 'h'; horizontal >= 'a'; horizontal--)
@@ -69,7 +92,7 @@
 
                 }
                 var figureInfo = this.chessGame.GetFigureOnPositionInfo(horizontal, vertical);
-                <button style="margin:0px; border: none; width: 70px; height:70px; background-color: @color">
+                <button id="@(horizontal.ToString() + vertical)field" disabled style="margin:0px; border: none; width: 70px; height:70px; background-color: @color">
                     @if (figureInfo != null)
                     {
                         var parsedColor = color == "white" ? "White" : "DarkGray";
@@ -86,21 +109,53 @@
 @code {
     private ChessGame chessGame;
 
+    private bool isOnTurn;
+
+    private Tuple<char, int> currentSelectedField = null;
+
     [Parameter]
     public ChessColors chessColor { get; set; }
 
     public ChessBoardComponent()
     {
         this.chessGame = new ChessGame(ChooseFigureToProduce, HandleGameEnding);
+        this.isOnTurn = this.chessColor == ChessColors.White;
     }
 
-    private static ChessFigureProductionType ChooseFigureToProduce()
+    private ChessFigureProductionType ChooseFigureToProduce()
     {
         return ChessFigureProductionType.Queen;
     }
 
-    private static void HandleGameEnding(EndGameResult endGameResult)
+    private void HandleGameEnding(EndGameResult endGameResult)
     {
 
+    }
+
+    public class BoardPosition
+    {
+        public char Horizontal { get; set; }
+
+        public int Vertical { get; set; }
+
+        public BoardPosition()
+        {
+
+        }
+    }
+
+
+    private async Task HandleFieldPressed(MouseEventArgs e, char horizontal, int vertical, ChessFigureType chessFigureType, ChessColors chessColors)
+    {
+        if (currentSelectedField == null)
+        {
+            var possiblePositions = this.chessGame.GetAllPossiblePositionsOfPlacingTheFigure(horizontal,
+                vertical, chessFigureType, chessColors);
+            List<BoardPosition> possiblePositionsArray = possiblePositions.Select(pos => new BoardPosition { Horizontal = pos.Horizontal, Vertical = pos.Vertical }).ToList();
+
+            possiblePositionsArray.Add(new BoardPosition { Horizontal = horizontal, Vertical = vertical });
+
+            await JSRuntime.InvokeVoidAsync("disableButtons", possiblePositions);
+        }
     }
 }
