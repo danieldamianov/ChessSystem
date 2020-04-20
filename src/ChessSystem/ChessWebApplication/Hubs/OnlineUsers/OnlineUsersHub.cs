@@ -13,6 +13,7 @@ using ChessSystem.Application.OnlineUsers.Commands.RemoveOnlineUser;
 using ChessSystem.Application.OnlineUsers.Queries.CheckIfUserIsOnline;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using ChessWebApplication.Controllers.Game.InputModels;
 
 namespace ChessWebApplication.Hubs.OnlineUsers
 {
@@ -39,12 +40,6 @@ namespace ChessWebApplication.Hubs.OnlineUsers
 
         public async override Task OnConnectedAsync()
         {
-            if (await this.Mediator.Send(new CheckIfUsersIsOnlineCommand(this.currentUser.UserId)))
-            {
-                await this.Clients.Caller.SendAsync("UserAlreadyOnline");
-                return;
-            }
-
             await this.Mediator.Send(new AddOnlineUserCommand(this.currentUser.UserId, this.Context.User.Identity.Name));
 
             await this.Clients.All.SendAsync("NewUser", new OnlineUserSocketModel(this.Context.User.Identity.Name, this.currentUser.UserId));
@@ -68,13 +63,29 @@ namespace ChessWebApplication.Hubs.OnlineUsers
 
         }
 
-
-
+        [Authorize]
+        public async Task InviteUserToPlay(string invitedId)
+        {
+            await this.Clients.User(invitedId).SendAsync("HandleInvitation", new OnlineUserSocketModel
+                (this.Context.User.Identity.Name, this.currentUser.UserId)) ;
+        }
 
         [Authorize]
-        public async Task InvitedUser(string invitedId)
+        public async Task AcceptGame(string opponentId)
         {
-            await this.Clients.User(invitedId).SendAsync("HandleInvitation",this.currentUser.UserId);
+            var modelStartGameAsBlack = new PlayInputModel()
+            {
+                BlackPlayerId = this.currentUser.UserId,
+                WhitePlayerId = opponentId,
+            };
+
+            var modelStartGameAsWhite = new PlayInputModel()
+            {
+                WhitePlayerId = this.currentUser.UserId,
+                BlackPlayerId = opponentId,
+            };
+            await this.Clients.Caller.SendAsync("StartGameAsBlack", modelStartGameAsBlack);
+            await this.Clients.User(opponentId).SendAsync("StartGameAsWhite", modelStartGameAsWhite);
         }
     }
 }

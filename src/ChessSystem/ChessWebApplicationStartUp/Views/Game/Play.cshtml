@@ -1,7 +1,12 @@
 ﻿@using ChessWebApplicationStartUp.Components
 @using ChessGameLogic.Enums
+@using ChessWebApplication.Controllers.Game.InputModels
 
-<component type="typeof(ChessBoardComponent)" render-mode="ServerPrerendered" param-chessColor = "@ChessColors.White" />
+@model PlayInputModel
+
+@{ ChessColors chessColor = Model.PlayerColor == "black" ? ChessColors.Black : ChessColors.White; }
+
+<component type="typeof(ChessBoardComponent)" render-mode="ServerPrerendered" param-chessColor="@chessColor" />
 
 @section Scripts{
     <script src="_framework/blazor.server.js"></script>

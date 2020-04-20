@@ -34,12 +34,10 @@
         [Authorize]
         public async Task<IActionResult> OnlineUsers()
         {
-            if(await this.Mediator.Send(new CheckIfUsersIsOnlineCommand(this.currentUser.UserId)))
+            if (await this.Mediator.Send(new CheckIfUsersIsOnlineCommand(this.currentUser.UserId)))
             {
-                this.TempData.Add("message", "User already logged in!");
                 return this.Redirect("/");
             }
-
             return this.View();
         }
 

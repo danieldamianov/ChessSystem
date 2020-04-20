@@ -77,7 +77,7 @@ namespace ChessWebApplicationStartUp
                 app.UseHsts();
             }
 
-            app.UseCustomExceptionHandler();
+            //app.UseCustomExceptionHandler();
 
             app.UseHealthChecks("/health");
 

@@ -12,7 +12,7 @@ namespace ChessWebApplication.Controllers.Game
         [Authorize]
         public IActionResult Play(PlayInputModel playInputModel)
         {
-            return this.View();
+            return this.View(playInputModel);
         }
     }
 }
