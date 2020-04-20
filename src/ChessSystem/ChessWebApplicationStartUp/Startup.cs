@@ -5,6 +5,7 @@ namespace ChessWebApplicationStartUp
     using ChessWebApplication;
     using ChessWebApplication.Controllers;
     using ChessWebApplication.Hubs;
+    using ChessWebApplication.Hubs.Game;
     using ChessWebApplication.Hubs.OnlineUsers;
     using ChessWebApplication.Middlewares;
     using ChessWebApplication.Services;
@@ -97,6 +98,7 @@ namespace ChessWebApplicationStartUp
                 endpoints.MapRazorPages();
                 endpoints.MapBlazorHub();
                 endpoints.MapHub<OnlineUsersHub>("/OnlineUsers");
+                endpoints.MapHub<GameHub>("/Game/Communication");
             });
         }
     }
