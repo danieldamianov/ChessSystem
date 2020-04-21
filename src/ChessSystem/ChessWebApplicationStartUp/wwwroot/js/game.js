@@ -37,7 +37,12 @@ function SendMove(initialPositionHorizontal,
         figureColor);
 }
 
-function disableButtons(buttons) {
+function enableButtons(buttons) {
     
     buttons.forEach(element => { var id = `${element.horizontal}${element.vertical}field`; document.getElementById(id).disabled = false });
-    }
+}
+
+function disableButtons(buttons) {
+
+    buttons.forEach(element => { var id = `${element.horizontal}${element.vertical}field`; document.getElementById(id).disabled = true  });
+}

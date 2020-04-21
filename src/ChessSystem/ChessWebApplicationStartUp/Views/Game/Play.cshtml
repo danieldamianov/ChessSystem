@@ -6,7 +6,7 @@
 
 @{ ChessColors chessColor = Model.PlayerColor == "black" ? ChessColors.Black : ChessColors.White; }
 
-<component type="typeof(ChessBoardComponent)" render-mode="ServerPrerendered" param-chessColor="@chessColor" />
+<component type="typeof(ChessBoardComponent)" render-mode="ServerPrerendered" param-chessColor="@chessColor" param-IsOnTurn="@chessColor == ChessColors.White" />
 
 @section Scripts{
 

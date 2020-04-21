@@ -16,7 +16,7 @@
 <h3>Chess board</h3>
 <br />
 @{
-    var color = "white";
+    var chessFieldColor = "White";
 }
 <div id="chessBoard" style="font-size: 0px;">
     @if (this.chessColor == ChessColors.White)
@@ -27,48 +27,33 @@
             {
                 if (horizontal != 'a')
                 {
-                    if (color == "white")
+                    if (chessFieldColor == "White")
                     {
-                        color = "darkgray";
+                        chessFieldColor = "Darkgray";
                     }
                     else
                     {
-                        color = "white";
+                        chessFieldColor = "White";
                     }
 
                 }
                 var figureInfo = this.chessGame.GetFigureOnPositionInfo(horizontal, vertical);
-                string disabled = null;
-                @if (figureInfo != null)
-                {
-                    var parsedColor = color == "white" ? "White" : "DarkGray";
-                    disabled = figureInfo.figureColor == this.chessColor ? "" : "disabled";
-                    if (disabled == "")
+
+
+                char hor = horizontal;
+                int ver = vertical;
+
+                this.ChessBoardContainerInstance.SetInfo(hor, ver, figureInfo);
+                <button @onclick="@(e =>
+                                        HandleFieldPressed(e, hor, ver, this.ChessBoardContainerInstance.GetInfo(hor, ver).figureType,
+                                        this.ChessBoardContainerInstance.GetInfo(hor, ver).figureColor))"
+                        id="@(horizontal.ToString() + vertical)field"
+                        style="margin:0px; border: none; width: 70px; height:70px; background-color: @chessFieldColor">
+                    @if (figureInfo != null)
                     {
-                        char hor = horizontal;
-                        int ver = vertical;
-                        ChessFigureType figUnfo = figureInfo.figureType;
-                        ChessColors figColor = figureInfo.figureColor;
-
-                        <button id="@(horizontal.ToString() + vertical)field"
-                                @onclick="@(e => HandleFieldPressed(e,hor,ver,figUnfo,figColor))" style="margin:0px; border: none; width: 70px; height:70px; background-color: @color">
-
-                            <img style="width: 50px; height:50px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{parsedColor}").jpg" alt="Alternate Text" />
-                        </button>
+                        <img style="width: 50px; height:50px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
                     }
-                    else
-                    {
-                        <button id="@(horizontal.ToString() + vertical)field" disabled style="margin:0px; border: none; width: 70px; height:70px; background-color: @color">
-
-                            <img style="width: 50px; height:50px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{parsedColor}").jpg" alt="Alternate Text" />
-                        </button>
-                    }
-                }
-                else
-                {
-                    <button id="@(horizontal.ToString() + vertical)field" disabled style="margin:0px; border: none; width: 70px; height:70px; background-color: @color">
-                    </button>
-                }
+                </button>
             }
             <br />
         }
@@ -81,22 +66,29 @@
             {
                 if (horizontal != 'h')
                 {
-                    if (color == "white")
+                    if (chessFieldColor == "White")
                     {
-                        color = "darkgray";
+                        chessFieldColor = "Darkgray";
                     }
                     else
                     {
-                        color = "white";
+                        chessFieldColor = "White";
                     }
 
                 }
                 var figureInfo = this.chessGame.GetFigureOnPositionInfo(horizontal, vertical);
-                <button id="@(horizontal.ToString() + vertical)field" disabled style="margin:0px; border: none; width: 70px; height:70px; background-color: @color">
+
+                char hor = horizontal;
+                int ver = vertical;
+
+                this.ChessBoardContainerInstance.SetInfo(hor, ver, figureInfo);
+                <button @onclick="@(e =>
+                                        HandleFieldPressed(e, hor, ver, this.ChessBoardContainerInstance.GetInfo(hor, ver).figureType,
+                                        this.ChessBoardContainerInstance.GetInfo(hor, ver).figureColor))"
+                        id="@(horizontal.ToString() + vertical)field" style="margin:0px; border: none; width: 70px; height:70px; background-color: @chessFieldColor">
                     @if (figureInfo != null)
                     {
-                        var parsedColor = color == "white" ? "White" : "DarkGray";
-                        <img style="width: 50px; height:50px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{parsedColor}").jpg" alt="Alternate Text" />
+                        <img style="width: 50px; height:50px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
                     }
                 </button>
             }
@@ -104,14 +96,31 @@
         }
     }
 
+
 </div>
 
 @code {
     private ChessGame chessGame;
 
-    private bool isOnTurn;
+    [Parameter]
+    public bool IsOnTurn { get; set; }
 
     private Tuple<char, int> currentSelectedField = null;
+
+    private ChessBoardContainer ChessBoardContainerInstance = new ChessBoardContainer();
+
+    private ChessFigureOnPositionInfo[,] chessFigureOnPositionInfo = new ChessFigureOnPositionInfo[8, 8];
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender == false)
+        {
+            return;
+        }
+        await EnableAndDisableFielsAccordingTurn();
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
 
     [Parameter]
     public ChessColors chessColor { get; set; }
@@ -119,7 +128,6 @@
     public ChessBoardComponent()
     {
         this.chessGame = new ChessGame(ChooseFigureToProduce, HandleGameEnding);
-        this.isOnTurn = this.chessColor == ChessColors.White;
     }
 
     private ChessFigureProductionType ChooseFigureToProduce()
@@ -132,30 +140,121 @@
 
     }
 
+    public class ChessBoardContainer
+    {
+        private Dictionary<char, Dictionary<int, ChessFigureOnPositionInfo>> board = new Dictionary<char, Dictionary<int, ChessFigureOnPositionInfo>>();
+
+        public void SetInfo(char horizontal, int vertical, ChessFigureOnPositionInfo chessFigureOnPositionInfo)
+        {
+            if (this.board.ContainsKey(horizontal) == false)
+            {
+                this.board[horizontal] = new Dictionary<int, ChessFigureOnPositionInfo>();
+            }
+            this.board[horizontal][vertical] = chessFigureOnPositionInfo;
+        }
+
+        public ChessFigureOnPositionInfo GetInfo(char horizontal, int vertical)
+        {
+            return this.board[horizontal][vertical];
+        }
+    }
+
     public class BoardPosition
     {
         public char Horizontal { get; set; }
 
         public int Vertical { get; set; }
 
-        public BoardPosition()
+        public BoardPosition(char horizontal, int vertical)
         {
-
+            this.Horizontal = horizontal;
+            this.Vertical = vertical;
         }
     }
 
+    private List<BoardPosition> GetBoardPositionsExceptGiven(List<BoardPosition> given)
+    {
+        var positions = new List<BoardPosition>();
+
+        for (char i = 'a'; i <= 'h'; i++)
+        {
+            for (int j = 1; j <= 8; j++)
+            {
+                if (given.Any(pos => pos.Horizontal == i && pos.Vertical == j) == false &&
+                   ((currentSelectedField.Item1 == i && currentSelectedField.Item2 == j) == false))
+                {
+                    positions.Add(new BoardPosition(i, j));
+                }
+            }
+        }
+
+        return positions;
+    }
 
     private async Task HandleFieldPressed(MouseEventArgs e, char horizontal, int vertical, ChessFigureType chessFigureType, ChessColors chessColors)
     {
         if (currentSelectedField == null)
         {
+            currentSelectedField = new Tuple<char, int>(horizontal, vertical);
+
             var possiblePositions = this.chessGame.GetAllPossiblePositionsOfPlacingTheFigure(horizontal,
                 vertical, chessFigureType, chessColors);
-            List<BoardPosition> possiblePositionsArray = possiblePositions.Select(pos => new BoardPosition { Horizontal = pos.Horizontal, Vertical = pos.Vertical }).ToList();
 
-            possiblePositionsArray.Add(new BoardPosition { Horizontal = horizontal, Vertical = vertical });
+            var positionsToDisable = GetBoardPositionsExceptGiven(possiblePositions.Select(pos => new BoardPosition(pos.Horizontal, pos.Vertical))
+                .ToList());
 
-            await JSRuntime.InvokeVoidAsync("disableButtons", possiblePositions);
+
+            await JSRuntime.InvokeVoidAsync("enableButtons", possiblePositions);
+            await JSRuntime.InvokeVoidAsync("disableButtons", positionsToDisable);
+        }
+        else
+        {
+            if (currentSelectedField.Item1 == horizontal && currentSelectedField.Item2 == vertical)
+            {
+                await JSRuntime.InvokeVoidAsync("enableButtons", new List<BoardPosition>() { new BoardPosition(horizontal, vertical) });
+                await JSRuntime.InvokeVoidAsync("disableButtons", GetBoardPositionsExceptGiven(new List<BoardPosition>() { new BoardPosition(horizontal, vertical) }));
+            }
+            else
+            {
+
+            }
+            currentSelectedField = null;
+        }
+
+    }
+
+    private async Task EnableAndDisableFielsAccordingTurn()
+    {
+        if (this.IsOnTurn == false)
+        {
+            List<BoardPosition> boardPositions = new List<BoardPosition>();
+            for (char i = 'a'; i <= 'h'; i++)
+            {
+                for (int j = 1; j <= 8; j++)
+                {
+                    boardPositions.Add(new BoardPosition(i, j));
+                }
+            }
+
+            await JSRuntime.InvokeVoidAsync("disableButtons", boardPositions);
+        }
+        else
+        {
+            List<BoardPosition> boardPositions = new List<BoardPosition>();
+            for (char i = 'a'; i <= 'h'; i++)
+            {
+                for (int j = 1; j <= 8; j++)
+                {
+                    if (this.ChessBoardContainerInstance.GetInfo(i, j) == null
+                        || this.ChessBoardContainerInstance.GetInfo(i, j).figureColor != chessColor)
+                    {
+                        boardPositions.Add(new BoardPosition(i, j));
+                    }
+                }
+            }
+
+            await JSRuntime.InvokeVoidAsync("disableButtons", boardPositions);
+            await JSRuntime.InvokeVoidAsync("enableButtons", GetBoardPositionsExceptGiven(boardPositions));
         }
     }
 }
