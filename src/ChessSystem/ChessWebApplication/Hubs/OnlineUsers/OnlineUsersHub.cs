@@ -73,19 +73,21 @@ namespace ChessWebApplication.Hubs.OnlineUsers
         [Authorize]
         public async Task AcceptGame(string opponentId)
         {
-            var modelStartGameAsBlack = new PlayInputModel()
+            var modelStartGameBlack = new PlayInputModel()
             {
                 BlackPlayerId = this.currentUser.UserId,
                 WhitePlayerId = opponentId,
+                PlayerColor = "Black"
             };
 
-            var modelStartGameAsWhite = new PlayInputModel()
+            var modelStartGameWhite = new PlayInputModel()
             {
-                WhitePlayerId = this.currentUser.UserId,
-                BlackPlayerId = opponentId,
+                BlackPlayerId = this.currentUser.UserId,
+                WhitePlayerId = opponentId,
+                PlayerColor = "White"
             };
-            await this.Clients.Caller.SendAsync("StartGameAsBlack", modelStartGameAsBlack);
-            await this.Clients.User(opponentId).SendAsync("StartGameAsWhite", modelStartGameAsWhite);
+            await this.Clients.Caller.SendAsync("StartGameAsBlack", modelStartGameBlack);
+            await this.Clients.User(opponentId).SendAsync("StartGameAsWhite", modelStartGameWhite);
         }
     }
 }

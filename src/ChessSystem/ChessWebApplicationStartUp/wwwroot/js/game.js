@@ -4,16 +4,23 @@ setupConnection = () => {
     connection = new signalR.HubConnectionBuilder()
         .withUrl("/Game/Communication")
         .build();
-
+    connection.serverTimeoutInMilliseconds = 100000; // 100 second
    
-    connection.on("OpponentHasMadeMove", function (initialPositionHorizontal,
+    connection.on("OpponentHasMadeMove", function
+        (initialPositionHorizontal,
         initialPositionVertical,
         targetPositionHorizontal,
         targetPositionVertical,
         figureType,
         figureColor
     ) {
-        
+        DotNet.invokeMethodAsync('ChessWebApplicationStartUp', 'OpponentHasMadeMove', initialPositionHorizontal,
+            initialPositionVertical,
+            targetPositionHorizontal,
+            targetPositionVertical,
+            figureType,
+            figureColor);
+                                  
     });
 
 
@@ -23,13 +30,16 @@ setupConnection = () => {
 
 setupConnection();
 
-function SendMove(initialPositionHorizontal,
+function SendMove(opponentId,
+    initialPositionHorizontal,
     initialPositionVertical,
     targetPositionHorizontal,
     targetPositionVertical,
     figureType,
     figureColor) {
-    connection.invoke("UserHasMadeMove", initialPositionHorizontal,
+    connection.invoke("UserHasMadeMove",
+        opponentId,
+        initialPositionHorizontal,
         initialPositionVertical,
         targetPositionHorizontal,
         targetPositionVertical,
@@ -46,3 +56,4 @@ function disableButtons(buttons) {
 
     buttons.forEach(element => { var id = `${element.horizontal}${element.vertical}field`; document.getElementById(id).disabled = true  });
 }
+

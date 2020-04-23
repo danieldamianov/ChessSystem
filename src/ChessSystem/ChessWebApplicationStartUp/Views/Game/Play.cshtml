@@ -1,12 +1,16 @@
 ﻿@using ChessWebApplicationStartUp.Components
 @using ChessGameLogic.Enums
 @using ChessWebApplication.Controllers.Game.InputModels
+@using System.Security.Claims;
 
 @model PlayInputModel
 
+@User.FindFirstValue(ClaimTypes.NameIdentifier);
+
 @{ ChessColors chessColor = Model.PlayerColor == "black" ? ChessColors.Black : ChessColors.White; }
 
-<component type="typeof(ChessBoardComponent)" render-mode="ServerPrerendered" param-chessColor="@chessColor" param-IsOnTurn="@chessColor == ChessColors.White" />
+<component type="typeof(ChessBoardComponent)" render-mode="ServerPrerendered" param-chessColor="@chessColor"
+           param-IsOnTurn="@chessColor == ChessColors.White" param-WhitePlayerId="Model.WhitePlayerId" param-BlackPlayerId="Model.BlackPlayerId" />
 
 @section Scripts{
 

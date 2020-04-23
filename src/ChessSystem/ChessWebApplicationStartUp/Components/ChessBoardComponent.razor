@@ -1,6 +1,7 @@
 ﻿@using ChessGameLogic
 @using ChessGameLogic.ClientInteractionEntities
 @using ChessGameLogic.Enums
+@using System.Reflection;
 
 @* Imports for blazor *@
 @using System.Net.Http
@@ -45,13 +46,17 @@
 
                 this.ChessBoardContainerInstance.SetInfo(hor, ver, figureInfo);
                 <button @onclick="@(e =>
-                                        HandleFieldPressed(e, hor, ver, this.ChessBoardContainerInstance.GetInfo(hor, ver).figureType,
-                                        this.ChessBoardContainerInstance.GetInfo(hor, ver).figureColor))"
+                                        HandleFieldPressed(e, hor, ver, this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureType,
+                                        this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor))"
                         id="@(horizontal.ToString() + vertical)field"
                         style="margin:0px; border: none; width: 70px; height:70px; background-color: @chessFieldColor">
                     @if (figureInfo != null)
                     {
                         <img style="width: 50px; height:50px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
+                    }
+                    else
+                    {
+                        <img style="width: 50px; height:50px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
                     }
                 </button>
             }
@@ -83,12 +88,16 @@
 
                 this.ChessBoardContainerInstance.SetInfo(hor, ver, figureInfo);
                 <button @onclick="@(e =>
-                                        HandleFieldPressed(e, hor, ver, this.ChessBoardContainerInstance.GetInfo(hor, ver).figureType,
-                                        this.ChessBoardContainerInstance.GetInfo(hor, ver).figureColor))"
+                                        HandleFieldPressed(e, hor, ver, this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureType,
+                                        this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor))"
                         id="@(horizontal.ToString() + vertical)field" style="margin:0px; border: none; width: 70px; height:70px; background-color: @chessFieldColor">
                     @if (figureInfo != null)
                     {
-                        <img style="width: 50px; height:50px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
+                        <img style="width: 50px; height:50px" src="/ImagesForFigures/@($"{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureType}{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
+                    }
+                    else
+                    {
+                        <img style="width: 50px; height:50px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
                     }
                 </button>
             }
@@ -100,6 +109,73 @@
 </div>
 
 @code {
+
+    private static List<Action<string, string, string, string, string, string>> _actionOpponentHasMadeMove 
+        = new List<Action<string, string, string, string, string, string>>();
+    private string _message = "Select the button.";
+
+
+    protected override void OnInitialized()
+    {
+        _actionOpponentHasMadeMove.Add(OpponentHasMadeMoveHandle);
+    }
+
+    private void OpponentHasMadeMoveHandle(string initialPositionHorizontal,
+            string initialPositionVertical,
+            string targetPositionHorizontal,
+            string targetPositionVertical,
+            string figureType,
+            string figureColor)
+    {
+        this.chessGame.NormalMove(initialPositionHorizontal[0], int.Parse(initialPositionVertical),
+                    targetPositionHorizontal[0], int.Parse(targetPositionVertical),
+                    Enum.Parse<ChessFigureType>(figureType), Enum.Parse<ChessColors>(figureColor));
+
+        this.UpdateChessBoardContainerInstance();
+
+
+        this.IsOnTurn = true;
+
+        EnableAndDisableFielsAccordingTurn().GetAwaiter();
+
+        InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
+    [JSInvokable]
+    public static Task OpponentHasMadeMove(string initialPositionHorizontal,
+            string initialPositionVertical,
+            string targetPositionHorizontal,
+            string targetPositionVertical,
+            string figureType,
+            string figureColor)
+    {
+        foreach (var item in _actionOpponentHasMadeMove)
+        {
+            item.Invoke(initialPositionHorizontal,
+                initialPositionVertical,
+                targetPositionHorizontal,
+                targetPositionVertical,
+                figureType,
+                figureColor);
+
+        }
+
+        return Task.CompletedTask;
+    }
+
+
+
+    [Parameter]
+    public string WhitePlayerId { get; set; }
+
+    [Parameter]
+    public string BlackPlayerId { get; set; }
+
+    public string OpponentId => this.chessColor == ChessColors.White ? BlackPlayerId : WhitePlayerId;
+
     private ChessGame chessGame;
 
     [Parameter]
@@ -180,8 +256,7 @@
         {
             for (int j = 1; j <= 8; j++)
             {
-                if (given.Any(pos => pos.Horizontal == i && pos.Vertical == j) == false &&
-                   ((currentSelectedField.Item1 == i && currentSelectedField.Item2 == j) == false))
+                if (given.Any(pos => pos.Horizontal == i && pos.Vertical == j) == false)
                 {
                     positions.Add(new BoardPosition(i, j));
                 }
@@ -191,36 +266,69 @@
         return positions;
     }
 
-    private async Task HandleFieldPressed(MouseEventArgs e, char horizontal, int vertical, ChessFigureType chessFigureType, ChessColors chessColors)
+    private async Task HandleFieldPressed(MouseEventArgs e, char horizontal, int vertical, ChessFigureType? chessFigureType, ChessColors? chessColors)
     {
         if (currentSelectedField == null)
         {
             currentSelectedField = new Tuple<char, int>(horizontal, vertical);
 
             var possiblePositions = this.chessGame.GetAllPossiblePositionsOfPlacingTheFigure(horizontal,
-                vertical, chessFigureType, chessColors);
+                vertical, (ChessFigureType)chessFigureType, (ChessColors)chessColors);
 
-            var positionsToDisable = GetBoardPositionsExceptGiven(possiblePositions.Select(pos => new BoardPosition(pos.Horizontal, pos.Vertical))
-                .ToList());
+            var positionsToEnable = possiblePositions.Select(pos => new BoardPosition(pos.Horizontal, pos.Vertical))
+                .ToList();
+
+            positionsToEnable.Add(new BoardPosition(this.currentSelectedField.Item1, this.currentSelectedField.Item2));
+
+            var positionsToDisable = GetBoardPositionsExceptGiven(positionsToEnable);
 
 
-            await JSRuntime.InvokeVoidAsync("enableButtons", possiblePositions);
+            await JSRuntime.InvokeVoidAsync("enableButtons", positionsToEnable);
             await JSRuntime.InvokeVoidAsync("disableButtons", positionsToDisable);
         }
         else
         {
             if (currentSelectedField.Item1 == horizontal && currentSelectedField.Item2 == vertical)
             {
-                await JSRuntime.InvokeVoidAsync("enableButtons", new List<BoardPosition>() { new BoardPosition(horizontal, vertical) });
-                await JSRuntime.InvokeVoidAsync("disableButtons", GetBoardPositionsExceptGiven(new List<BoardPosition>() { new BoardPosition(horizontal, vertical) }));
+                await this.EnableAndDisableFielsAccordingTurn();
             }
             else
             {
+                var figureInfo = this.ChessBoardContainerInstance.GetInfo(currentSelectedField.Item1, currentSelectedField.Item2);
 
+                this.chessGame.NormalMove(currentSelectedField.Item1, currentSelectedField.Item2,
+                    horizontal, vertical, figureInfo.figureType, figureInfo.figureColor);
+
+                this.UpdateChessBoardContainerInstance();
+
+                this.IsOnTurn = false;
+
+                await EnableAndDisableFielsAccordingTurn();
+
+                string assemblyname = Assembly.GetExecutingAssembly().GetName().Name;
+
+                await JSRuntime.InvokeVoidAsync("SendMove", OpponentId.ToString(),
+                    currentSelectedField.Item1.ToString(),
+                    currentSelectedField.Item2.ToString(),
+                    horizontal.ToString(),
+                    vertical.ToString(),
+                    figureInfo.figureType.ToString(),
+                    figureInfo.figureColor.ToString());
             }
             currentSelectedField = null;
         }
 
+    }
+
+    private void UpdateChessBoardContainerInstance()
+    {
+        for (char i = 'a'; i <= 'h'; i++)
+        {
+            for (int j = 1; j <= 8; j++)
+            {
+                this.ChessBoardContainerInstance.SetInfo(i, j, this.chessGame.GetFigureOnPositionInfo(i, j));
+            }
+        }
     }
 
     private async Task EnableAndDisableFielsAccordingTurn()
