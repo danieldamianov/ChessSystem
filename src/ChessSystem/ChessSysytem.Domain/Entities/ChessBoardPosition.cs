@@ -12,10 +12,6 @@ namespace ChessSystem.Domain.Entities
         private char horizontal;
         private int vertical;
 
-        public string NormalChessMoveId { get; set; }
-
-        public NormalMove NormalChessMove { get; set; }
-
         public ChessBoardPosition(char horizontal, int vertical)
         {
             this.Id = Guid.NewGuid().ToString();

@@ -1,20 +1,21 @@
-﻿using ChessSystem.Application.Common.Interfaces;
-using ChessSystem.Domain.BaseEntities;
-using ChessSystem.Domain.Entities;
-using IdentityServer4.EntityFramework.Options;
-using Infrastructure.Identity;
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Infrastructure.Persistence
+﻿namespace Infrastructure.Persistence
 {
+    using ChessSystem.Application.Common.Interfaces;
+    using ChessSystem.Domain.BaseEntities;
+    using ChessSystem.Domain.Entities;
+    using ChessSystem.Domain.Entities.Moves;
+    using IdentityServer4.EntityFramework.Options;
+    using Infrastructure.Identity;
+    using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Options;
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Text;
+    using System.Threading;
+    using System.Threading.Tasks;
+
     public class ChessApplicationDbContext : ApiAuthorizationDbContext<ChessAppUser>, IChessApplicationData
     {
         private readonly ICurrentUser currentUserService;
@@ -32,6 +33,16 @@ namespace Infrastructure.Persistence
         }
 
         public DbSet<OnlineUser> LogedInUsers { get; set; }
+
+        public DbSet<ChessBoardPosition> ChessBoardPositions { get; set; }
+
+        public DbSet<NormalMove> NormalMoves { get; set; }
+
+        public DbSet<CastlingMove> CastlingMoves { get; set; }
+
+        public DbSet<PawnProductionMove> PawnProductionMoves { get; set; }
+
+        public DbSet<ChessGame> ChessGames { get; set; }
 
         public Task<int> SaveChanges(CancellationToken cancellationToken = new CancellationToken())
             => this.SaveChangesAsync(cancellationToken);

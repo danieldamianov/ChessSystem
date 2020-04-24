@@ -12,7 +12,7 @@ namespace ChessSystem.Domain.Entities.Moves
 
         public ChessFigureColor ColorOfTheFigures { get; set; }
 
-        public string KingInitialPositionnId { get; set; }
+        public string KingInitialPositionId { get; set; }
 
         public ChessBoardPosition KingInitialPosition { get; set; }
 

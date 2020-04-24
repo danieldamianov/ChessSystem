@@ -35,7 +35,7 @@ namespace ChessSystem.Application
                 .Select(t => new
                 {
                     Service = t.GetInterface($"I{t.Name.Replace("Service", string.Empty)}"),
-                    Implementation = t
+                    Implementation = t,
                 })
                 .Where(t => t.Service != null);
 
