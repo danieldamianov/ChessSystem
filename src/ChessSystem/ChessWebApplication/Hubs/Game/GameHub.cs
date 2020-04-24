@@ -17,7 +17,9 @@ namespace ChessWebApplication.Hubs.Game
             string figureType,
             string figureColor)
         {
-            await this.Clients.User(opponentId).SendAsync("OpponentHasMadeMove",
+            await this.Clients.User(opponentId).SendAsync(
+                "OpponentHasMadeMove",
+                opponentId,
                 initialPositionHorizontal,
                 initialPositionVertical,
                 targetPositionHorizontal,

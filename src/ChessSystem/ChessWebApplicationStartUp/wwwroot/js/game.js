@@ -7,14 +7,17 @@ setupConnection = () => {
     connection.serverTimeoutInMilliseconds = 100000; // 100 second
    
     connection.on("OpponentHasMadeMove", function
-        (initialPositionHorizontal,
+        (opponentId,
+        initialPositionHorizontal,
         initialPositionVertical,
         targetPositionHorizontal,
         targetPositionVertical,
         figureType,
         figureColor
     ) {
-        DotNet.invokeMethodAsync('ChessWebApplicationStartUp', 'OpponentHasMadeMove', initialPositionHorizontal,
+        DotNet.invokeMethodAsync('ChessWebApplicationStartUp', 'OpponentHasMadeMove',
+            opponentId,
+            initialPositionHorizontal,
             initialPositionVertical,
             targetPositionHorizontal,
             targetPositionVertical,

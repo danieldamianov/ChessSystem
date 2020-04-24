@@ -24,4 +24,3 @@ namespace ChessWebApplication.Services
                 .FindFirstValue(ClaimTypes.NameIdentifier);
     }
 }
-
