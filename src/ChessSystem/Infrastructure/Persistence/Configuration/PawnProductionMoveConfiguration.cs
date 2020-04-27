@@ -1,4 +1,5 @@
 ﻿using ChessSystem.Domain.Entities;
+using ChessSystem.Domain.Entities.Moves;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;

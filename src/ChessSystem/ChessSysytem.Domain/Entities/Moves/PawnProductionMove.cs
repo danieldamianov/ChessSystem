@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessSystem.Domain.Entities
+﻿namespace ChessSystem.Domain.Entities.Moves
 {
-    using BaseEntities;
-    using ChessSystem.Domain.Entities.Moves;
-
     public class PawnProductionMove : BaseMove
     {
         public PawnProductionMove()
