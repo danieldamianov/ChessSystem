@@ -12,6 +12,11 @@ namespace ChessWebApplication.Controllers.Game
         [Authorize]
         public IActionResult Play(PlayInputModel playInputModel)
         {
+            if (this.ModelState.IsValid == false)
+            {
+                return this.Redirect("/");
+            }
+
             return this.View(playInputModel);
         }
     }

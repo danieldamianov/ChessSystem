@@ -1,15 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace ChessWebApplication.Controllers.Game.InputModels
 {
     public class PlayInputModel
     {
+        [Required]
+        [RegularExpression(@"[\dabcdef]{8}-[\dabcdef]{4}-[\dabcdef]{4}-[\dabcdef]{4}-[\dabcdef]{12}")]
         public string WhitePlayerId { get; set; }
 
+        [Required]
+        [RegularExpression(@"[\dabcdef]{8}-[\dabcdef]{4}-[\dabcdef]{4}-[\dabcdef]{4}-[\dabcdef]{12}")]
         public string BlackPlayerId { get; set; }
 
-        public string PlayerColor { get; set; } // black or white
+        [Required]
+        [RegularExpression(@"(black|white)")]
+        public string PlayerColor { get; set; }
     }
 }
