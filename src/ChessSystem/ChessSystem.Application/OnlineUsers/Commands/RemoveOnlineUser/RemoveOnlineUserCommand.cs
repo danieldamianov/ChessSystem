@@ -39,6 +39,7 @@ namespace ChessSystem.Application.OnlineUsers.Commands.RemoveOnlineUser
                 {
                     throw new CannotSetOfflineUserWhichIsOfflineException();
                 }
+
                 this.chessApplicationData.LogedInUsers.Remove(onlineUser);
 
                 await this.chessApplicationData.SaveChanges(cancellationToken);

@@ -30,7 +30,7 @@
         /// <param name="whitePlayerId"></param>
         /// <param name="blackPlayerId"></param>
         public ChessGame(string whitePlayerId, string blackPlayerId)
-            : base()
+            : this()
         {
             if (whitePlayerId == null || blackPlayerId == null)
             {
