@@ -7,9 +7,11 @@ namespace ChessSystem.Domain.Entities.Moves
 {
     public abstract class BaseMove : BaseEntitiy<string>
     {
-        public BaseMove()
+        public BaseMove(int orderInTheGame)
         {
             this.Id = Guid.NewGuid().ToString();
+
+            this.OrderInTheGame = orderInTheGame;
         }
 
         public int OrderInTheGame { get; set; }

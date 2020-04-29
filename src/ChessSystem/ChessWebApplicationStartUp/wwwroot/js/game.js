@@ -33,7 +33,9 @@ setupConnection = () => {
 
 setupConnection();
 
-function SendMove(opponentId,
+function SendMove(
+    userThatHasMadeTheMove,
+    opponentId,
     initialPositionHorizontal,
     initialPositionVertical,
     targetPositionHorizontal,
@@ -41,6 +43,7 @@ function SendMove(opponentId,
     figureType,
     figureColor) {
     connection.invoke("UserHasMadeMove",
+        userThatHasMadeTheMove,
         opponentId,
         initialPositionHorizontal,
         initialPositionVertical,

@@ -52,14 +52,14 @@
                                         HandleFieldPressed(e, hor, ver, this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureType,
                                         this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor))"
                         id="@(horizontal.ToString() + vertical)field"
-                        style="margin:0px; border: none; width: 70px; height:70px; background-color: @chessFieldColor">
+                        style="margin:0px; border: none; width: 40px; height:40px; background-color: @chessFieldColor">
                     @if (figureInfo != null)
                     {
-                        <img style="width: 50px; height:50px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
+                        <img style="width: 20px; height:20px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
                     }
                     else
                     {
-                        <img style="width: 50px; height:50px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
+                        <img style="width: 20px; height:20px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
                     }
                 </button>
             }
@@ -93,14 +93,14 @@
                 <button @onclick="@(e =>
                                         HandleFieldPressed(e, hor, ver, this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureType,
                                         this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor))"
-                        id="@(horizontal.ToString() + vertical)field" style="margin:0px; border: none; width: 70px; height:70px; background-color: @chessFieldColor">
+                        id="@(horizontal.ToString() + vertical)field" style="margin:0px; border: none; width: 40px; height:40px; background-color: @chessFieldColor">
                     @if (figureInfo != null)
                     {
-                        <img style="width: 50px; height:50px" src="/ImagesForFigures/@($"{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureType}{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
+                        <img style="width: 20px; height:20px" src="/ImagesForFigures/@($"{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureType}{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
                     }
                     else
                     {
-                        <img style="width: 50px; height:50px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
+                        <img style="width: 20px; height:20px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
                     }
                 </button>
             }
@@ -314,7 +314,9 @@
 
                 string assemblyname = Assembly.GetExecutingAssembly().GetName().Name;
 
-                await JSRuntime.InvokeVoidAsync("SendMove", OpponentId.ToString(),
+                await JSRuntime.InvokeVoidAsync("SendMove",
+                    this.currentUser.UserId,
+                    OpponentId.ToString(),
                     currentSelectedField.Item1.ToString(),
                     currentSelectedField.Item2.ToString(),
                     horizontal.ToString(),

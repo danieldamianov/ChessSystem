@@ -7,9 +7,12 @@ namespace ChessSystem.Domain.Entities.Moves
 {
     public class NormalMove : BaseMove
     {
-        public NormalMove()
-            : base()
-        { }
+        public NormalMove(int orderInTheGame, ChessFigureType chessFigureType, ChessFigureColor chessFigureColor)
+            : base(orderInTheGame)
+        {
+            this.ChessFigureType = chessFigureType;
+            this.ChessFigureColor = chessFigureColor;
+        }
 
         public string InitialPositionId { get; set; }
 

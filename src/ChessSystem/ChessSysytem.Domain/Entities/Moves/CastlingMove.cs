@@ -6,8 +6,8 @@ namespace ChessSystem.Domain.Entities.Moves
 {
     public class CastlingMove : BaseMove
     {
-        public CastlingMove()
-            : base()
+        public CastlingMove(int orderInTheGame)
+            : base(orderInTheGame)
         { }
 
         public ChessFigureColor ColorOfTheFigures { get; set; }
