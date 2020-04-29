@@ -33,7 +33,26 @@ setupConnection = () => {
 
 setupConnection();
 
-function SendMove(
+function SendCastlingMove(
+    userThatHasMadeCastlingId,
+    opponentId,
+    kingPositionHorizontal,
+    kingPositionVertical,
+    rookPositionHorizontal,
+    rookPositionVertical,
+    figureColor) {
+    connection.invoke("UserHasMadeCastlingMove",
+        userThatHasMadeCastlingId,
+        opponentId,
+        kingPositionHorizontal,
+        kingPositionVertical,
+        rookPositionHorizontal,
+        rookPositionVertical,
+        figureColor
+    )
+}
+
+function SendNormalMove(
     userThatHasMadeTheMove,
     opponentId,
     initialPositionHorizontal,

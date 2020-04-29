@@ -301,6 +301,65 @@
             }
             else
             {
+                var figureOnInitialPosition = this.chessGame.GetFigureOnPositionInfo(
+                       this.currentSelectedField.Item1,
+                       this.currentSelectedField.Item2);
+
+                var firstCastingValidationResult = this.chessGame.MakeCastling(
+                    horizontal,
+                    vertical,
+                    this.currentSelectedField.Item1,
+                    this.currentSelectedField.Item2,
+                    figureOnInitialPosition.figureColor);
+
+                if (firstCastingValidationResult == CastlingMoveValidationResult.ValidCastling)
+                {
+                    /// HandleCastling
+                    this.UpdateChessBoardContainerInstance();
+
+                    this.IsOnTurn = false;
+
+                    await EnableAndDisableFielsAccordingTurn();
+
+                    await JSRuntime.InvokeVoidAsync("SendCastlingMove",
+                        this.currentUser.UserId,
+                        OpponentId.ToString(),
+                        currentSelectedField.Item1.ToString(),
+                        currentSelectedField.Item2.ToString(),
+                        horizontal.ToString(),
+                        vertical.ToString(),
+                        figureOnInitialPosition.figureColor.ToString());
+                    return;
+                }
+
+                var secondCastingValidationResult = this.chessGame.MakeCastling(
+                    this.currentSelectedField.Item1,
+                    this.currentSelectedField.Item2,
+                    horizontal,
+                    vertical,
+                    figureOnInitialPosition.figureColor);
+
+                if (secondCastingValidationResult == CastlingMoveValidationResult.ValidCastling)
+                {
+                    ///HandleCastling
+                    this.UpdateChessBoardContainerInstance();
+
+                    this.IsOnTurn = false;
+
+                    await EnableAndDisableFielsAccordingTurn();
+
+                    await JSRuntime.InvokeVoidAsync("SendCastlingMove",
+                        this.currentUser.UserId,
+                        OpponentId.ToString(),
+                        currentSelectedField.Item1.ToString(),
+                        currentSelectedField.Item2.ToString(),
+                        horizontal.ToString(),
+                        vertical.ToString(),
+                        figureOnInitialPosition.figureColor.ToString());
+                    return;
+                }
+
+
                 var figureInfo = this.ChessBoardContainerInstance.GetInfo(currentSelectedField.Item1, currentSelectedField.Item2);
 
                 this.chessGame.NormalMove(currentSelectedField.Item1, currentSelectedField.Item2,
@@ -312,9 +371,7 @@
 
                 await EnableAndDisableFielsAccordingTurn();
 
-                string assemblyname = Assembly.GetExecutingAssembly().GetName().Name;
-
-                await JSRuntime.InvokeVoidAsync("SendMove",
+                await JSRuntime.InvokeVoidAsync("SendNormalMove",
                     this.currentUser.UserId,
                     OpponentId.ToString(),
                     currentSelectedField.Item1.ToString(),
