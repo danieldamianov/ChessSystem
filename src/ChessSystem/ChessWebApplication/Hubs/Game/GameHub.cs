@@ -13,6 +13,25 @@
             : base(httpContextAccessor)
         { }
 
+        public async Task UserHasMadeCastlingMove(
+            string userThatHasMadeCastlingId,
+            string opponentId,
+            string kingPositionHorizontal,
+            string kingPositionVertical,
+            string rookPositionHorizontal,
+            string rookPositionVertical,
+            string figureColor)
+        {
+            await this.Clients.User(opponentId).SendAsync(
+                "OpponentHasMadeCastlingMove",
+                opponentId,
+                kingPositionHorizontal,
+                kingPositionVertical,
+                rookPositionHorizontal,
+                rookPositionVertical,
+                figureColor);
+        }
+
         public async Task UserHasMadeMove(
             string userThatHasMadeTheMove,
             string opponentId,

@@ -114,7 +114,10 @@
 @code {
 
     private static ConcurrentDictionary<string, Action<string, string, string, string, string, string>> opponentHasMadeMoveHandlers
-        = new ConcurrentDictionary<string, Action<string, string, string, string, string, string>>();
+    = new ConcurrentDictionary<string, Action<string, string, string, string, string, string>>();
+
+    private static ConcurrentDictionary<string, Action<string, string, string, string, string>> opponentHasMadeCastlingMoveHandlers
+    = new ConcurrentDictionary<string, Action<string, string, string, string, string>>();
 
     protected override void OnInitialized()
     {
@@ -125,6 +128,27 @@
 
         opponentHasMadeMoveHandlers.TryAdd(this.currentUser.UserId, OpponentHasMadeMoveHandle);
 
+        if (opponentHasMadeCastlingMoveHandlers.ContainsKey(this.currentUser.UserId))
+        {
+            opponentHasMadeCastlingMoveHandlers.TryRemove(this.currentUser.UserId, out Action<string, string, string, string, string> value);
+        }
+
+        opponentHasMadeCastlingMoveHandlers.TryAdd(this.currentUser.UserId, OpponentHasMadeCastlingMoveHandle);
+
+    }
+
+    private void UpdateUIChessBoard()
+    {
+        this.UpdateChessBoardContainerInstance();
+
+        this.IsOnTurn = true;
+
+        EnableAndDisableFielsAccordingTurn().GetAwaiter();
+
+        InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
     }
 
     private void OpponentHasMadeMoveHandle(
@@ -139,17 +163,43 @@
                     targetPositionHorizontal[0], int.Parse(targetPositionVertical),
                     Enum.Parse<ChessFigureType>(figureType), Enum.Parse<ChessColors>(figureColor));
 
-        this.UpdateChessBoardContainerInstance();
+        this.UpdateUIChessBoard();
+    }
 
+    private void OpponentHasMadeCastlingMoveHandle(
+            string kingPositionHorizontal,
+            string kingPositionVertical,
+            string rookPositionHorizontal,
+            string rookPositionVertical,
+            string figureColor)
+    {
+        this.chessGame.MakeCastling(
+            kingPositionHorizontal[0],
+            int.Parse(kingPositionVertical),
+            rookPositionHorizontal[0],
+            int.Parse(rookPositionVertical),
+            Enum.Parse<ChessColors>(figureColor));
 
-        this.IsOnTurn = true;
+        this.UpdateUIChessBoard();
+    }
 
-        EnableAndDisableFielsAccordingTurn().GetAwaiter();
+    [JSInvokable]
+    public static Task OpponentHasMadeCastlingMove(
+    string opponentId,
+    string kingPositionHorizontal,
+    string kingPositionVertical,
+    string rookPositionHorizontal,
+    string rookPositionVertical,
+    string figureColor)
+    {
+        opponentHasMadeCastlingMoveHandlers.TryGetValue(opponentId, out Action<string, string, string, string, string> value);
+        value.Invoke(kingPositionHorizontal,
+            kingPositionVertical,
+            rookPositionHorizontal,
+            rookPositionVertical,
+            figureColor);
 
-        InvokeAsync(() =>
-        {
-            StateHasChanged();
-        });
+        return Task.CompletedTask;
     }
 
     [JSInvokable]
@@ -329,6 +379,9 @@
                         horizontal.ToString(),
                         vertical.ToString(),
                         figureOnInitialPosition.figureColor.ToString());
+
+                    currentSelectedField = null;
+
                     return;
                 }
 
@@ -356,6 +409,9 @@
                         horizontal.ToString(),
                         vertical.ToString(),
                         figureOnInitialPosition.figureColor.ToString());
+
+                    currentSelectedField = null;
+
                     return;
                 }
 

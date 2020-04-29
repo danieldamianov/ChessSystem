@@ -5,7 +5,23 @@ setupConnection = () => {
         .withUrl("/Game/Communication")
         .build();
     connection.serverTimeoutInMilliseconds = 100000; // 100 second
-   
+
+    connection.on("OpponentHasMadeCastlingMove", function
+        (opponentId,
+            kingPositionHorizontal,
+            kingPositionVertical,
+            rookPositionHorizontal,
+            rookPositionVertical,
+            figureColor) {
+        DotNet.invokeMethodAsync('ChessWebApplicationStartUp', 'OpponentHasMadeCastlingMove',
+            opponentId,
+            kingPositionHorizontal,
+            kingPositionVertical,
+            rookPositionHorizontal,
+            rookPositionVertical,
+            figureColor);
+    });
+
     connection.on("OpponentHasMadeMove", function
         (opponentId,
         initialPositionHorizontal,
