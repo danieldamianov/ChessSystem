@@ -55,11 +55,11 @@
                         style="margin:0px; border: none; width: 40px; height:40px; background-color: @chessFieldColor">
                     @if (figureInfo != null)
                     {
-                        <img style="width: 20px; height:20px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
+                        <img style="width: 30px; height:30px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
                     }
                     else
                     {
-                        <img style="width: 20px; height:20px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
+                        <img style="width: 30px; height:30px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
                     }
                 </button>
             }
@@ -96,11 +96,11 @@
                         id="@(horizontal.ToString() + vertical)field" style="margin:0px; border: none; width: 40px; height:40px; background-color: @chessFieldColor">
                     @if (figureInfo != null)
                     {
-                        <img style="width: 20px; height:20px" src="/ImagesForFigures/@($"{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureType}{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
+                        <img style="width: 30px; height:30px" src="/ImagesForFigures/@($"{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureType}{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
                     }
                     else
                     {
-                        <img style="width: 20px; height:20px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
+                        <img style="width: 30px; height:30px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
                     }
                 </button>
             }
