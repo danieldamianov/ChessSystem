@@ -17,17 +17,9 @@ namespace Infrastructure.Persistence.Configuration
                 .WithOne()
                 .HasForeignKey<CastlingMove>(move => move.KingInitialPositionId);
 
-            builder.HasOne(move => move.KingTargetPosition)
-                .WithOne()
-                .HasForeignKey<CastlingMove>(move => move.KingTargetPositionnId);
-
             builder.HasOne(move => move.RookInitialPosition)
                 .WithOne()
                 .HasForeignKey<CastlingMove>(move => move.RookInitialPositionnId);
-
-            builder.HasOne(move => move.RookTargetPosition)
-                .WithOne()
-                .HasForeignKey<CastlingMove>(move => move.RookTargetPositionnId);
         }
     }
 }

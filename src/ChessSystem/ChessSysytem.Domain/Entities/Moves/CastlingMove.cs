@@ -16,16 +16,8 @@ namespace ChessSystem.Domain.Entities.Moves
 
         public ChessBoardPosition KingInitialPosition { get; set; }
 
-        public string KingTargetPositionnId { get; set; }
-
-        public ChessBoardPosition KingTargetPosition { get; set; }
-
         public string RookInitialPositionnId { get; set; }
 
         public ChessBoardPosition RookInitialPosition { get; set; }
-
-        public string RookTargetPositionnId { get; set; }
-
-        public ChessBoardPosition RookTargetPosition { get; set; }
     }
 }

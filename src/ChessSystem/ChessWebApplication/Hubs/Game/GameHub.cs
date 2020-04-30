@@ -2,6 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
+    using ChessSystem.Application.Games.Commands.SaveCastlingMove;
     using ChessSystem.Application.Games.Commands.SaveMove;
     using ChessSystem.Domain.Entities;
     using Microsoft.AspNetCore.Http;
@@ -30,6 +31,31 @@
                 rookPositionHorizontal,
                 rookPositionVertical,
                 figureColor);
+
+            if (figureColor == "White")
+            {
+                await this.Mediator.Send(new SaveCastlingMoveCommand(
+                    userThatHasMadeCastlingId,
+                    opponentId,
+                    new SaveCastlingMoveInputModel(
+                        Enum.Parse<ChessFigureColor>(figureColor),
+                        kingPositionHorizontal[0],
+                        int.Parse(kingPositionVertical),
+                        rookPositionHorizontal[0],
+                        int.Parse(rookPositionVertical))));
+            }
+            else
+            {
+                await this.Mediator.Send(new SaveCastlingMoveCommand(
+                    opponentId,
+                    userThatHasMadeCastlingId,
+                    new SaveCastlingMoveInputModel(
+                        Enum.Parse<ChessFigureColor>(figureColor),
+                        kingPositionHorizontal[0],
+                        int.Parse(kingPositionVertical),
+                        rookPositionHorizontal[0],
+                        int.Parse(rookPositionVertical))));
+            }
         }
 
         public async Task UserHasMadeMove(

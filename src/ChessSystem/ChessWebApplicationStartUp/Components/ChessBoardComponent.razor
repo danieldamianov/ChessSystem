@@ -374,10 +374,10 @@
                     await JSRuntime.InvokeVoidAsync("SendCastlingMove",
                         this.currentUser.UserId,
                         OpponentId.ToString(),
-                        currentSelectedField.Item1.ToString(),
-                        currentSelectedField.Item2.ToString(),
                         horizontal.ToString(),
                         vertical.ToString(),
+                        currentSelectedField.Item1.ToString(),
+                        currentSelectedField.Item2.ToString(),
                         figureOnInitialPosition.figureColor.ToString());
 
                     currentSelectedField = null;
