@@ -1,15 +1,13 @@
-﻿using ChessSystem.Application.Common.Interfaces;
-using ChessSystem.Domain.Entities;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace ChessSystem.Application.OnlineUsers.Commands.AddOnlineUser
+﻿namespace ChessSystem.Application.OnlineUsers.Commands.AddOnlineUser
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    using ChessSystem.Application.Common.Interfaces;
+    using ChessSystem.Domain.Entities;
+    using MediatR;
+
     public class AddOnlineUserCommand : IRequest
     {
         public AddOnlineUserCommand(string userId, string username)

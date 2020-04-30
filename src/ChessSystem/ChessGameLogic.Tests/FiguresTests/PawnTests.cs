@@ -250,8 +250,7 @@
             char targetHorizontal,
             int targetVertical,
             ChessColors pawnColor,
-            object[] positionsInTheWayOfMove
-            )
+            object[] positionsInTheWayOfMove)
         {
             List<Tuple<char, int>> positions = new List<Tuple<char, int>>();
 
@@ -346,7 +345,8 @@
             ChessColors pawnColor,
             bool isProducable)
         {
-            var isPositionProducableMethod = this.PawnType.GetMethod("isPositionProducable",
+            var isPositionProducableMethod = this.PawnType.GetMethod(
+                "isPositionProducable",
                 BindingFlags.Instance | BindingFlags.NonPublic);
 
             var chessBoardPositionType = ChessGameLogicProvider.GetType("ChessGameLogic.ChessBoardPosition");
@@ -357,23 +357,13 @@
             {
                 isPositionProducableActualResult = (bool)isPositionProducableMethod.Invoke(
                         this.BlackPawnInstance,
-                        new object[]
-                        {
-                chessBoardPositionType
-                .GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)
-                .First()
-                .Invoke(new object[] { positionHorizontal, positionVertical}) });
+                        new object[] { chessBoardPositionType.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic).First().Invoke(new object[] { positionHorizontal, positionVertical }), });
             }
             else
             {
                 isPositionProducableActualResult = (bool)isPositionProducableMethod.Invoke(
                         this.WhitePawnInstance,
-                        new object[]
-                        {
-                chessBoardPositionType
-                .GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)
-                .First()
-                .Invoke(new object[] { positionHorizontal, positionVertical}) });
+                        new object[] { chessBoardPositionType.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic).First().Invoke(new object[] { positionHorizontal, positionVertical }), });
             }
 
             Assert.AreEqual(isProducable, isPositionProducableActualResult);

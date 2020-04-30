@@ -4,7 +4,8 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Exceptions;
+
+    using ChessSystem.Application.Common.Exceptions;
     using FluentValidation;
     using MediatR;
 

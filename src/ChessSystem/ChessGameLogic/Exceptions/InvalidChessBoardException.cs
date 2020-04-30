@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace ChessGameLogic.Exceptions
+﻿namespace ChessGameLogic.Exceptions
 {
+    using System;
+
     public class InvalidChessBoardException : Exception
     {
         public InvalidChessBoardException(string message)

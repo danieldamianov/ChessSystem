@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessSystem.Application.Common.Exceptions
+﻿namespace ChessSystem.Application.Common.Exceptions
 {
     using System;
 

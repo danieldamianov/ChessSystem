@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessSystem.Application.Common.Exceptions
+﻿namespace ChessSystem.Application.Common.Exceptions
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using FluentValidation.Results;
 
     public class ModelValidationException : Exception

@@ -81,8 +81,8 @@
             var chessBoardPositionType = ChessGameLogicProvider.GetType("ChessGameLogic.ChessBoardPosition");
 
             var move = normalChessMoveType.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)[0]
-                .Invoke(new object[] 
-                { 
+                .Invoke(new object[]
+                {
                     initialHorizontal,
                     initialVertical,
                     targetHorizontal,

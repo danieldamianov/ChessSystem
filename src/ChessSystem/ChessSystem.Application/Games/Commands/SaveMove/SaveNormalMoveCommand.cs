@@ -1,12 +1,13 @@
 ﻿namespace ChessSystem.Application.Games.Commands.SaveMove
 {
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+
     using ChessSystem.Application.Common.Interfaces;
     using ChessSystem.Domain.Entities;
     using ChessSystem.Domain.Entities.Moves;
     using MediatR;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
 
     public class SaveNormalMoveCommand : IRequest<bool>
     {

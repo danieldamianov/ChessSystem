@@ -1,10 +1,9 @@
-﻿using ChessSystem.Domain.BaseEntities;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessSystem.Domain.Entities
+﻿namespace ChessSystem.Domain.Entities
 {
+    using System;
+
+    using ChessSystem.Domain.BaseEntities;
+
     public class OnlineUser : BaseEntitiy<string>
     {
         public OnlineUser()

@@ -1,15 +1,12 @@
-﻿using ChessSystem.Application.Common.Interfaces;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace ChessSystem.Application.OnlineUsers.Queries.CheckIfUserIsOnline
+﻿namespace ChessSystem.Application.OnlineUsers.Queries.CheckIfUserIsOnline
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    using ChessSystem.Application.Common.Interfaces;
+    using MediatR;
+    using Microsoft.EntityFrameworkCore;
+
     public class CheckIfUsersIsOnlineCommand : IRequest<bool>
     {
         public CheckIfUsersIsOnlineCommand(string userId)

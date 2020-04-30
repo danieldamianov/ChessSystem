@@ -1,11 +1,7 @@
-﻿using ChessSystem.Application.Common.Mapping;
-using ChessSystem.Application.OnlineUsers.Queries.GetAllOnlineUsers;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessWebApplication.Hubs.OnlineUsers
+﻿namespace ChessWebApplication.Hubs.OnlineUsers
 {
+    using ChessSystem.Application.Common.Mapping;
+    using ChessSystem.Application.OnlineUsers.Queries.GetAllOnlineUsers;
 
     public class OnlineUserSocketModel : IMapFrom<OnlineUserOutputModel>
     {

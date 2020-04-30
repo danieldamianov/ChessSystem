@@ -2,6 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
+
     using ChessSystem.Application.Games.Commands.SaveCastlingMove;
     using ChessSystem.Application.Games.Commands.SaveMove;
     using ChessSystem.Domain.Entities;

@@ -1,5 +1,9 @@
 ﻿namespace Infrastructure.Persistence
 {
+    using System.Reflection;
+    using System.Threading;
+    using System.Threading.Tasks;
+
     using ChessSystem.Application.Common.Interfaces;
     using ChessSystem.Domain.BaseEntities;
     using ChessSystem.Domain.Entities;
@@ -9,12 +13,6 @@
     using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Options;
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
-    using System.Text;
-    using System.Threading;
-    using System.Threading.Tasks;
 
     public class ChessApplicationDbContext : ApiAuthorizationDbContext<ChessAppUser>, IChessApplicationData
     {

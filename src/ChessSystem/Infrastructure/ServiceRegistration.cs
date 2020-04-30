@@ -2,13 +2,11 @@
 {
     using ChessSystem.Application;
     using ChessSystem.Application.Common.Interfaces;
-    using Identity;
-    using Microsoft.AspNetCore.Authentication;
+    using Infrastructure.Identity;
+    using Infrastructure.Persistence;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Persistence;
-    using Services;
 
     public static class ServiceRegistration
     {

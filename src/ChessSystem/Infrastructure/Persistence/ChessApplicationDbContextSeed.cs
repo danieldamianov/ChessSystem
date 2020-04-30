@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Infrastructure.Persistence
+﻿namespace Infrastructure.Persistence
 {
-    using System;
     using System.Linq;
-    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
-    using Identity;
+
+    using Infrastructure.Identity;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.EntityFrameworkCore;
 
     public static class ChessApplicationDbContextSeed
     {

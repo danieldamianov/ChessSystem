@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessSystem.Application.Common.Interfaces
+﻿namespace ChessSystem.Application.Common.Interfaces
 {
     using ChessSystem.Application.Common.ServiceInterfaces;
 

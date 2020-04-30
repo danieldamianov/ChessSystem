@@ -2,10 +2,10 @@
 {
     using System.Threading;
     using System.Threading.Tasks;
-    using ServiceInterfaces;
+
+    using ChessSystem.Application.Common.Interfaces;
     using MediatR.Pipeline;
     using Microsoft.Extensions.Logging;
-    using ChessSystem.Application.Common.Interfaces;
 
     public class RequestLogger<TRequest> : IRequestPreProcessor<TRequest>
     {

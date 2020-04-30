@@ -15,18 +15,6 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="ChessGame"/> class.
         /// </summary>
-        protected ChessGame()
-        {
-            this.Id = Guid.NewGuid().ToString();
-
-            this.NormalChessMoves = new List<NormalMove>();
-            this.PawnProductionMoves = new List<PawnProductionMove>();
-            this.CastlingMoves = new List<CastlingMove>();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ChessGame"/> class.
-        /// </summary>
         /// <param name="whitePlayerId"></param>
         /// <param name="blackPlayerId"></param>
         public ChessGame(string whitePlayerId, string blackPlayerId)
@@ -39,6 +27,18 @@
 
             this.WhitePlayerId = whitePlayerId;
             this.BlackPlayerId = blackPlayerId;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChessGame"/> class.
+        /// </summary>
+        protected ChessGame()
+        {
+            this.Id = Guid.NewGuid().ToString();
+
+            this.NormalChessMoves = new List<NormalMove>();
+            this.PawnProductionMoves = new List<PawnProductionMove>();
+            this.CastlingMoves = new List<CastlingMove>();
         }
 
         public string WhitePlayerId { get; set; }

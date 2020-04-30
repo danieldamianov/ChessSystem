@@ -1,10 +1,9 @@
-﻿using ChessSystem.Domain.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessSystem.Domain.BaseEntities
+﻿namespace ChessSystem.Domain.BaseEntities
 {
+    using System;
+
+    using ChessSystem.Domain.Exceptions;
+
     public abstract class BaseAuditableEntity<TKey> : BaseEntitiy<TKey>, IAuditInfo
     {
         private string createdBy;

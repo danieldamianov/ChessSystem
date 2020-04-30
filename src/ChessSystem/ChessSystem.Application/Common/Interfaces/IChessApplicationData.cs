@@ -1,10 +1,11 @@
 ﻿namespace ChessSystem.Application.Common.Interfaces
 {
-    using System.Threading.Tasks;
     using System.Threading;
-    using Microsoft.EntityFrameworkCore;
+    using System.Threading.Tasks;
+
     using ChessSystem.Domain.Entities;
     using ChessSystem.Domain.Entities.Moves;
+    using Microsoft.EntityFrameworkCore;
 
     public interface IChessApplicationData
     {

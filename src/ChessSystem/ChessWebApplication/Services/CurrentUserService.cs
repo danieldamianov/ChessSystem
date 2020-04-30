@@ -1,13 +1,10 @@
-﻿using ChessSystem.Application.Common.Interfaces;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Text;
-
-namespace ChessWebApplication.Services
+﻿namespace ChessWebApplication.Services
 {
+    using System.Security.Claims;
+
+    using ChessSystem.Application.Common.Interfaces;
+    using Microsoft.AspNetCore.Http;
+
     public class CurrentUserService : ICurrentUser
     {
         private readonly IHttpContextAccessor httpContextAccessor;

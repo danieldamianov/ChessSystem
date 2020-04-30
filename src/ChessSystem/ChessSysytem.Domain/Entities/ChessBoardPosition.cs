@@ -1,12 +1,10 @@
-﻿using ChessSystem.Domain.BaseEntities;
-using ChessSystem.Domain.Entities.Moves;
-using ChessSystem.Domain.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessSystem.Domain.Entities
+﻿namespace ChessSystem.Domain.Entities
 {
+    using System;
+
+    using ChessSystem.Domain.BaseEntities;
+    using ChessSystem.Domain.Exceptions;
+
     public class ChessBoardPosition : BaseEntitiy<string>
     {
         private char horizontal;

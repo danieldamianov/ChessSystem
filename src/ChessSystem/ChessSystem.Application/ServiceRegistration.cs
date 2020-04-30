@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessSystem.Application
+﻿namespace ChessSystem.Application
 {
     using System.Linq;
     using System.Reflection;
+
     using AutoMapper;
-    using Common.ServiceInterfaces;
-    using Common.Behaviours;
+    using ChessSystem.Application.Common.Behaviours;
+    using ChessSystem.Application.Common.ServiceInterfaces;
     using MediatR;
     using Microsoft.Extensions.DependencyInjection;
 

@@ -63,7 +63,6 @@
             return chessBoard;
         }
 
-
         internal ChessBoard(IFigure[,] figures)
         {
             if (figures.GetLength(0) != 8 && figures.GetLength(1) != 8)

@@ -7,6 +7,6 @@
         Pawn,
         Queen,
         King,
-        Knight
+        Knight,
     }
 }

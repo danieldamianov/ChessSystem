@@ -4,7 +4,8 @@
     {
         public PawnProductionMove(int orderInTheGame)
             : base(orderInTheGame)
-        { }
+        {
+        }
 
         public string ChessBoardPositionId { get; set; }
 

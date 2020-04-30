@@ -1,9 +1,9 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.SignalR;
-
-namespace ChessWebApplication.Hubs
+﻿namespace ChessWebApplication.Hubs
 {
+    using MediatR;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.SignalR;
+
     public class BaseMediatorHub : Hub
     {
         private readonly IHttpContextAccessor httpContextAccessor;

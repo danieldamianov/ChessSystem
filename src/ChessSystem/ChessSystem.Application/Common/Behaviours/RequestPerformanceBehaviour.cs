@@ -3,9 +3,10 @@
     using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
+
+    using ChessSystem.Application.Common.Interfaces;
     using MediatR;
     using Microsoft.Extensions.Logging;
-    using ChessSystem.Application.Common.Interfaces;
 
     public class RequestPerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {

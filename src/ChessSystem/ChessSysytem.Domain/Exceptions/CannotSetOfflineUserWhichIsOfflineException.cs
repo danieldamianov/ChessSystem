@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessSystem.Domain.Exceptions
+﻿namespace ChessSystem.Domain.Exceptions
 {
+    using System;
+
     public class CannotSetOfflineUserWhichIsOfflineException : Exception
     {
     }

@@ -1,11 +1,10 @@
-﻿using ChessSystem.Application.Common.Mapping;
-using ChessSystem.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessSystem.Application.OnlineUsers.Queries.GetAllOnlineUsers
+﻿namespace ChessSystem.Application.OnlineUsers.Queries.GetAllOnlineUsers
 {
+    using System;
+
+    using ChessSystem.Application.Common.Mapping;
+    using ChessSystem.Domain.Entities;
+
     public class OnlineUserOutputModel : IMapFrom<OnlineUser>
     {
         public string UserId { get; set; }

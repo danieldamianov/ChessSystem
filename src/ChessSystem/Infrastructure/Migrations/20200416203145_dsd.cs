@@ -1,8 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace Infrastructure.Migrations
+﻿namespace Infrastructure.Migrations
 {
+    using System;
+
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class dsd : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

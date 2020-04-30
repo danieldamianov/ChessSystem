@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessSystem.Application.Common.Interfaces
+﻿namespace ChessSystem.Application.Common.Interfaces
 {
     using System.Threading.Tasks;
-    using Models;
-    using ServiceInterfaces;
+
+    using ChessSystem.Application.Common.Models;
+    using ChessSystem.Application.Common.ServiceInterfaces;
 
     public interface IIdentity : IService
     {

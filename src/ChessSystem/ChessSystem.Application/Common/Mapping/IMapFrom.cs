@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessSystem.Application.Common.Mapping
+﻿namespace ChessSystem.Application.Common.Mapping
 {
     using AutoMapper;
 

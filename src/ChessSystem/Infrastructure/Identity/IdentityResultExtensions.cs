@@ -1,6 +1,7 @@
 ﻿namespace Infrastructure.Identity
 {
     using System.Linq;
+
     using ChessSystem.Application.Common.Models;
     using Microsoft.AspNetCore.Identity;
 

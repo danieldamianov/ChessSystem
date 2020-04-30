@@ -1,15 +1,13 @@
-﻿using ChessSystem.Application.Games.Commands.CreateGame;
-using ChessWebApplication.Common;
-using ChessWebApplication.Controllers.Game.InputModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChessWebApplication.Controllers.Game
+﻿namespace ChessWebApplication.Controllers.Game
 {
+    using System.Threading.Tasks;
+
+    using ChessSystem.Application.Games.Commands.CreateGame;
+    using ChessWebApplication.Common;
+    using ChessWebApplication.Controllers.Game.InputModels;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+
     public class GameController : MediatorController
     {
         [Authorize]

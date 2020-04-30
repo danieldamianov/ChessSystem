@@ -1,22 +1,22 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection.Abstractions;
-using ChessSystem.Application.OnlineUsers.Commands.AddOnlineUser;
-using ChessSystem.Application.Common.Interfaces;
-using ChessSystem.Application.OnlineUsers.Queries.GetAllOnlineUsers;
-using ChessSystem.Application.OnlineUsers.Commands.RemoveOnlineUser;
-using ChessSystem.Application.OnlineUsers.Queries.CheckIfUserIsOnline;
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using ChessWebApplication.Controllers.Game.InputModels;
-
-namespace ChessWebApplication.Hubs.OnlineUsers
+﻿namespace ChessWebApplication.Hubs.OnlineUsers
 {
+    using System;
+    using System.Threading.Tasks;
+
+    using AutoMapper;
+    using ChessSystem.Application.Common.Interfaces;
+    using ChessSystem.Application.OnlineUsers.Commands.AddOnlineUser;
+    using ChessSystem.Application.OnlineUsers.Commands.RemoveOnlineUser;
+    using ChessSystem.Application.OnlineUsers.Queries.GetAllOnlineUsers;
+    using ChessWebApplication.Controllers.Game.InputModels;
+    using MediatR;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.SignalR;
+
+    /// <summary>
+    /// Hub That manages which users are online and searching for opponents.
+    /// </summary>
     public class OnlineUsersHub : Hub
     {
         private readonly IHttpContextAccessor httpContextAccessor;
@@ -58,16 +58,16 @@ namespace ChessWebApplication.Hubs.OnlineUsers
         {
             await this.Mediator.Send(new RemoveOnlineUserCommand(this.currentUser.UserId));
 
-            await this.Clients.All.SendAsync("UserDisconnected", new OnlineUserSocketModel(this.Context.User.Identity.Name,
-            this.currentUser.UserId));
+            await this.Clients.All.SendAsync("UserDisconnected", new OnlineUserSocketModel(this.Context.User.Identity.Name, this.currentUser.UserId));
 
         }
 
         [Authorize]
         public async Task InviteUserToPlay(string invitedId)
         {
-            await this.Clients.User(invitedId).SendAsync("HandleInvitation", new OnlineUserSocketModel
-                (this.Context.User.Identity.Name, this.currentUser.UserId)) ;
+            await this.Clients.User(invitedId).SendAsync(
+                "HandleInvitation",
+                new OnlineUserSocketModel(this.Context.User.Identity.Name, this.currentUser.UserId));
         }
 
         [Authorize]

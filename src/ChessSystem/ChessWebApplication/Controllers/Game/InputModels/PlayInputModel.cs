@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-
-namespace ChessWebApplication.Controllers.Game.InputModels
+﻿namespace ChessWebApplication.Controllers.Game.InputModels
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class PlayInputModel
     {
         [Required]

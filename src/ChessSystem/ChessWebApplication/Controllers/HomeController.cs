@@ -1,17 +1,14 @@
 ﻿namespace ChessWebApplication.Controllers
 {
-    using System;
     using System.Diagnostics;
-    using System.Security.Claims;
     using System.Threading.Tasks;
+
     using ChessSystem.Application.Common.Interfaces;
     using ChessSystem.Application.OnlineUsers.Queries.CheckIfUserIsOnline;
     using ChessWebApplication.Common;
-    using ChessWebApplication.Hubs;
     using ChessWebApplication.Models;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.SignalR;
     using Microsoft.Extensions.Logging;
 
     public class HomeController : MediatorController
@@ -19,8 +16,7 @@
         private readonly ILogger<HomeController> _logger;
         private readonly ICurrentUser currentUser;
 
-        public HomeController(ILogger<HomeController> logger,
-            ICurrentUser currentUser)
+        public HomeController(ILogger<HomeController> logger, ICurrentUser currentUser)
         {
             this._logger = logger;
             this.currentUser = currentUser;

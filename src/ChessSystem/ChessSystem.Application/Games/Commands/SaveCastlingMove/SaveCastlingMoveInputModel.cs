@@ -1,7 +1,7 @@
-﻿using ChessSystem.Domain.Entities;
-
-namespace ChessSystem.Application.Games.Commands.SaveCastlingMove
+﻿namespace ChessSystem.Application.Games.Commands.SaveCastlingMove
 {
+    using ChessSystem.Domain.Entities;
+
     public class SaveCastlingMoveInputModel
     {
         /// <summary>

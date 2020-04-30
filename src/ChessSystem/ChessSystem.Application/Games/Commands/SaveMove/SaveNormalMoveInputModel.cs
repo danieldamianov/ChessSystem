@@ -1,10 +1,7 @@
-﻿using ChessSystem.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessSystem.Application.Games.Commands.SaveMove
+﻿namespace ChessSystem.Application.Games.Commands.SaveMove
 {
+    using ChessSystem.Domain.Entities;
+
     public class SaveNormalMoveInputModel
     {
         public SaveNormalMoveInputModel(char initialPositionHorizontal,
