@@ -5,20 +5,20 @@
     using System.Threading.Tasks;
 
     using ChessSystem.Application.Common.Interfaces;
-    using ChessSystem.Domain.Entities;
     using MediatR;
+    using Microsoft.EntityFrameworkCore;
 
     /// <summary>
-    /// Command that handles creating a new game.
+    /// Command that checks if there is game in progress with the given players.
     /// </summary>
-    public class EnsureCreatedGameCommand : IRequest<string>
+    public class CheckIfThereIsGameInProgressCommand : IRequest<bool>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EnsureCreatedGameCommand"/> class.
+        /// Initializes a new instance of the <see cref="CreatedNewGameCommand"/> class.
         /// </summary>
         /// <param name="whitePlayerId">The Id of the white player.</param>
         /// <param name="blackPlayerId">The Id of the black player.</param>
-        public EnsureCreatedGameCommand(string whitePlayerId, string blackPlayerId)
+        public CheckIfThereIsGameInProgressCommand(string whitePlayerId, string blackPlayerId)
         {
             this.WhitePlayerId = whitePlayerId;
             this.BlackPlayerId = blackPlayerId;
@@ -37,15 +37,15 @@
         /// <summary>
         /// Handler for the command.
         /// </summary>
-        public class EnsureCreatedGameCommandHandler : IRequestHandler<EnsureCreatedGameCommand, string>
+        public class CheckIfThereIsGameInProgressCommandHandler : IRequestHandler<CheckIfThereIsGameInProgressCommand, bool>
         {
             private readonly IChessApplicationData chessApplicationData;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="EnsureCreatedGameCommandHandler"/> class.
+            /// Initializes a new instance of the <see cref="CheckIfThereIsGameInProgressCommandHandler"/> class.
             /// </summary>
             /// <param name="chessApplicationData">DI generetad.</param>
-            public EnsureCreatedGameCommandHandler(IChessApplicationData chessApplicationData)
+            public CheckIfThereIsGameInProgressCommandHandler(IChessApplicationData chessApplicationData)
             {
                 this.chessApplicationData = chessApplicationData;
             }
@@ -56,20 +56,9 @@
             /// <param name="request">request.</param>
             /// <param name="cancellationToken">cancellationToken.</param>
             /// <returns>result.</returns>
-            public async Task<string> Handle(EnsureCreatedGameCommand request, CancellationToken cancellationToken)
-            {
-                if (this.chessApplicationData.ChessGames.Any(game => game.WhitePlayerId == request.WhitePlayerId && game.BlackPlayerId == request.BlackPlayerId))
-                {
-                    return null;
-                }
-
-                ChessGame chessGame = new ChessGame(request.WhitePlayerId, request.BlackPlayerId);
-                this.chessApplicationData.ChessGames.Add(chessGame);
-
-                await this.chessApplicationData.SaveChanges(cancellationToken);
-
-                return chessGame.Id;
-            }
+            public async Task<bool> Handle(CheckIfThereIsGameInProgressCommand request, CancellationToken cancellationToken)
+                => await this.chessApplicationData.ChessGames
+                .AnyAsync(game => game.WhitePlayerId == request.WhitePlayerId && game.BlackPlayerId == request.BlackPlayerId && game.EndGameInfo == null);
         }
     }
 }

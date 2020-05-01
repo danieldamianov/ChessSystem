@@ -17,9 +17,6 @@
 @inject IJSRuntime JSRuntime
 @inject ICurrentUser currentUser
 
-    
-
-<h3>Chess board</h3>
 <br />
 @{
     var chessFieldColor = "White";
@@ -43,7 +40,7 @@
                     }
 
                 }
-                var figureInfo = this.chessGame.GetFigureOnPositionInfo(horizontal, vertical);
+                var figureInfo = this.ChessGame.GetFigureOnPositionInfo(horizontal, vertical);
 
 
                 char hor = horizontal;
@@ -86,7 +83,7 @@
                     }
 
                 }
-                var figureInfo = this.chessGame.GetFigureOnPositionInfo(horizontal, vertical);
+                var figureInfo = this.ChessGame.GetFigureOnPositionInfo(horizontal, vertical);
 
                 char hor = horizontal;
                 int ver = vertical;
@@ -162,7 +159,7 @@
             string figureType,
             string figureColor)
     {
-        this.chessGame.NormalMove(initialPositionHorizontal[0], int.Parse(initialPositionVertical),
+        this.ChessGame.NormalMove(initialPositionHorizontal[0], int.Parse(initialPositionVertical),
                     targetPositionHorizontal[0], int.Parse(targetPositionVertical),
                     Enum.Parse<ChessFigureType>(figureType), Enum.Parse<ChessColors>(figureColor));
 
@@ -176,7 +173,7 @@
             string rookPositionVertical,
             string figureColor)
     {
-        this.chessGame.MakeCastling(
+        this.ChessGame.MakeCastling(
             kingPositionHorizontal[0],
             int.Parse(kingPositionVertical),
             rookPositionHorizontal[0],
@@ -236,7 +233,8 @@
 
     public string OpponentId => this.chessColor == ChessColors.White ? BlackPlayerId : WhitePlayerId;
 
-    private ChessGame chessGame;
+    [Parameter]
+    public ChessGame ChessGame { get; set; }
 
     [Parameter]
     public bool IsOnTurn { get; set; }
@@ -263,7 +261,24 @@
 
     public ChessBoardComponent()
     {
-        this.chessGame = new ChessGame(ChooseFigureToProduce, HandleGameEnding);
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var newChessGame = new ChessGame(ChooseFigureToProduce, HandleGameEnding);
+
+        var chessGameType = typeof(ChessGame);
+
+        var fieldInfoProgressInfo = chessGameType.GetField("progressInfo", BindingFlags.NonPublic | BindingFlags.Instance);
+        var fieldInfoChessBoard = chessGameType.GetField("chessBoard", BindingFlags.NonPublic | BindingFlags.Instance);
+        var fieldInfoPlayerOnTurn = chessGameType.GetField("playerOnTurn", BindingFlags.NonPublic | BindingFlags.Instance);
+
+        fieldInfoProgressInfo.SetValue(newChessGame, fieldInfoProgressInfo.GetValue(this.ChessGame));
+        fieldInfoChessBoard.SetValue(newChessGame, fieldInfoChessBoard.GetValue(this.ChessGame));
+        fieldInfoPlayerOnTurn.SetValue(newChessGame, fieldInfoPlayerOnTurn.GetValue(this.ChessGame));
+
+
+        this.ChessGame = newChessGame;
     }
 
     private ChessFigureProductionType ChooseFigureToProduce()
@@ -332,7 +347,7 @@
         {
             currentSelectedField = new Tuple<char, int>(horizontal, vertical);
 
-            var possiblePositions = this.chessGame.GetAllPossiblePositionsOfPlacingTheFigure(horizontal,
+            var possiblePositions = this.ChessGame.GetAllPossiblePositionsOfPlacingTheFigure(horizontal,
                 vertical, (ChessFigureType)chessFigureType, (ChessColors)chessColors);
 
             var positionsToEnable = possiblePositions.Select(pos => new BoardPosition(pos.Horizontal, pos.Vertical))
@@ -354,11 +369,11 @@
             }
             else
             {
-                var figureOnInitialPosition = this.chessGame.GetFigureOnPositionInfo(
+                var figureOnInitialPosition = this.ChessGame.GetFigureOnPositionInfo(
                        this.currentSelectedField.Item1,
                        this.currentSelectedField.Item2);
 
-                var firstCastingValidationResult = this.chessGame.MakeCastling(
+                var firstCastingValidationResult = this.ChessGame.MakeCastling(
                     horizontal,
                     vertical,
                     this.currentSelectedField.Item1,
@@ -388,7 +403,7 @@
                     return;
                 }
 
-                var secondCastingValidationResult = this.chessGame.MakeCastling(
+                var secondCastingValidationResult = this.ChessGame.MakeCastling(
                     this.currentSelectedField.Item1,
                     this.currentSelectedField.Item2,
                     horizontal,
@@ -421,7 +436,7 @@
 
                 var figureInfo = this.ChessBoardContainerInstance.GetInfo(currentSelectedField.Item1, currentSelectedField.Item2);
 
-                this.chessGame.NormalMove(currentSelectedField.Item1, currentSelectedField.Item2,
+                this.ChessGame.NormalMove(currentSelectedField.Item1, currentSelectedField.Item2,
                     horizontal, vertical, figureInfo.figureType, figureInfo.figureColor);
 
                 this.UpdateChessBoardContainerInstance();
@@ -451,7 +466,7 @@
         {
             for (int j = 1; j <= 8; j++)
             {
-                this.ChessBoardContainerInstance.SetInfo(i, j, this.chessGame.GetFigureOnPositionInfo(i, j));
+                this.ChessBoardContainerInstance.SetInfo(i, j, this.ChessGame.GetFigureOnPositionInfo(i, j));
             }
         }
     }

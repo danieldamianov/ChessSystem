@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ChessGameLogic\ChessGameLogic.csproj" />
     <ProjectReference Include="..\ChessSysytem.Domain\ChessSystem.Domain.csproj" />
   </ItemGroup>
 
