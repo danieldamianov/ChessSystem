@@ -4,6 +4,7 @@
 @using System.Reflection;
 @using ChessSystem.Application.Common.Interfaces
 @using System.Collections.Concurrent;
+@using ChessSystem.Application.Games.Commands.GetGame;
 
 @* Imports for blazor *@
 @using System.Net.Http
@@ -16,6 +17,7 @@
 
 @inject IJSRuntime JSRuntime
 @inject ICurrentUser currentUser
+@inject IChessApplicationData IChessData
 
 <br />
 @{
@@ -234,7 +236,11 @@
     public string OpponentId => this.chessColor == ChessColors.White ? BlackPlayerId : WhitePlayerId;
 
     [Parameter]
-    public ChessGame ChessGame { get; set; }
+    public ChessGame ChessGameParam { get; set; }
+
+    public bool HasBeenChessGameParamSet = false;
+
+    private ChessGame ChessGame;
 
     [Parameter]
     public bool IsOnTurn { get; set; }
@@ -261,10 +267,14 @@
 
     public ChessBoardComponent()
     {
+        this.ChessGame = new ChessGame(ChooseFigureToProduce, HandleGameEnding);
     }
 
     protected override async Task OnParametersSetAsync()
     {
+        this.ChessGameParam = await new GetChessGameCurrentProgressQuery.GetChessGameCurrentProgressQueryHandler(IChessData).Handle(new GetChessGameCurrentProgressQuery(this.WhitePlayerId,this.BlackPlayerId),new System.Threading.CancellationToken());
+
+        HasBeenChessGameParamSet = true;
         var newChessGame = new ChessGame(ChooseFigureToProduce, HandleGameEnding);
 
         var chessGameType = typeof(ChessGame);
@@ -273,10 +283,11 @@
         var fieldInfoChessBoard = chessGameType.GetField("chessBoard", BindingFlags.NonPublic | BindingFlags.Instance);
         var fieldInfoPlayerOnTurn = chessGameType.GetField("playerOnTurn", BindingFlags.NonPublic | BindingFlags.Instance);
 
-        fieldInfoProgressInfo.SetValue(newChessGame, fieldInfoProgressInfo.GetValue(this.ChessGame));
-        fieldInfoChessBoard.SetValue(newChessGame, fieldInfoChessBoard.GetValue(this.ChessGame));
-        fieldInfoPlayerOnTurn.SetValue(newChessGame, fieldInfoPlayerOnTurn.GetValue(this.ChessGame));
+        fieldInfoProgressInfo.SetValue(newChessGame, fieldInfoProgressInfo.GetValue(this.ChessGameParam));
+        fieldInfoChessBoard.SetValue(newChessGame, fieldInfoChessBoard.GetValue(this.ChessGameParam));
+        fieldInfoPlayerOnTurn.SetValue(newChessGame, fieldInfoPlayerOnTurn.GetValue(this.ChessGameParam));
 
+        //await Task.CompletedTask;
 
         this.ChessGame = newChessGame;
     }
@@ -436,7 +447,7 @@
 
                 var figureInfo = this.ChessBoardContainerInstance.GetInfo(currentSelectedField.Item1, currentSelectedField.Item2);
 
-                this.ChessGame.NormalMove(currentSelectedField.Item1, currentSelectedField.Item2,
+                var result = this.ChessGame.NormalMove(currentSelectedField.Item1, currentSelectedField.Item2,
                     horizontal, vertical, figureInfo.figureType, figureInfo.figureColor);
 
                 this.UpdateChessBoardContainerInstance();

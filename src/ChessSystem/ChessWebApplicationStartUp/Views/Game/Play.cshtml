@@ -1,14 +1,22 @@
 ﻿@using ChessWebApplicationStartUp.Components
 @using ChessGameLogic.Enums
 @using ChessWebApplication.Controllers.Game.ViewModels
+@using System.Text.Json;
 
+@*param-ChessGame="@Model.ChessGame"*@
 @model GamePlayViewModel
 
 @{ ChessColors chessColor = Model.PlayerColor == "black" ? ChessColors.Black : ChessColors.White; }
 
+@{
+    string jsonString;
+    jsonString = JsonSerializer.Serialize(@Model.ChessGame);
+    ;
+}
 <component type="typeof(ChessBoardComponent)" render-mode="ServerPrerendered" param-chessColor="@chessColor"
-           param-IsOnTurn="@chessColor == ChessColors.White" param-WhitePlayerId="Model.WhitePlayerId" param-BlackPlayerId="Model.BlackPlayerId"
-           param-ChessGame="@Model.ChessGame"/>
+           param-IsOnTurn="@chessColor == ChessColors.White" param-WhitePlayerId="Model.WhitePlayerId" param-BlackPlayerId="Model.BlackPlayerId" />
+
+@*param-ChessGameParam="@Model.ChessGame"*@
 
 @section Scripts{
 

@@ -1,0 +1,3 @@
+1. Ensure working the getting the game which is in progress already between two players.
+2. Sometimes js cant find disableButtons Function and doesnt disable the buttons.
+3. Sometimes when a move is made it doesn't affect the board of the player that has made the move.
