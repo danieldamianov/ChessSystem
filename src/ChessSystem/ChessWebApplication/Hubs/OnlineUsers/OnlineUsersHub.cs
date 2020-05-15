@@ -43,7 +43,7 @@
         {
             await this.Mediator.Send(new AddOnlineUserCommand(this.currentUser.UserId, this.Context.User.Identity.Name));
 
-            await this.Clients.All.SendAsync("NewUser", new OnlineUserSocketModel(this.Context.User.Identity.Name, this.currentUser.UserId));
+            await this.Clients.Others.SendAsync("NewUser", new OnlineUserSocketModel(this.Context.User.Identity.Name, this.currentUser.UserId));
 
             GetAllOnlineUsersOutputModel getAllOnlineUsersOutputModel = await this.mediator.Send(new GetAllOnlineUsersQuery());
             foreach (var client in getAllOnlineUsersOutputModel.OnlineUsers)

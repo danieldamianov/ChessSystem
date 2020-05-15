@@ -15,7 +15,7 @@ setupConnection = () => {
 
 
     connection.on("UserDisconnected", function (user) {
-        document.getElementById(user.userId).remove();
+        document.getElementById(user.userId + "linkForInvitation").remove();
     });
 
     connection.on("StartGameAsBlack", function (user) {
