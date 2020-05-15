@@ -5,6 +5,8 @@
 @using ChessSystem.Application.Common.Interfaces
 @using System.Collections.Concurrent;
 @using ChessSystem.Application.Games.Commands.GetGame;
+@using ChessSystem.Application.Games.Commands.ChessGameHasEnded;
+@using ChessSystem.Domain.Entities;
 
 @* Imports for blazor *@
 @using System.Net.Http
@@ -164,7 +166,7 @@
     {
         this.ChessGame.NormalMove(initialPositionHorizontal[0], int.Parse(initialPositionVertical),
                     targetPositionHorizontal[0], int.Parse(targetPositionVertical),
-                    Enum.Parse<ChessFigureType>(figureType), Enum.Parse<ChessColors>(figureColor));
+                    Enum.Parse<ChessGameLogic.ClientInteractionEntities.ChessFigureType>(figureType), Enum.Parse<ChessColors>(figureColor));
 
         this.UpdateUIChessBoard();
     }
@@ -237,9 +239,9 @@
     public string OpponentId => this.chessColor == ChessColors.White ? BlackPlayerId : WhitePlayerId;
 
     [Parameter]
-    public ChessGame CurrentGameInProgressFromTheDatabase { get; set; }
+    public ChessGameLogic.ChessGame CurrentGameInProgressFromTheDatabase { get; set; }
 
-    private ChessGame ChessGame;
+    private ChessGameLogic.ChessGame ChessGame;
 
     [Parameter]
     public bool IsOnTurn { get; set; }
@@ -266,16 +268,16 @@
 
     public ChessBoardComponent()
     {
-        this.ChessGame = new ChessGame(ChooseFigureToProduce, HandleGameEnding);
+        this.ChessGame = new ChessGameLogic.ChessGame(ChooseFigureToProduce, HandleGameEnding);
     }
 
     protected override async Task OnParametersSetAsync()
     {
-        this.CurrentGameInProgressFromTheDatabase = await Mediator.Send(new GetChessGameCurrentProgressQuery(this.WhitePlayerId,this.BlackPlayerId),new System.Threading.CancellationToken());
+        this.CurrentGameInProgressFromTheDatabase = await Mediator.Send(new GetChessGameCurrentProgressQuery(this.WhitePlayerId, this.BlackPlayerId), new System.Threading.CancellationToken());
 
-        var newChessGame = new ChessGame(ChooseFigureToProduce, HandleGameEnding);
+        var newChessGame = new ChessGameLogic.ChessGame(ChooseFigureToProduce, HandleGameEnding);
 
-        var chessGameType = typeof(ChessGame);
+        var chessGameType = typeof(ChessGameLogic.ChessGame);
 
         var fieldInfoProgressInfo = chessGameType.GetField("progressInfo", BindingFlags.NonPublic | BindingFlags.Instance);
         var fieldInfoChessBoard = chessGameType.GetField("chessBoard", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -295,7 +297,10 @@
 
     private void HandleGameEnding(EndGameResult endGameResult)
     {
-
+        if (this.chessColor == ChessColors.White)
+        {
+            Task.Run(async () => await this.Mediator.Send(new ChessGameHasEndedCommand(this.WhitePlayerId, this.BlackPlayerId, Enum.Parse<EndGameInfo>(endGameResult.ToString())))).Wait();
+        }
     }
 
     public class ChessBoardContainer
@@ -348,14 +353,14 @@
         return positions;
     }
 
-    private async Task HandleFieldPressed(MouseEventArgs e, char horizontal, int vertical, ChessFigureType? chessFigureType, ChessColors? chessColors)
+    private async Task HandleFieldPressed(MouseEventArgs e, char horizontal, int vertical, ChessGameLogic.ClientInteractionEntities.ChessFigureType? chessFigureType, ChessColors? chessColors)
     {
         if (currentSelectedField == null)
         {
             currentSelectedField = new Tuple<char, int>(horizontal, vertical);
 
             var possiblePositions = this.ChessGame.GetAllPossiblePositionsOfPlacingTheFigure(horizontal,
-                vertical, (ChessFigureType)chessFigureType, (ChessColors)chessColors);
+                vertical, (ChessGameLogic.ClientInteractionEntities.ChessFigureType)chessFigureType, (ChessColors)chessColors);
 
             var positionsToEnable = possiblePositions.Select(pos => new BoardPosition(pos.Horizontal, pos.Vertical))
                 .ToList();
@@ -389,7 +394,6 @@
 
                 if (firstCastingValidationResult == CastlingMoveValidationResult.ValidCastling)
                 {
-                    /// HandleCastling
                     this.UpdateChessBoardContainerInstance();
 
                     this.IsOnTurn = false;
@@ -419,7 +423,6 @@
 
                 if (secondCastingValidationResult == CastlingMoveValidationResult.ValidCastling)
                 {
-                    ///HandleCastling
                     this.UpdateChessBoardContainerInstance();
 
                     this.IsOnTurn = false;
