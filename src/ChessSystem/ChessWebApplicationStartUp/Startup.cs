@@ -12,6 +12,7 @@ namespace ChessWebApplicationStartUp
     using FluentValidation.AspNetCore;
     using Infrastructure;
     using Infrastructure.Persistence;
+    using MediatR;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
@@ -41,6 +42,8 @@ namespace ChessWebApplicationStartUp
             services
                 .AddHealthChecks()
                 .AddDbContextCheck<ChessApplicationDbContext>();
+
+            services.AddMediatR(typeof(Startup));
 
             services
                 .AddControllers()

@@ -34,9 +34,9 @@
             {
                 return this.Redirect("/");
             }
+
             return this.View();
         }
-
 
         public IActionResult Privacy()
         {

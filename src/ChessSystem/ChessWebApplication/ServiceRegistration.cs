@@ -1,6 +1,7 @@
 ﻿namespace ChessWebApplication
 {
     using ChessSystem.Application;
+    using MediatR;
     using Microsoft.Extensions.DependencyInjection;
 
     public static class ServiceRegistration
@@ -10,6 +11,8 @@
         {
             services.AddHttpContextAccessor();
             services.AddConventionalServices(typeof(ServiceRegistration).Assembly);
+
+            
 
             return services;
         }

@@ -15,6 +15,7 @@
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.JSInterop
 
+@inject MediatR.IMediator Mediator
 @inject IJSRuntime JSRuntime
 @inject ICurrentUser currentUser
 @inject IChessApplicationData IChessData
@@ -236,9 +237,7 @@
     public string OpponentId => this.chessColor == ChessColors.White ? BlackPlayerId : WhitePlayerId;
 
     [Parameter]
-    public ChessGame ChessGameParam { get; set; }
-
-    public bool HasBeenChessGameParamSet = false;
+    public ChessGame CurrentGameInProgressFromTheDatabase { get; set; }
 
     private ChessGame ChessGame;
 
@@ -272,9 +271,8 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        this.ChessGameParam = await new GetChessGameCurrentProgressQuery.GetChessGameCurrentProgressQueryHandler(IChessData).Handle(new GetChessGameCurrentProgressQuery(this.WhitePlayerId,this.BlackPlayerId),new System.Threading.CancellationToken());
+        this.CurrentGameInProgressFromTheDatabase = await Mediator.Send(new GetChessGameCurrentProgressQuery(this.WhitePlayerId,this.BlackPlayerId),new System.Threading.CancellationToken());
 
-        HasBeenChessGameParamSet = true;
         var newChessGame = new ChessGame(ChooseFigureToProduce, HandleGameEnding);
 
         var chessGameType = typeof(ChessGame);
@@ -283,11 +281,9 @@
         var fieldInfoChessBoard = chessGameType.GetField("chessBoard", BindingFlags.NonPublic | BindingFlags.Instance);
         var fieldInfoPlayerOnTurn = chessGameType.GetField("playerOnTurn", BindingFlags.NonPublic | BindingFlags.Instance);
 
-        fieldInfoProgressInfo.SetValue(newChessGame, fieldInfoProgressInfo.GetValue(this.ChessGameParam));
-        fieldInfoChessBoard.SetValue(newChessGame, fieldInfoChessBoard.GetValue(this.ChessGameParam));
-        fieldInfoPlayerOnTurn.SetValue(newChessGame, fieldInfoPlayerOnTurn.GetValue(this.ChessGameParam));
-
-        //await Task.CompletedTask;
+        fieldInfoProgressInfo.SetValue(newChessGame, fieldInfoProgressInfo.GetValue(this.CurrentGameInProgressFromTheDatabase));
+        fieldInfoChessBoard.SetValue(newChessGame, fieldInfoChessBoard.GetValue(this.CurrentGameInProgressFromTheDatabase));
+        fieldInfoPlayerOnTurn.SetValue(newChessGame, fieldInfoPlayerOnTurn.GetValue(this.CurrentGameInProgressFromTheDatabase));
 
         this.ChessGame = newChessGame;
     }
