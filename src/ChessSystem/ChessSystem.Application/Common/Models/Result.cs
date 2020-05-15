@@ -8,8 +8,8 @@
     {
         internal Result(bool succeeded, IEnumerable<string> errors)
         {
-            Succeeded = succeeded;
-            Errors = errors.ToArray();
+            this.Succeeded = succeeded;
+            this.Errors = errors.ToArray();
         }
 
         public static Result Success

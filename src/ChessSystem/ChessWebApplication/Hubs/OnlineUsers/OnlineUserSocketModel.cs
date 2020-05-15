@@ -7,8 +7,8 @@
     {
         public OnlineUserSocketModel(string username, string userId)
         {
-            UserId = userId;
-            Username = username;
+            this.UserId = userId;
+            this.Username = username;
         }
 
         public string UserId { get; set; }
@@ -16,4 +16,3 @@
         public string Username { get; set; }
     }
 }
-

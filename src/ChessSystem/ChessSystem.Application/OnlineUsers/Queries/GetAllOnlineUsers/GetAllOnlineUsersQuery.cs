@@ -16,7 +16,8 @@
             private readonly IChessApplicationData chessApplicationData;
             private readonly IMapper mapper;
 
-            public GetAllOnlineUsersQueryHandler(IChessApplicationData chessApplicationData,
+            public GetAllOnlineUsersQueryHandler(
+                IChessApplicationData chessApplicationData,
                 IMapper mapper)
             {
                 this.chessApplicationData = chessApplicationData;

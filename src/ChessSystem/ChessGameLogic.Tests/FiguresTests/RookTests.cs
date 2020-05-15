@@ -121,9 +121,8 @@
             var normalChessMoveType = ChessGameLogicProvider.GetType("ChessGameLogic.ChessMoves.NormalChessMovePositions");
             var chessBoardPositionType = ChessGameLogicProvider.GetType("ChessGameLogic.ChessBoardPosition");
 
-            var move = normalChessMoveType.GetConstructors(BindingFlags.Instance
-                | BindingFlags.NonPublic)[0].Invoke(new object[] { initialHorizontal,initialVertical
-                , targetHorizontal, targetVertical });
+            var move = normalChessMoveType.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)[0]
+                .Invoke(new object[] { initialHorizontal, initialVertical, targetHorizontal, targetVertical });
 
             var actualPositionsInTheWayOfMove = (ICollection)getPositionsInTheWayOfMoveMethod.Invoke(this.RookInstance, new object[] { move });
 

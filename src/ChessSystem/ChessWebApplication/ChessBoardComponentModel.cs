@@ -1,20 +1,19 @@
-﻿using ChessGameLogic.ClientInteractionEntities;
-using ChessGameLogic.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChessWebApplication
+﻿namespace ChessWebApplication
 {
+    using System.Collections.Generic;
+
+    using ChessGameLogic.ClientInteractionEntities;
+    using ChessGameLogic.Enums;
+
     public class ChessBoardComponentModel
     {
         public ChessBoardComponentModel()
         {
-            board = new Dictionary<char, Dictionary<int, ChessFigureOnPositionInfo>>();
+            this.board = new Dictionary<char, Dictionary<int, ChessFigureOnPositionInfo>>();
 
             for (char i = 'a'; i <= 'h'; i++)
             {
-                board[i] = new Dictionary<int, ChessFigureOnPositionInfo>();
+                this.board[i] = new Dictionary<int, ChessFigureOnPositionInfo>();
             }
         }
 

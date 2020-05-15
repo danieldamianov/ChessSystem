@@ -5,6 +5,6 @@
         Bishop,
         Rook,
         Queen,
-        Knight
+        Knight,
     }
 }

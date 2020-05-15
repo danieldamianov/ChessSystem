@@ -8,7 +8,7 @@
 
     internal class Queen : Figure, IUnableToJumpFigure
     {
-        internal Queen(ChessColors color) 
+        internal Queen(ChessColors color)
             : base(color)
         {
         }

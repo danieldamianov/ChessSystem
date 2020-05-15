@@ -24,7 +24,8 @@
         private readonly IMapper mapper;
         private IMediator mediator;
 
-        public OnlineUsersHub(IHttpContextAccessor httpContextAccessor,
+        public OnlineUsersHub(
+            IHttpContextAccessor httpContextAccessor,
             ICurrentUser currentUser,
             IMapper mapper)
         {
@@ -77,14 +78,14 @@
             {
                 BlackPlayerId = this.currentUser.UserId,
                 WhitePlayerId = opponentId,
-                PlayerColor = "Black"
+                PlayerColor = "Black",
             };
 
             var modelStartGameWhite = new PlayInputModel()
             {
                 BlackPlayerId = this.currentUser.UserId,
                 WhitePlayerId = opponentId,
-                PlayerColor = "White"
+                PlayerColor = "White",
             };
             await this.Clients.Caller.SendAsync("StartGameAsBlack", modelStartGameBlack);
             await this.Clients.User(opponentId).SendAsync("StartGameAsWhite", modelStartGameWhite);

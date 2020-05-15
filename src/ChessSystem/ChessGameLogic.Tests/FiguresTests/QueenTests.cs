@@ -133,8 +133,7 @@
             int initialVertical,
             char targetHorizontal,
             int targetVertical,
-            object[] positionsInTheWayOfMove
-            )
+            object[] positionsInTheWayOfMove)
         {
             List<Tuple<char, int>> positions = new List<Tuple<char, int>>();
 

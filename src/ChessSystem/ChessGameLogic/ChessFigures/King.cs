@@ -8,7 +8,7 @@
 
     internal class King : Figure, ICastleableFigure
     {
-        internal King(ChessColors color) 
+        internal King(ChessColors color)
             : base(color)
         {
             this.HasBeenMovedFromTheStartOfTheGame = false;

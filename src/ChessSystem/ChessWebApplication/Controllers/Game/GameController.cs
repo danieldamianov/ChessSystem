@@ -2,6 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
+
     using ChessGameLogic;
     using ChessSystem.Application.Games.Commands.CreateGame;
     using ChessSystem.Application.Games.Commands.GetGame;
@@ -37,19 +38,19 @@
             typeof(ChessGame).GetField("chooseFigureToProduceFunction", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).SetValue(chessGameCurrentProgress, null);
             typeof(ChessGame).GetField("endGameHandleFunction", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).SetValue(chessGameCurrentProgress, null);
 
-            //ChessBoardComponentModel chessBoardComponentModel = new ChessBoardComponentModel();
+            /*ChessBoardComponentModel chessBoardComponentModel = new ChessBoardComponentModel();
 
-            //for (char hor = 'a'; hor <= 'h'; hor++)
-            //{
-            //    for (int ver = 1; ver <= 8; ver++)
-            //    {
-            //        chessBoardComponentModel.board[hor][ver] = chessGameCurrentProgress.GetFigureOnPositionInfo(hor, ver);
-            //    }
-            //}
+            for (char hor = 'a'; hor <= 'h'; hor++)
+            {
+                for (int ver = 1; ver <= 8; ver++)
+                {
+                    chessBoardComponentModel.board[hor][ver] = chessGameCurrentProgress.GetFigureOnPositionInfo(hor, ver);
+                }
+            }
 
-            //chessBoardComponentModel.ChessGameProgressInfo = chessGameCurrentProgress.GameProgressInfo;
+            chessBoardComponentModel.ChessGameProgressInfo = chessGameCurrentProgress.GameProgressInfo;
 
-            //chessBoardComponentModel.PlayerOnTurn = chessGameCurrentProgress.PlayerOnTurn;
+            chessBoardComponentModel.PlayerOnTurn = chessGameCurrentProgress.PlayerOnTurn;*/
 
             var outputModel = new GamePlayViewModel(playInputModel.WhitePlayerId, playInputModel.BlackPlayerId, playInputModel.PlayerColor, chessGameCurrentProgress);
 

@@ -13,7 +13,8 @@
     {
         public GameHub(IHttpContextAccessor httpContextAccessor)
             : base(httpContextAccessor)
-        { }
+        {
+        }
 
         public async Task UserHasMadeCastlingMove(
             string userThatHasMadeCastlingId,

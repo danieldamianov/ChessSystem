@@ -15,7 +15,7 @@
             var defaultUser = new ChessAppUser
             {
                 UserName = "admin@dev.com",
-                Email = "admin@dev.com"
+                Email = "admin@dev.com",
             };
 
             if (userManager.Users.All(u => u.Id != defaultUser.Id))

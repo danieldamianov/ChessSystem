@@ -42,10 +42,10 @@
 
         public DbSet<ChessGame> ChessGames { get; set; }
 
-        public Task<int> SaveChanges(CancellationToken cancellationToken = new CancellationToken())
+        public Task<int> SaveChanges(CancellationToken cancellationToken = default(CancellationToken))
             => this.SaveChangesAsync(cancellationToken);
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             foreach (var entry in this.ChangeTracker.Entries<IAuditInfo>())
             {

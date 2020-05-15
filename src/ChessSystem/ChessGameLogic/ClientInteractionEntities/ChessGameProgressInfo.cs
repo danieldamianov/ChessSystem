@@ -10,6 +10,6 @@
         GameHasEndedDraw,
         WhiteAreUnderCheck,
         BlackAreUnderCheck,
-        InProgressWithoutCheck
+        InProgressWithoutCheck,
     }
 }

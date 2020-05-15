@@ -4,7 +4,8 @@
 
     public class SaveNormalMoveInputModel
     {
-        public SaveNormalMoveInputModel(char initialPositionHorizontal,
+        public SaveNormalMoveInputModel(
+            char initialPositionHorizontal,
             int initialPositionVertical,
             char targetPositionHorizontal,
             int targetPositionVertical,

@@ -24,11 +24,6 @@
         private ChessBoard chessBoard;
         private ChessColors playerOnTurn;
 
-        public ChessGame()
-        {
-
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ChessGame"/> class.
         /// </summary>

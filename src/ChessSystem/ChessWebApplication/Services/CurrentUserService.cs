@@ -14,8 +14,7 @@
             this.httpContextAccessor = httpContextAccessor;
         }
 
-
-        public string UserId => httpContextAccessor
+        public string UserId => this.httpContextAccessor
                 .HttpContext?
                 .User?
                 .FindFirstValue(ClaimTypes.NameIdentifier);

@@ -11,7 +11,7 @@
     {
         public CheckIfUsersIsOnlineCommand(string userId)
         {
-            UserId = userId;
+            this.UserId = userId;
         }
 
         public string UserId { get; set; }
