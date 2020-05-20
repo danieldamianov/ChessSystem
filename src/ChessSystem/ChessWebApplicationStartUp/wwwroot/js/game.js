@@ -24,13 +24,13 @@ setupConnection = () => {
 
     connection.on("OpponentHasMadeMove", function
         (opponentId,
-        initialPositionHorizontal,
-        initialPositionVertical,
-        targetPositionHorizontal,
-        targetPositionVertical,
-        figureType,
-        figureColor
-    ) {
+            initialPositionHorizontal,
+            initialPositionVertical,
+            targetPositionHorizontal,
+            targetPositionVertical,
+            figureType,
+            figureColor
+        ) {
         DotNet.invokeMethodAsync('ChessWebApplicationStartUp', 'OpponentHasMadeMove',
             opponentId,
             initialPositionHorizontal,
@@ -39,7 +39,7 @@ setupConnection = () => {
             targetPositionVertical,
             figureType,
             figureColor);
-                                  
+
     });
 
 
@@ -89,12 +89,17 @@ function SendNormalMove(
 }
 
 function enableButtons(buttons) {
-    
+
     buttons.forEach(element => { var id = `${element.horizontal}${element.vertical}field`; document.getElementById(id).disabled = false });
 }
 
 function disableButtons(buttons) {
 
-    buttons.forEach(element => { var id = `${element.horizontal}${element.vertical}field`; document.getElementById(id).disabled = true  });
+    buttons.forEach(element => { var id = `${element.horizontal}${element.vertical}field`; document.getElementById(id).disabled = true });
+}
+
+function showModalWindowEndGame() {
+    var element = document.getElementById("modalWindowEndGameTrigger");
+    element.click();
 }
 

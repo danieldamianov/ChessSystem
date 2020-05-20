@@ -3,3 +3,6 @@
 3. Sometimes when a move is made it doesn't affect the board of the player that has made the move.
 4 When user is online, logouts and then get back, the other get another window with the user.
 5. When user becomes offline his window doesn't disapperar from other users online list.
+6. When the game ends, the user ho makes the ending move
+ - his endGameHandleMethod closes the game in the database and saveMove can't be done -
+ the last move is missed.
