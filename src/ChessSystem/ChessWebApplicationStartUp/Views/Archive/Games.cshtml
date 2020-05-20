@@ -1,6 +1,30 @@
-﻿
+﻿@using System.Collections.Generic;
+
+@model List<ChessSystem.Application.Archive.Queries.PlayedGames.PlayedGameOutputModel>
+
 @{
     ViewData["Title"] = "Games";
+    @foreach (var game in Model)
+    {
+        <p>@game.WhitePlayerName vs @game.BlackPlayerName result: @game.EndGameInfo</p>
+        <p>Moves:</p>
+        foreach (var item in game.Moves)
+        {
+            if (item is ChessSystem.Application.Archive.Queries.PlayedGames.NormalMoveOutputModel)
+            {
+                var itemAsNormalMove = (ChessSystem.Application.Archive.Queries.PlayedGames.NormalMoveOutputModel)item;
+                <p>@(itemAsNormalMove.InitialPosition.ToString()) - @(itemAsNormalMove.TargetPosition.ToString()) - @itemAsNormalMove.ChessFigureType.ToString() - @itemAsNormalMove.ChessFigureColor.ToString()</p>
+            }
+            if (item is ChessSystem.Application.Archive.Queries.PlayedGames.CastlingMoveOutputModel)
+            {
+
+            }
+            if (item is ChessSystem.Application.Archive.Queries.PlayedGames.ProductionMoveOutputModel)
+            {
+
+            }
+        }
+    }
 }
 
 <h1>Games</h1>

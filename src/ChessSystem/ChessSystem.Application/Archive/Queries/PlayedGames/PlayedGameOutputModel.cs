@@ -1,5 +1,6 @@
 ﻿using ChessSystem.Domain.Entities;
 using System;
+using System.Collections.Generic;
 using System.Security.Principal;
 
 namespace ChessSystem.Application.Archive.Queries.PlayedGames
@@ -15,5 +16,7 @@ namespace ChessSystem.Application.Archive.Queries.PlayedGames
         public TimeSpan Duration { get; set; }
 
         public EndGameInfo EndGameInfo { get; set; }
+
+        public List<BaseMoveOutputModel> Moves { get; set; }
     }
 }
