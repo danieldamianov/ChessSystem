@@ -61,6 +61,8 @@
                             this.mapper.Map<List<CastlingMove>, List<CastlingMoveOutputModel>>(game.CastlingMoves).Cast<BaseMoveOutputModel>().ToList()).Concat(
                             this.mapper.Map<List<PawnProductionMove>, List<ProductionMoveOutputModel>>(game.PawnProductionMoves).Cast<BaseMoveOutputModel>().ToList())
                             .OrderBy(move => move.OrderInTheGame).ToList(),
+                        StartTime = game.StartedOn,
+                        Duration = game.Duration,
                     })
                     .ToList();
 

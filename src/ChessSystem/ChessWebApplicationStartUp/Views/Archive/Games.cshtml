@@ -6,7 +6,7 @@
     ViewData["Title"] = "Games";
     @foreach (var game in Model)
     {
-        <p>@game.WhitePlayerName vs @game.BlackPlayerName result: @game.EndGameInfo</p>
+        <p>@game.WhitePlayerName vs @game.BlackPlayerName result: @game.EndGameInfo Started On : @game.StartTime Duration: @game.Duration</p>
         <p>Moves:</p>
         foreach (var item in game.Moves)
         {

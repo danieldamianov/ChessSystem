@@ -52,5 +52,9 @@
         public List<CastlingMove> CastlingMoves { get; set; }
 
         public EndGameInfo? EndGameInfo { get; set; }
+
+        public DateTime StartedOn { get; set; }
+
+        public TimeSpan Duration { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace ChessSystem.Application.Games.Commands.ChessGameHasEnded
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -36,6 +37,7 @@
                 && game.BlackPlayerId == request.blackPlayerId && game.EndGameInfo == null);
 
                 game.EndGameInfo = request.endGameInfo;
+                game.Duration = DateTime.Now.Subtract(game.StartedOn);
 
                 await this.chessApplicationData.SaveChanges(cancellationToken);
 

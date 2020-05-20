@@ -1,5 +1,6 @@
 ﻿namespace ChessSystem.Application.Games.Commands.CreateGame
 {
+    using System;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -7,6 +8,7 @@
     using ChessSystem.Application.Common.Interfaces;
     using ChessSystem.Domain.Entities;
     using MediatR;
+    using Microsoft.VisualBasic.CompilerServices;
 
     /// <summary>
     /// Command that handles creating a new game.
@@ -59,6 +61,9 @@
             public async Task<string> Handle(CreatedNewGameCommand request, CancellationToken cancellationToken)
             {
                 ChessGame chessGame = new ChessGame(request.WhitePlayerId, request.BlackPlayerId);
+
+                chessGame.StartedOn = DateTime.UtcNow;
+
                 this.chessApplicationData.ChessGames.Add(chessGame);
 
                 await this.chessApplicationData.SaveChanges(cancellationToken);
