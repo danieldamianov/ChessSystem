@@ -1,5 +1,4 @@
-﻿@using ChessGameLogic
-@using ChessGameLogic.ClientInteractionEntities
+﻿@using ChessGameLogic.ClientInteractionEntities
 @using ChessGameLogic.Enums
 @using System.Reflection;
 @using ChessSystem.Application.Common.Interfaces
@@ -122,17 +121,14 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
+                        <h5 class="modal-title">@EndGameMessaage</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Chess Game Has Ended</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">View Game Again</button>
+                        <a class="btn btn-primary" href="/">Home Page</a>
                     </div>
                 </div>
             </div>
@@ -255,6 +251,8 @@
         return Task.CompletedTask;
     }
 
+    public string EndGameMessaage { get; set; }
+
     [Parameter]
     public string WhitePlayerId { get; set; }
 
@@ -322,11 +320,25 @@
 
     private void HandleGameEnding(EndGameResult endGameResult)
     {
-        if (this.chessColor == ChessColors.White)
+        if (this.IsOnTurn == false)
         {
             Task.Run(async () => await this.Mediator.Send(new ChessGameHasEndedCommand(this.WhitePlayerId, this.BlackPlayerId, Enum.Parse<EndGameInfo>(endGameResult.ToString())))).Wait();
         }
-        //JSRuntime.InvokeVoidAsync("showModalWindowEndGame").GetAwaiter().GetResult();
+        JSRuntime.InvokeVoidAsync("showModalWindowEndGame").GetAwaiter();
+        if (endGameResult == EndGameResult.WhiteWin && this.chessColor == ChessColors.White ||
+            endGameResult == EndGameResult.BlackWin && this.chessColor == ChessColors.Black)
+        {
+            this.EndGameMessaage = "You won the game!";
+        }
+        else if (endGameResult == EndGameResult.Draw)
+        {
+            this.EndGameMessaage = "The game ended draw!";
+        }
+        else
+        {
+            this.EndGameMessaage = "You lost the game!";
+        }
+        this.StateHasChanged();
     }
 
     public class ChessBoardContainer
