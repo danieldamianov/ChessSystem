@@ -1,0 +1,198 @@
+﻿@using ChessSystem.Application.Archive.Queries.PlayedGames
+@using ChessGameLogic
+@using ChessGameLogic.Enums
+
+@inject MediatR.IMediator Mediator
+
+@using ChessSystem.Application.Archive.Queries.ReplayGame
+
+@* Imports for blazor *@
+@using System.Net.Http
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.JSInterop
+
+@*<div>
+        <h4>PlayedGameOutputModel</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.WhitePlayerName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.WhitePlayerName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.BlackPlayerName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.BlackPlayerName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.StartTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.StartTime)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Duration)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Duration)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.EndGameInfo)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.EndGameInfo)
+            </dd>
+        </dl>
+    </div>*@
+
+<h3>GameReplay</h3>
+@{
+    var chessFieldColor = "White";
+}
+<div>
+    @if (Enum.Parse<ChessColors>(this.PlayerColor) == ChessColors.White)
+    {
+        @for (int vertical = 8; vertical >= 1; vertical--)
+        {
+            for (char horizontal = 'a'; horizontal <= 'h'; horizontal++)
+            {
+                if (horizontal != 'a')
+                {
+                    if (chessFieldColor == "White")
+                    {
+                        chessFieldColor = "Darkgray";
+                    }
+                    else
+                    {
+                        chessFieldColor = "White";
+                    }
+
+                }
+                var figureInfo = this.ChessGame.GetFigureOnPositionInfo(horizontal, vertical);
+
+
+                char hor = horizontal;
+                int ver = vertical;
+
+                <button disabled="disabled"
+                        id="@(horizontal.ToString() + vertical)field"
+                        style="margin:0px; border: none; width: 40px; height:40px; background-color: @chessFieldColor">
+                    @if (figureInfo != null)
+                    {
+                        <img style="width: 30px; height:30px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
+                    }
+                    else
+                    {
+                        <img style="width: 30px; height:30px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
+                    }
+                </button>
+            }
+            <br />
+        }
+    }
+    else
+    {
+        @for (int vertical = 1; vertical <= 8; vertical++)
+        {
+            for (char horizontal = 'h'; horizontal >= 'a'; horizontal--)
+            {
+                if (horizontal != 'h')
+                {
+                    if (chessFieldColor == "White")
+                    {
+                        chessFieldColor = "Darkgray";
+                    }
+                    else
+                    {
+                        chessFieldColor = "White";
+                    }
+
+                }
+                var figureInfo = this.ChessGame.GetFigureOnPositionInfo(horizontal, vertical);
+
+                char hor = horizontal;
+                int ver = vertical;
+
+                <button disabled="disabled"
+                        id="@(horizontal.ToString() + vertical)field" style="margin:0px; border: none; width: 40px; height:40px; background-color: @chessFieldColor">
+                    @if (figureInfo != null)
+                    {
+                        <img style="width: 30px; height:30px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
+                    }
+                    else
+                    {
+                        <img style="width: 30px; height:30px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
+                    }
+                </button>
+            }
+            <br />
+        }
+    }
+</div>
+<div>
+    <button @onclick="@(e => { MoveNextMove(); })">Next move</button>
+</div>
+
+@code {
+    public PlayedGameOutputModel GameModel { get; set; }
+
+    [Parameter]
+    public string PlayerColor { get; set; }
+
+    [Parameter]
+    public string GameId { get; set; }
+
+    public ChessGame ChessGame { get; set; }
+
+    public int MovesMade { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.GameModel = await this.Mediator.Send(new GetReplayGameQuery(GameId));
+    }
+
+    public GameReplay()
+    {
+        this.ChessGame = new ChessGame(ChooseFigure, (_) => { });
+        this.MovesMade = 0;
+    }
+
+    private ChessGameLogic.ClientInteractionEntities.ChessFigureProductionType ChooseFigure()
+    {
+        return ChessGameLogic.ClientInteractionEntities.ChessFigureProductionType.Queen;
+    }
+
+    private void MoveNextMove()
+    {
+        var move = this.GameModel.Moves[this.MovesMade];
+        if (move is ChessSystem.Application.Archive.Queries.PlayedGames.NormalMoveOutputModel)
+        {
+            var itemAsNormalMove = (ChessSystem.Application.Archive.Queries.PlayedGames.NormalMoveOutputModel)move;
+            this.ChessGame.NormalMove(
+                itemAsNormalMove.InitialPosition.Horizontal,
+                itemAsNormalMove.InitialPosition.Vertical,
+                itemAsNormalMove.TargetPosition.Horizontal,
+                itemAsNormalMove.TargetPosition.Vertical,
+                Enum.Parse<ChessGameLogic.ClientInteractionEntities.ChessFigureType>(itemAsNormalMove.ChessFigureType.ToString()),
+                Enum.Parse<ChessGameLogic.Enums.ChessColors>(itemAsNormalMove.ChessFigureColor.ToString()));
+
+        }
+        if (move is ChessSystem.Application.Archive.Queries.PlayedGames.CastlingMoveOutputModel)
+        {
+
+        }
+        if (move is ChessSystem.Application.Archive.Queries.PlayedGames.ProductionMoveOutputModel)
+        {
+
+        }
+        this.StateHasChanged();
+        this.MovesMade++;
+    }
+}

@@ -1,6 +1,7 @@
 ﻿namespace ChessWebApplication.Controllers.Archive
 {
     using ChessSystem.Application.Archive.Queries.PlayedGames;
+    using ChessSystem.Application.Archive.Queries.ReplayGame;
     using ChessSystem.Application.Common.Interfaces;
     using ChessWebApplication.Common;
     using Microsoft.AspNetCore.Authorization;
@@ -21,6 +22,12 @@
         {
             var games = await this.Mediator.Send(new GetAllPlayedGamesOfUserQuery(this.currentUser.UserId));
             return this.View(games);
+        }
+
+        [Authorize]
+        public IActionResult GameReplay([FromForm] string gameId, [FromForm] string colorOfThePlayer)
+        {
+            return this.View(model: new GameReplayViewModel(gameId, colorOfThePlayer));
         }
     }
 }

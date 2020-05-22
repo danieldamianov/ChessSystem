@@ -1,11 +1,13 @@
 ﻿@using System.Collections.Generic;
 
 @model List<ChessSystem.Application.Archive.Queries.PlayedGames.PlayedGameOutputModel>
+<h1>Games</h1>
 
 @{
     ViewData["Title"] = "Games";
     @foreach (var game in Model)
     {
+        <button onclick="redirectToGameReplayPage('@game.Id','@game.PlayerColorInTheGame.ToString()')">Replay</button>
         <p>@game.WhitePlayerName vs @game.BlackPlayerName result: @game.EndGameInfo Started On : @game.StartTime Duration: @game.Duration</p>
         <p>Moves:</p>
         foreach (var item in game.Moves)
@@ -17,15 +19,15 @@
             }
             if (item is ChessSystem.Application.Archive.Queries.PlayedGames.CastlingMoveOutputModel)
             {
-
+        
             }
             if (item is ChessSystem.Application.Archive.Queries.PlayedGames.ProductionMoveOutputModel)
             {
-
+        
             }
         }
     }
 }
 
-<h1>Games</h1>
+
 

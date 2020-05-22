@@ -54,6 +54,7 @@
                     .ToList()
                     .Select(game => new PlayedGameOutputModel()
                     {
+                        Id = game.Id,
                         BlackPlayerName = this.identity.GetUserName(game.BlackPlayerId).GetAwaiter().GetResult(),
                         WhitePlayerName = this.identity.GetUserName(game.WhitePlayerId).GetAwaiter().GetResult(),
                         EndGameInfo = (EndGameInfo)game.EndGameInfo,
@@ -63,6 +64,8 @@
                             .OrderBy(move => move.OrderInTheGame).ToList(),
                         StartTime = game.StartedOn,
                         Duration = game.Duration,
+                        PlayerColorInTheGame = request.UserId == game.BlackPlayerId ?
+                        ChessGameLogic.Enums.ChessColors.Black : ChessGameLogic.Enums.ChessColors.White,
                     })
                     .ToList();
 
