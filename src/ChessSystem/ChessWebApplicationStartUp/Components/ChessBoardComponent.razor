@@ -58,6 +58,7 @@
                                         this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor))"
                         id="@(horizontal.ToString() + vertical)field"
                         style="margin:0px; border: none; width: @(fieldSize)px; height:@(fieldSize)px; background-color: @chessFieldColor">
+                        
                     @if (figureInfo != null)
                     {
                         <img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
@@ -98,7 +99,8 @@
                 <button @onclick="@(e =>
                                         HandleFieldPressed(e, hor, ver, this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureType,
                                         this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor))"
-                        id="@(horizontal.ToString() + vertical)field" style="margin:0px; border: none; width: @(fieldSize)px; height:@(fieldSize)px; background-color: @chessFieldColor">
+                        id="@(horizontal.ToString() + vertical)field"
+                        style="margin:0px; border: none; width: @(fieldSize)px; height:@(fieldSize)px; background-color: @chessFieldColor">>
                     @if (figureInfo != null)
                     {
                         <img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureType}{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
@@ -290,7 +292,7 @@
         }
         else
         {
-            this.figurePictureSize = 70;
+            this.figurePictureSize = 60;
             this.fieldSize = 80;
         }
 
