@@ -3,6 +3,7 @@
 @using ChessGameLogic.Enums
 
 @inject MediatR.IMediator Mediator
+@inject BrowserService BrowserService
 
 @using ChessSystem.Application.Archive.Queries.ReplayGame
 
@@ -15,48 +16,11 @@
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.JSInterop
 
-@*<div>
-        <h4>PlayedGameOutputModel</h4>
-        <hr />
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.WhitePlayerName)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.WhitePlayerName)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.BlackPlayerName)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.BlackPlayerName)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.StartTime)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.StartTime)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Duration)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Duration)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.EndGameInfo)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.EndGameInfo)
-            </dd>
-        </dl>
-    </div>*@
-
 <h3>GameReplay</h3>
 @{
     var chessFieldColor = "White";
 }
-<div>
+<div style="font-size: 0px;">
     @if (Enum.Parse<ChessColors>(this.PlayerColor) == ChessColors.White)
     {
         @for (int vertical = 8; vertical >= 1; vertical--)
@@ -83,14 +47,14 @@
 
                 <button disabled="disabled"
                         id="@(horizontal.ToString() + vertical)field"
-                        style="margin:0px; border: none; width: 40px; height:40px; background-color: @chessFieldColor">
+                        style="margin:0px; border: none; width: @(fieldSize)px; height:@(fieldSize)px; background-color: @chessFieldColor">
                     @if (figureInfo != null)
                     {
-                        <img style="width: 30px; height:30px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
+                        <img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
                     }
                     else
                     {
-                        <img style="width: 30px; height:30px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
+                        <img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
                     }
                 </button>
             }
@@ -121,14 +85,14 @@
                 int ver = vertical;
 
                 <button disabled="disabled"
-                        id="@(horizontal.ToString() + vertical)field" style="margin:0px; border: none; width: 40px; height:40px; background-color: @chessFieldColor">
+                        id="@(horizontal.ToString() + vertical)field" style="margin:0px; border: none; width: @(fieldSize)px; height:@(fieldSize)px; background-color: @chessFieldColor">
                     @if (figureInfo != null)
                     {
-                        <img style="width: 30px; height:30px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
+                        <img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
                     }
                     else
                     {
-                        <img style="width: 30px; height:30px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
+                        <img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
                     }
                 </button>
             }
@@ -153,6 +117,10 @@
 
     public int MovesMade { get; set; }
 
+    private int figurePictureSize = 30;
+
+    private int fieldSize = 40;
+
     protected override async Task OnInitializedAsync()
     {
         this.GameModel = await this.Mediator.Send(new GetReplayGameQuery(GameId));
@@ -162,6 +130,25 @@
     {
         this.ChessGame = new ChessGame(ChooseFigure, (_) => { });
         this.MovesMade = 0;
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        var dimensionsOfTheScreen = await BrowserService.GetDimensions();
+        if (dimensionsOfTheScreen.Width < 400)
+        {
+            this.figurePictureSize = 30;
+            this.fieldSize = 40;
+        }
+        else
+        {
+            this.figurePictureSize = 60;
+            this.fieldSize = 80;
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+
+        this.StateHasChanged();
     }
 
     private ChessGameLogic.ClientInteractionEntities.ChessFigureProductionType ChooseFigure()
