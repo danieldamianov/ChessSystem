@@ -20,9 +20,11 @@
 @inject IJSRuntime JSRuntime
 @inject ICurrentUser currentUser
 @inject IChessApplicationData IChessData
+@inject BrowserService BrowserService
 
 <br />
 @{
+
     var chessFieldColor = "White";
 }
 <div id="chessBoard" style="font-size: 0px;">
@@ -55,14 +57,14 @@
                                         HandleFieldPressed(e, hor, ver, this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureType,
                                         this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor))"
                         id="@(horizontal.ToString() + vertical)field"
-                        style="margin:0px; border: none; width: 40px; height:40px; background-color: @chessFieldColor">
+                        style="margin:0px; border: none; width: @(fieldSize)px; height:@(fieldSize)px; background-color: @chessFieldColor">
                     @if (figureInfo != null)
                     {
-                        <img style="width: 30px; height:30px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
+                        <img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
                     }
                     else
                     {
-                        <img style="width: 30px; height:30px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
+                        <img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
                     }
                 </button>
             }
@@ -96,14 +98,14 @@
                 <button @onclick="@(e =>
                                         HandleFieldPressed(e, hor, ver, this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureType,
                                         this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor))"
-                        id="@(horizontal.ToString() + vertical)field" style="margin:0px; border: none; width: 40px; height:40px; background-color: @chessFieldColor">
+                        id="@(horizontal.ToString() + vertical)field" style="margin:0px; border: none; width: @(fieldSize)px; height:@(fieldSize)px; background-color: @chessFieldColor">
                     @if (figureInfo != null)
                     {
-                        <img style="width: 30px; height:30px" src="/ImagesForFigures/@($"{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureType}{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
+                        <img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureType}{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
                     }
                     else
                     {
-                        <img style="width: 30px; height:30px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
+                        <img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
                     }
                 </button>
             }
@@ -111,29 +113,29 @@
         }
     }
 
-        <button id="modalWindowEndGameTrigger" style="visibility:hidden" type="button" class="btn btn-primary" data-toggle="modal" data-target="#EndGameModal">
-            Launch demo modal
-        </button>
+    <button id="modalWindowEndGameTrigger" style="visibility:hidden" type="button" class="btn btn-primary" data-toggle="modal" data-target="#EndGameModal">
+        Launch demo modal
+    </button>
 
-        
 
-        <div class="modal" id="EndGameModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">@EndGameMessaage</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">View Game Again</button>
-                        <a class="btn btn-primary" href="/">Home Page</a>
-                    </div>
+
+    <div class="modal" id="EndGameModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@EndGameMessaage</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">View Game Again</button>
+                    <a class="btn btn-primary" href="/">Home Page</a>
                 </div>
             </div>
         </div>
-    
+    </div>
+
 
 </div>
 
@@ -279,10 +281,29 @@
         {
             return;
         }
+
+        var dimensionsOfTheScreen = await BrowserService.GetDimensions();
+        if (dimensionsOfTheScreen.Width < 400)
+        {
+            this.figurePictureSize = 30;
+            this.fieldSize = 40;
+        }
+        else
+        {
+            this.figurePictureSize = 70;
+            this.fieldSize = 80;
+        }
+
         await EnableAndDisableFielsAccordingTurn();
+
+        this.StateHasChanged();
 
         await base.OnAfterRenderAsync(firstRender);
     }
+
+    private int figurePictureSize = 30;
+
+    private int fieldSize = 40;
 
     [Parameter]
     public ChessColors chessColor { get; set; }
@@ -291,6 +312,7 @@
     {
         this.ChessGame = new ChessGameLogic.ChessGame(ChooseFigureToProduce, HandleGameEnding);
     }
+
 
     protected override async Task OnParametersSetAsync()
     {

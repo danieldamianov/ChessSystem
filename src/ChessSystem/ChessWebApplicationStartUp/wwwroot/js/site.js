@@ -24,3 +24,10 @@
 function redirectToGameReplayPage(gameId, colorOfThePlayer) {
     post("/Archive/GameReplay", { gameId: gameId, colorOfThePlayer: colorOfThePlayer})
 }
+
+window.getDimensions = function () {
+    return {
+        width: window.innerWidth,
+        height: window.innerHeight
+    };
+};

@@ -7,25 +7,36 @@
     ViewData["Title"] = "Games";
     @foreach (var game in Model)
     {
-        <button onclick="redirectToGameReplayPage('@game.Id','@game.PlayerColorInTheGame.ToString()')">Replay</button>
-        <p>@game.WhitePlayerName vs @game.BlackPlayerName result: @game.EndGameInfo Started On : @game.StartTime Duration: @game.Duration</p>
-        <p>Moves:</p>
-        foreach (var item in game.Moves)
-        {
-            if (item is ChessSystem.Application.Archive.Queries.PlayedGames.NormalMoveOutputModel)
+        <div class="card" style="width: 18rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Game</h5>
+                <p class="card-text"><p><b>@game.WhitePlayerName</b> vs <b>@game.BlackPlayerName</b></p>
+                <p>Result: @game.EndGameInfo</p>
+                <p>Date: @game.StartTime.ToShortDateString()</p>
+                <p>Duration : @(Math.Round(game.Duration.TotalMinutes)) minutes</p>
+                <button class="btn btn-primary" onclick="redirectToGameReplayPage('@game.Id','@game.PlayerColorInTheGame.ToString()')">Replay</button>
+            </div>
+            <b>Moves Count: @game.Moves.Count</b>
+        </div>
+        <hr />
+        <br />
+        @*foreach (var item in game.Moves)
             {
-                var itemAsNormalMove = (ChessSystem.Application.Archive.Queries.PlayedGames.NormalMoveOutputModel)item;
-                <p>@(itemAsNormalMove.InitialPosition.ToString()) - @(itemAsNormalMove.TargetPosition.ToString()) - @itemAsNormalMove.ChessFigureType.ToString() - @itemAsNormalMove.ChessFigureColor.ToString()</p>
-            }
-            if (item is ChessSystem.Application.Archive.Queries.PlayedGames.CastlingMoveOutputModel)
-            {
-        
-            }
-            if (item is ChessSystem.Application.Archive.Queries.PlayedGames.ProductionMoveOutputModel)
-            {
-        
-            }
-        }
+                if (item is ChessSystem.Application.Archive.Queries.PlayedGames.NormalMoveOutputModel)
+                {
+                    var itemAsNormalMove = (ChessSystem.Application.Archive.Queries.PlayedGames.NormalMoveOutputModel)item;
+                    <p>@(itemAsNormalMove.InitialPosition.ToString()) - @(itemAsNormalMove.TargetPosition.ToString()) - @itemAsNormalMove.ChessFigureType.ToString() - @itemAsNormalMove.ChessFigureColor.ToString()</p>
+                }
+                if (item is ChessSystem.Application.Archive.Queries.PlayedGames.CastlingMoveOutputModel)
+                {
+
+                }
+                if (item is ChessSystem.Application.Archive.Queries.PlayedGames.ProductionMoveOutputModel)
+                {
+
+                }
+            }*@
     }
 }
 

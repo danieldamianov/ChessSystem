@@ -12,6 +12,8 @@
             services.AddHttpContextAccessor();
             services.AddConventionalServices(typeof(ServiceRegistration).Assembly);
 
+            services.AddScoped<BrowserService>();
+
             return services;
         }
     }
