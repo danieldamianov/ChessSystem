@@ -346,7 +346,7 @@
             bool isProducable)
         {
             var isPositionProducableMethod = this.PawnType.GetMethod(
-                "isPositionProducable",
+                "IsPositionProducable",
                 BindingFlags.Instance | BindingFlags.NonPublic);
 
             var chessBoardPositionType = ChessGameLogicProvider.GetType("ChessGameLogic.ChessBoardPosition");

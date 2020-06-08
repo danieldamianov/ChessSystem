@@ -6,3 +6,4 @@
 6. When the game ends, the user ho makes the ending move
  - his endGameHandleMethod closes the game in the database and saveMove can't be done -
  the last move is missed.
+7 when the game ends, in particular situation the the lost user does't receive a message.
