@@ -60,8 +60,8 @@ namespace ChessSystem.Application.Archive.Queries.ReplayGame
                 var gameOutputModel = new PlayedGameOutputModel()
                 {
                     Id = game.Id,
-                    BlackPlayerName = await this.identity.GetUserName(game.BlackPlayerId),
-                    WhitePlayerName = await this.identity.GetUserName(game.WhitePlayerId),
+                    BlackPlayerName = await this.identity.GetUserNameAsync(game.BlackPlayerId),
+                    WhitePlayerName = await this.identity.GetUserNameAsync(game.WhitePlayerId),
                     EndGameInfo = (EndGameInfo)game.EndGameInfo,
                     Moves = this.mapper.Map<List<NormalMove>, List<NormalMoveOutputModel>>(game.NormalChessMoves).Cast<BaseMoveOutputModel>().ToList().Concat(
                         this.mapper.Map<List<CastlingMove>, List<CastlingMoveOutputModel>>(game.CastlingMoves).Cast<BaseMoveOutputModel>().ToList()).Concat(

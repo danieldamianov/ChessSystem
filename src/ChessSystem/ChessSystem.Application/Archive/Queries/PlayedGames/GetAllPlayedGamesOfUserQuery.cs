@@ -37,7 +37,7 @@
                 this.mapper = mapper;
             }
 
-            public async Task<List<PlayedGameOutputModel>> Handle(GetAllPlayedGamesOfUserQuery request, CancellationToken cancellationToken)
+            public Task<List<PlayedGameOutputModel>> Handle(GetAllPlayedGamesOfUserQuery request, CancellationToken cancellationToken)
             {
                 var games = this.chessApplicationData.ChessGames
                     .Include(game => game.CastlingMoves)
@@ -52,11 +52,11 @@
                         .ThenInclude(move => move.ChessBoardPosition)
                     .Where(game => (game.BlackPlayerId == request.UserId || game.WhitePlayerId == request.UserId) && game.EndGameInfo != null)
                     .ToList()
-                    .Select(async (game) => new PlayedGameOutputModel()
+                    .Select((game) => new PlayedGameOutputModel()
                     {
                         Id = game.Id,
-                        BlackPlayerName = await this.identity.GetUserName(game.BlackPlayerId),
-                        WhitePlayerName = await this.identity.GetUserName(game.WhitePlayerId),
+                        BlackPlayerName = this.identity.GetUserName(game.BlackPlayerId),
+                        WhitePlayerName = this.identity.GetUserName(game.WhitePlayerId),
                         EndGameInfo = (EndGameInfo)game.EndGameInfo,
                         Moves = this.mapper.Map<List<NormalMove>, List<NormalMoveOutputModel>>(game.NormalChessMoves).Cast<BaseMoveOutputModel>().ToList().Concat(
                             this.mapper.Map<List<CastlingMove>, List<CastlingMoveOutputModel>>(game.CastlingMoves).Cast<BaseMoveOutputModel>().ToList()).Concat(
@@ -69,12 +69,7 @@
                     })
                     .ToList();
 
-                foreach (var game in games)
-                {
-                    await game;
-                }
-
-                return games.Select(gameTask => gameTask.Result).ToList();
+                return Task.FromResult(games);
             }
         }
     }

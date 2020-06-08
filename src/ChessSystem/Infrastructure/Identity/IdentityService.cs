@@ -15,7 +15,7 @@
         public IdentityService(UserManager<ChessAppUser> userManager)
             => this.userManager = userManager;
 
-        public async Task<string> GetUserName(string userId)
+        public async Task<string> GetUserNameAsync(string userId)
             => await this.userManager
                 .Users
                 .Where(u => u.Id == userId)
@@ -55,5 +55,12 @@
 
             return result.ToApplicationResult();
         }
+
+        public string GetUserName(string userId)
+            => this.userManager
+                .Users
+                .Where(u => u.Id == userId)
+                .Select(u => u.UserName)
+                .FirstOrDefault();
     }
 }

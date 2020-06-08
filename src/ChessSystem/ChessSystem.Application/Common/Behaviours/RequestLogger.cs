@@ -27,7 +27,7 @@
         {
             var requestName = typeof(TRequest).Name;
             var userId = this.currentUserService.UserId;
-            var userName = await this.identityService.GetUserName(userId);
+            var userName = await this.identityService.GetUserNameAsync(userId);
 
             this.logger.LogInformation(
                 "Blog Request: {Name} {@UserId} {@UserName} {@Request}",
