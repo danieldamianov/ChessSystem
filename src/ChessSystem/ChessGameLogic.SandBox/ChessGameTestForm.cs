@@ -5,6 +5,7 @@
     using System.Drawing;
     using System.Linq;
     using System.Reflection;
+    using System.Threading.Tasks;
     using System.Windows.Forms;
 
     using ChessGameLogic.ClientInteractionEntities;
@@ -38,7 +39,7 @@
             this.ClientSize = new Size(600, 600);
         }
 
-        private void HandleGameEnd(EndGameResult endGameResult)
+        private async Task HandleGameEnd(EndGameResult endGameResult)
         {
             switch (endGameResult)
             {
@@ -115,7 +116,7 @@
             }
         }
 
-        private void MoveHandler(object sender, EventArgs eventArgs)
+        private async void MoveHandler(object sender, EventArgs eventArgs)
         {
             if (this.chessFieldSelected == null)
             {
@@ -179,7 +180,7 @@
                     return;
                 }
 
-                this.chessGame.NormalMove(
+                await this.chessGame.NormalMove(
                     this.chessFieldSelected.PositionOnTheBoard.Horizontal,
                     this.chessFieldSelected.PositionOnTheBoard.Vertical,
                     ((ChessField)sender).PositionOnTheBoard.Horizontal,

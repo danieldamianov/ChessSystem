@@ -1,16 +1,16 @@
 ﻿namespace ChessSystem.Application.Archive.Queries.PlayedGames
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+
     using AutoMapper;
     using ChessSystem.Application.Common.Interfaces;
     using ChessSystem.Domain.Entities;
     using ChessSystem.Domain.Entities.Moves;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
 
     public class GetAllPlayedGamesOfUserQuery : IRequest<List<PlayedGameOutputModel>>
     {
@@ -37,7 +37,7 @@
                 this.mapper = mapper;
             }
 
-            public Task<List<PlayedGameOutputModel>> Handle(GetAllPlayedGamesOfUserQuery request, CancellationToken cancellationToken)
+            public async Task<List<PlayedGameOutputModel>> Handle(GetAllPlayedGamesOfUserQuery request, CancellationToken cancellationToken)
             {
                 var games = this.chessApplicationData.ChessGames
                     .Include(game => game.CastlingMoves)
@@ -52,11 +52,11 @@
                         .ThenInclude(move => move.ChessBoardPosition)
                     .Where(game => (game.BlackPlayerId == request.UserId || game.WhitePlayerId == request.UserId) && game.EndGameInfo != null)
                     .ToList()
-                    .Select(game => new PlayedGameOutputModel()
+                    .Select(async (game) => new PlayedGameOutputModel()
                     {
                         Id = game.Id,
-                        BlackPlayerName = this.identity.GetUserName(game.BlackPlayerId).GetAwaiter().GetResult(),
-                        WhitePlayerName = this.identity.GetUserName(game.WhitePlayerId).GetAwaiter().GetResult(),
+                        BlackPlayerName = await this.identity.GetUserName(game.BlackPlayerId),
+                        WhitePlayerName = await this.identity.GetUserName(game.WhitePlayerId),
                         EndGameInfo = (EndGameInfo)game.EndGameInfo,
                         Moves = this.mapper.Map<List<NormalMove>, List<NormalMoveOutputModel>>(game.NormalChessMoves).Cast<BaseMoveOutputModel>().ToList().Concat(
                             this.mapper.Map<List<CastlingMove>, List<CastlingMoveOutputModel>>(game.CastlingMoves).Cast<BaseMoveOutputModel>().ToList()).Concat(
@@ -69,7 +69,12 @@
                     })
                     .ToList();
 
-                return Task.FromResult(games);
+                foreach (var game in games)
+                {
+                    await game;
+                }
+
+                return games.Select(gameTask => gameTask.Result).ToList();
             }
         }
     }

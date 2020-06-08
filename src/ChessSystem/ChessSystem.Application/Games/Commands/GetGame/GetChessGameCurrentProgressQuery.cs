@@ -45,7 +45,7 @@
             {
                 var chessGameInstance = new ChessGame(
                     () => { return ChessFigureProductionType.Queen; },
-                    (result) => { });
+                    async (result) => { await Task.CompletedTask; });
 
                 Domain.Entities.ChessGame chessGameWithCastlingAndNormalMoves = await this.chessApplicationData
                     .ChessGames

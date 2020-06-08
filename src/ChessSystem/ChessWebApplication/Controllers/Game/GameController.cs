@@ -24,7 +24,7 @@
 
             ChessGame chessGameCurrentProgress = new ChessGame(
                 () => throw new NotImplementedException(),
-                (result) => { });
+                async (result) => { await Task.CompletedTask; });
 
             if (await this.Mediator.Send(new CheckIfThereIsGameInProgressCommand(playInputModel.WhitePlayerId, playInputModel.BlackPlayerId)))
             {

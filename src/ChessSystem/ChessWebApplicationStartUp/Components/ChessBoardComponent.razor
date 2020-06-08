@@ -58,7 +58,7 @@
                                         this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor))"
                         id="@(horizontal.ToString() + vertical)field"
                         style="margin:0px; border: none; width: @(fieldSize)px; height:@(fieldSize)px; background-color: @chessFieldColor">
-                        
+
                     @if (figureInfo != null)
                     {
                         <img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
@@ -100,7 +100,8 @@
                                         HandleFieldPressed(e, hor, ver, this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureType,
                                         this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor))"
                         id="@(horizontal.ToString() + vertical)field"
-                        style="margin:0px; border: none; width: @(fieldSize)px; height:@(fieldSize)px; background-color: @chessFieldColor">>
+                        style="margin:0px; border: none; width: @(fieldSize)px; height:@(fieldSize)px; background-color: @chessFieldColor">
+                    >
                     @if (figureInfo != null)
                     {
                         <img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureType}{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
@@ -143,45 +144,42 @@
 
 @code {
 
-    private static ConcurrentDictionary<string, Action<string, string, string, string, string, string>> opponentHasMadeMoveHandlers
-    = new ConcurrentDictionary<string, Action<string, string, string, string, string, string>>();
+    private static ConcurrentDictionary<string, Func<string, string, string, string, string, string, Task>> opponentHasMadeMoveHandlers
+    = new ConcurrentDictionary<string, Func<string, string, string, string, string, string, Task>>();
 
-    private static ConcurrentDictionary<string, Action<string, string, string, string, string>> opponentHasMadeCastlingMoveHandlers
-    = new ConcurrentDictionary<string, Action<string, string, string, string, string>>();
+    private static ConcurrentDictionary<string, Func<string, string, string, string, string, Task>> opponentHasMadeCastlingMoveHandlers
+    = new ConcurrentDictionary<string, Func<string, string, string, string, string, Task>>();
 
     protected override void OnInitialized()
     {
         if (opponentHasMadeMoveHandlers.ContainsKey(this.currentUser.UserId))
         {
-            opponentHasMadeMoveHandlers.TryRemove(this.currentUser.UserId, out Action<string, string, string, string, string, string> value);
+            opponentHasMadeMoveHandlers.TryRemove(this.currentUser.UserId, out Func<string, string, string, string, string, string, Task> value);
         }
 
         opponentHasMadeMoveHandlers.TryAdd(this.currentUser.UserId, OpponentHasMadeMoveHandle);
 
         if (opponentHasMadeCastlingMoveHandlers.ContainsKey(this.currentUser.UserId))
         {
-            opponentHasMadeCastlingMoveHandlers.TryRemove(this.currentUser.UserId, out Action<string, string, string, string, string> value);
+            opponentHasMadeCastlingMoveHandlers.TryRemove(this.currentUser.UserId, out Func<string, string, string, string, string, Task> value);
         }
 
         opponentHasMadeCastlingMoveHandlers.TryAdd(this.currentUser.UserId, OpponentHasMadeCastlingMoveHandle);
 
     }
 
-    private void UpdateUIChessBoard()
+    private async Task UpdateUIChessBoard()
     {
         this.UpdateChessBoardContainerInstance();
 
         this.IsOnTurn = true;
 
-        EnableAndDisableFielsAccordingTurn().GetAwaiter();
+        await EnableAndDisableFielsAccordingTurn();
 
-        InvokeAsync(() =>
-        {
-            StateHasChanged();
-        });
+        this.StateHasChanged();
     }
 
-    private void OpponentHasMadeMoveHandle(
+    private async Task OpponentHasMadeMoveHandle(
             string initialPositionHorizontal,
             string initialPositionVertical,
             string targetPositionHorizontal,
@@ -189,14 +187,14 @@
             string figureType,
             string figureColor)
     {
-        this.ChessGame.NormalMove(initialPositionHorizontal[0], int.Parse(initialPositionVertical),
+        await this.ChessGame.NormalMove(initialPositionHorizontal[0], int.Parse(initialPositionVertical),
                     targetPositionHorizontal[0], int.Parse(targetPositionVertical),
                     Enum.Parse<ChessGameLogic.ClientInteractionEntities.ChessFigureType>(figureType), Enum.Parse<ChessColors>(figureColor));
 
-        this.UpdateUIChessBoard();
+        await this.UpdateUIChessBoard();
     }
 
-    private void OpponentHasMadeCastlingMoveHandle(
+    private async Task OpponentHasMadeCastlingMoveHandle(
             string kingPositionHorizontal,
             string kingPositionVertical,
             string rookPositionHorizontal,
@@ -210,11 +208,11 @@
             int.Parse(rookPositionVertical),
             Enum.Parse<ChessColors>(figureColor));
 
-        this.UpdateUIChessBoard();
+        await this.UpdateUIChessBoard();
     }
 
     [JSInvokable]
-    public static Task OpponentHasMadeCastlingMove(
+    public async static Task OpponentHasMadeCastlingMove(
     string opponentId,
     string kingPositionHorizontal,
     string kingPositionVertical,
@@ -222,18 +220,18 @@
     string rookPositionVertical,
     string figureColor)
     {
-        opponentHasMadeCastlingMoveHandlers.TryGetValue(opponentId, out Action<string, string, string, string, string> value);
-        value.Invoke(kingPositionHorizontal,
+        opponentHasMadeCastlingMoveHandlers.TryGetValue(opponentId, out Func<string, string, string, string, string, Task> value);
+        await value.Invoke(kingPositionHorizontal,
             kingPositionVertical,
             rookPositionHorizontal,
             rookPositionVertical,
             figureColor);
 
-        return Task.CompletedTask;
+        await Task.CompletedTask;
     }
 
     [JSInvokable]
-    public static Task OpponentHasMadeMove(
+    public static async Task OpponentHasMadeMove(
             string opponentId,
             string initialPositionHorizontal,
             string initialPositionVertical,
@@ -242,15 +240,15 @@
             string figureType,
             string figureColor)
     {
-        opponentHasMadeMoveHandlers.TryGetValue(opponentId, out Action<string, string, string, string, string, string> value);
-        value.Invoke(initialPositionHorizontal,
+        opponentHasMadeMoveHandlers.TryGetValue(opponentId, out Func<string, string, string, string, string, string, Task> value);
+        await value.Invoke(initialPositionHorizontal,
             initialPositionVertical,
             targetPositionHorizontal,
             targetPositionVertical,
             figureType,
             figureColor);
 
-        return Task.CompletedTask;
+        await Task.CompletedTask;
     }
 
     public string EndGameMessaage { get; set; }
@@ -340,13 +338,13 @@
         return ChessFigureProductionType.Queen;
     }
 
-    private void HandleGameEnding(EndGameResult endGameResult)
+    private async Task HandleGameEnding(EndGameResult endGameResult)
     {
         if (this.IsOnTurn == false)
         {
-            Task.Run(async () => await this.Mediator.Send(new ChessGameHasEndedCommand(this.WhitePlayerId, this.BlackPlayerId, Enum.Parse<EndGameInfo>(endGameResult.ToString())))).Wait();
+            await this.Mediator.Send(new ChessGameHasEndedCommand(this.WhitePlayerId, this.BlackPlayerId, Enum.Parse<EndGameInfo>(endGameResult.ToString())));
         }
-        JSRuntime.InvokeVoidAsync("showModalWindowEndGame").GetAwaiter();
+        await JSRuntime.InvokeVoidAsync("showModalWindowEndGame");
         if (endGameResult == EndGameResult.WhiteWin && this.chessColor == ChessColors.White ||
             endGameResult == EndGameResult.BlackWin && this.chessColor == ChessColors.Black)
         {
@@ -506,7 +504,7 @@
 
                 var figureInfo = this.ChessBoardContainerInstance.GetInfo(currentSelectedField.Item1, currentSelectedField.Item2);
 
-                var result = this.ChessGame.NormalMove(currentSelectedField.Item1, currentSelectedField.Item2,
+                var result = await this.ChessGame.NormalMove(currentSelectedField.Item1, currentSelectedField.Item2,
                     horizontal, vertical, figureInfo.figureType, figureInfo.figureColor);
 
                 this.UpdateChessBoardContainerInstance();

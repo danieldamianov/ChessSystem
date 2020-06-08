@@ -42,7 +42,7 @@ namespace ChessSystem.Application.Archive.Queries.ReplayGame
                 this.identity = identity;
             }
 
-            public Task<PlayedGameOutputModel> Handle(GetReplayGameQuery request, CancellationToken cancellationToken)
+            public async Task<PlayedGameOutputModel> Handle(GetReplayGameQuery request, CancellationToken cancellationToken)
             {
                 var game = this.chessApplicationData.ChessGames
                     .Include(game => game.CastlingMoves)
@@ -60,8 +60,8 @@ namespace ChessSystem.Application.Archive.Queries.ReplayGame
                 var gameOutputModel = new PlayedGameOutputModel()
                 {
                     Id = game.Id,
-                    BlackPlayerName = this.identity.GetUserName(game.BlackPlayerId).GetAwaiter().GetResult(),
-                    WhitePlayerName = this.identity.GetUserName(game.WhitePlayerId).GetAwaiter().GetResult(),
+                    BlackPlayerName = await this.identity.GetUserName(game.BlackPlayerId),
+                    WhitePlayerName = await this.identity.GetUserName(game.WhitePlayerId),
                     EndGameInfo = (EndGameInfo)game.EndGameInfo,
                     Moves = this.mapper.Map<List<NormalMove>, List<NormalMoveOutputModel>>(game.NormalChessMoves).Cast<BaseMoveOutputModel>().ToList().Concat(
                         this.mapper.Map<List<CastlingMove>, List<CastlingMoveOutputModel>>(game.CastlingMoves).Cast<BaseMoveOutputModel>().ToList()).Concat(
@@ -73,7 +73,7 @@ namespace ChessSystem.Application.Archive.Queries.ReplayGame
                     ChessGameLogic.Enums.ChessColors.Black : ChessGameLogic.Enums.ChessColors.White,
                 };
 
-                return Task.FromResult(gameOutputModel);
+                return gameOutputModel;
             }
         }
     }

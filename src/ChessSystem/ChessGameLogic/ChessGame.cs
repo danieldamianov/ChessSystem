@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Threading.Tasks;
 
     using ChessGameLogic.ChessFigures;
     using ChessGameLogic.ChessFigures.Interfaces;
@@ -18,7 +19,7 @@
     public class ChessGame
     {
         private readonly Func<ChessFigureProductionType> chooseFigureToProduceFunction;
-        private readonly Action<EndGameResult> endGameHandleFunction;
+        private readonly Func<EndGameResult, Task> endGameHandleFunction;
 
         private ChessGameProgressInfo progressInfo;
         private ChessBoard chessBoard;
@@ -31,7 +32,7 @@
         /// figure to produce in the place of pawn that have reached the end of the board.</param>
         /// <param name="endGameHandleFunction">Function which will be called when the chess game finishes in some way.
         /// The result can be found in the EndGameResult parameter.</param>
-        public ChessGame(Func<ChessFigureProductionType> chooseFigureToProduceFunction, Action<EndGameResult> endGameHandleFunction)
+        public ChessGame(Func<ChessFigureProductionType> chooseFigureToProduceFunction, Func<EndGameResult, Task> endGameHandleFunction)
         {
             if (chooseFigureToProduceFunction == null)
             {
@@ -71,7 +72,7 @@
         /// <param name="figureType">The type of the figure.</param>
         /// <param name="color">The color of the figure.</param>
         /// <returns>NormalChessMoveValidationResult - contains the validation result of the move.</returns>
-        public NormalChessMoveValidationResult NormalMove(
+        public async Task<NormalChessMoveValidationResult> NormalMove(
             char initialPositionHorizontal,
             int initialPositionVertical,
             char targetPositionHorizontal,
@@ -132,19 +133,19 @@
 
                 if (this.CheckForDraw())
                 {
-                    this.endGameHandleFunction(EndGameResult.Draw);
+                    await this.endGameHandleFunction(EndGameResult.Draw);
                     this.progressInfo = ChessGameProgressInfo.GameHasEndedDraw;
                 }
 
                 if (this.CheckForMate(ChessColors.Black))
                 {
-                    this.endGameHandleFunction(EndGameResult.BlackWin);
+                    await this.endGameHandleFunction(EndGameResult.BlackWin);
                     this.progressInfo = ChessGameProgressInfo.BlackHaveWon;
                 }
 
                 if (this.CheckForMate(ChessColors.White))
                 {
-                    this.endGameHandleFunction(EndGameResult.WhiteWin);
+                    await this.endGameHandleFunction(EndGameResult.WhiteWin);
                     this.progressInfo = ChessGameProgressInfo.WhiteHaveWon;
                 }
 

@@ -101,7 +101,7 @@
     }
 </div>
 <div>
-    <button class="btn btn-primary" @onclick="@(e => { MoveNextMove(); })">Next move</button>
+    <button class="btn btn-primary" @onclick="@(async (e) => { await MoveNextMove(); })">Next move</button>
 </div>
 
 @code {
@@ -128,7 +128,7 @@
 
     public GameReplay()
     {
-        this.ChessGame = new ChessGame(ChooseFigure, (_) => { });
+        this.ChessGame = new ChessGame(ChooseFigure, async (_) => { await Task.CompletedTask; });
         this.MovesMade = 0;
     }
 
@@ -156,13 +156,13 @@
         return ChessGameLogic.ClientInteractionEntities.ChessFigureProductionType.Queen;
     }
 
-    private void MoveNextMove()
+    private async Task MoveNextMove()
     {
         var move = this.GameModel.Moves[this.MovesMade];
         if (move is ChessSystem.Application.Archive.Queries.PlayedGames.NormalMoveOutputModel)
         {
             var itemAsNormalMove = (ChessSystem.Application.Archive.Queries.PlayedGames.NormalMoveOutputModel)move;
-            this.ChessGame.NormalMove(
+            await this.ChessGame.NormalMove(
                 itemAsNormalMove.InitialPosition.Horizontal,
                 itemAsNormalMove.InitialPosition.Vertical,
                 itemAsNormalMove.TargetPosition.Horizontal,
