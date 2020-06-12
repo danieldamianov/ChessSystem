@@ -47,6 +47,16 @@
                     () => { return ChessFigureProductionType.Queen; },
                     async (result) => { await Task.CompletedTask; });
 
+                //if (this.chessApplicationData.ChessGames
+                //    .Count(game => game.WhitePlayerId == request.WhitePlayerId && game.BlackPlayerId == request.BlackPlayerId && game.EndGameInfo == null) == 2)
+                //{
+                //    Domain.Entities.ChessGame gameToRemove = await this.chessApplicationData.ChessGames
+                //        .FirstAsync(game => game.WhitePlayerId == request.WhitePlayerId && game.BlackPlayerId == request.BlackPlayerId && game.EndGameInfo == null);
+
+                //    this.chessApplicationData.ChessGames
+                //        .Remove(gameToRemove)
+                //}
+
                 Domain.Entities.ChessGame chessGameWithCastlingAndNormalMoves = await this.chessApplicationData
                     .ChessGames
                     .Include(game => game.CastlingMoves)
@@ -57,7 +67,8 @@
                         .ThenInclude(move => move.InitialPosition)
                     .Include(game => game.NormalChessMoves)
                         .ThenInclude(move => move.TargetPosition)
-                    .SingleAsync(game => game.WhitePlayerId == request.WhitePlayerId && game.BlackPlayerId == request.BlackPlayerId && game.EndGameInfo == null);
+                    .OrderBy(game => game.Id)
+                    .FirstAsync(game => game.WhitePlayerId == request.WhitePlayerId && game.BlackPlayerId == request.BlackPlayerId && game.EndGameInfo == null);
 
                 var castlingMovesFromTheDatabase = chessGameWithCastlingAndNormalMoves
                     .CastlingMoves
@@ -86,7 +97,7 @@
                     {
                         var moveAsNormal = (NormalMove)move;
 
-                        chessGameInstance.NormalMove(
+                        await chessGameInstance.NormalMove(
                             moveAsNormal.InitialPosition.Horizontal,
                             moveAsNormal.InitialPosition.Vertical,
                             moveAsNormal.TargetPosition.Horizontal,

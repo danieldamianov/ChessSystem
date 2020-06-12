@@ -7,3 +7,4 @@
  - his endGameHandleMethod closes the game in the database and saveMove can't be done -
  the last move is missed.
 7 when the game ends, in particular situation the the lost user does't receive a message.
+8. when user regreshes the page he is always on turn according his board, but actually he is not.

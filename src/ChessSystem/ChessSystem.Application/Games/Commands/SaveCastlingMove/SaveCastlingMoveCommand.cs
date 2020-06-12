@@ -8,6 +8,7 @@
     using ChessSystem.Domain.Entities;
     using ChessSystem.Domain.Entities.Moves;
     using MediatR;
+    using Microsoft.EntityFrameworkCore;
 
     public class SaveCastlingMoveCommand : IRequest<bool>
     {
@@ -35,8 +36,9 @@
 
             public async Task<bool> Handle(SaveCastlingMoveCommand request, CancellationToken cancellationToken)
             {
-                var game = this.chessApplicationData.ChessGames
-                    .Single(game => game.WhitePlayerId == request.WhitePlayerId && game.BlackPlayerId == request.BlackPlayerId);
+                var game = await this.chessApplicationData.ChessGames
+                    .OrderBy(game => game.Id)
+                    .FirstAsync(game => game.WhitePlayerId == request.WhitePlayerId && game.BlackPlayerId == request.BlackPlayerId && game.EndGameInfo == null);
 
                 var movesMadeInTheGame = this.chessApplicationData.NormalMoves.Where(move => move.ChessGameId == game.Id).Count() +
                     this.chessApplicationData.CastlingMoves.Where(move => move.ChessGameId == game.Id).Count() +

@@ -74,21 +74,14 @@
         [Authorize]
         public async Task AcceptGame(string opponentId)
         {
-            var modelStartGameBlack = new PlayInputModel()
+            var modelStartGame = new PlayInputModel()
             {
                 BlackPlayerId = this.currentUser.UserId,
                 WhitePlayerId = opponentId,
-                PlayerColor = "Black",
             };
 
-            var modelStartGameWhite = new PlayInputModel()
-            {
-                BlackPlayerId = this.currentUser.UserId,
-                WhitePlayerId = opponentId,
-                PlayerColor = "White",
-            };
-            await this.Clients.Caller.SendAsync("StartGameAsBlack", modelStartGameBlack);
-            await this.Clients.User(opponentId).SendAsync("StartGameAsWhite", modelStartGameWhite);
+            await this.Clients.Caller.SendAsync("StartGameAsBlack", modelStartGame);
+            await this.Clients.User(opponentId).SendAsync("StartGameAsWhite", modelStartGame);
         }
     }
 }
