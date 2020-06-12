@@ -331,6 +331,8 @@
         fieldInfoPlayerOnTurn.SetValue(newChessGame, fieldInfoPlayerOnTurn.GetValue(this.CurrentGameInProgressFromTheDatabase));
 
         this.ChessGame = newChessGame;
+
+        this.IsOnTurn = this.chessColor == this.ChessGame.PlayerOnTurn;
     }
 
     private ChessFigureProductionType ChooseFigureToProduce()
