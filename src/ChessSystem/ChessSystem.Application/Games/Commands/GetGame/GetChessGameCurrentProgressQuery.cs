@@ -47,16 +47,6 @@
                     () => { return ChessFigureProductionType.Queen; },
                     async (result) => { await Task.CompletedTask; });
 
-                //if (this.chessApplicationData.ChessGames
-                //    .Count(game => game.WhitePlayerId == request.WhitePlayerId && game.BlackPlayerId == request.BlackPlayerId && game.EndGameInfo == null) == 2)
-                //{
-                //    Domain.Entities.ChessGame gameToRemove = await this.chessApplicationData.ChessGames
-                //        .FirstAsync(game => game.WhitePlayerId == request.WhitePlayerId && game.BlackPlayerId == request.BlackPlayerId && game.EndGameInfo == null);
-
-                //    this.chessApplicationData.ChessGames
-                //        .Remove(gameToRemove)
-                //}
-
                 Domain.Entities.ChessGame chessGameWithCastlingAndNormalMoves = await this.chessApplicationData
                     .ChessGames
                     .Include(game => game.CastlingMoves)
