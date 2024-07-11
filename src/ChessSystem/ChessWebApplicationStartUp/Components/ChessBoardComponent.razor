@@ -24,6 +24,7 @@
 
 <br />
 @{
+
     var chessFieldColor = "White";
 }
 <div id="chessBoard" style="font-size: 0px;">
@@ -51,10 +52,10 @@
                 char hor = horizontal;
                 int ver = vertical;
 
-                //this.ChessBoardContaЯinerInstance.SetInfo(hor, ver, figureInfo, true);
-                <button disabled="@this.ChessBoardContainerInstance.GetInfo(hor,ver)?.Item2" @onclick="@(e =>
-                                        HandleFieldPressed(e, hor, ver, this.ChessBoardContainerInstance.GetInfo(hor, ver)?.Item1?.figureType,
-                                        this.ChessBoardContainerInstance.GetInfo(hor, ver)?.Item1?.figureColor))"
+                this.ChessBoardContainerInstance.SetInfo(hor, ver, figureInfo);
+                <button @onclick="@(e =>
+                                        HandleFieldPressed(e, hor, ver, this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureType,
+                                        this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor))"
                         id="@(horizontal.ToString() + vertical)field"
                         style="margin:0px; border: none; width: @(fieldSize)px; height:@(fieldSize)px; background-color: @chessFieldColor">
 
@@ -94,16 +95,16 @@
                 char hor = horizontal;
                 int ver = vertical;
 
-                //this.ChessBoardContainerInstance.SetInfo(hor, ver, figureInfo, true);
-                <button disabled="@this.ChessBoardContainerInstance.GetInfo(hor,ver)?.Item2" @onclick="@(e =>
-                                        HandleFieldPressed(e, hor, ver, this.ChessBoardContainerInstance.GetInfo(hor, ver)?.Item1.figureType,
-                                        this.ChessBoardContainerInstance.GetInfo(hor, ver)?.Item1.figureColor))"
+                this.ChessBoardContainerInstance.SetInfo(hor, ver, figureInfo);
+                <button @onclick="@(e =>
+                                        HandleFieldPressed(e, hor, ver, this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureType,
+                                        this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor))"
                         id="@(horizontal.ToString() + vertical)field"
                         style="margin:0px; border: none; width: @(fieldSize)px; height:@(fieldSize)px; background-color: @chessFieldColor">
                     >
                     @if (figureInfo != null)
                     {
-                        <img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.Item1?.figureType}{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.Item1.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
+                        <img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureType}{this.ChessBoardContainerInstance.GetInfo(hor, ver)?.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
                     }
                     else
                     {
@@ -151,8 +152,6 @@
 
     protected override void OnInitialized()
     {
-        this.UpdateUIChessBoard();
-
         if (opponentHasMadeMoveHandlers.ContainsKey(this.currentUser.UserId))
         {
             opponentHasMadeMoveHandlers.TryRemove(this.currentUser.UserId, out Func<string, string, string, string, string, string, Task> value);
@@ -169,13 +168,13 @@
 
     }
 
-    private void UpdateUIChessBoard()
+    private async Task UpdateUIChessBoard()
     {
         this.UpdateChessBoardContainerInstance();
 
-        //this.IsOnTurn = true;
+        this.IsOnTurn = true;
 
-        this.EnableAndDisableFielsAccordingTurn();
+        await EnableAndDisableFielsAccordingTurn();
 
         this.StateHasChanged();
     }
@@ -192,7 +191,7 @@
                     targetPositionHorizontal[0], int.Parse(targetPositionVertical),
                     Enum.Parse<ChessGameLogic.ClientInteractionEntities.ChessFigureType>(figureType), Enum.Parse<ChessColors>(figureColor));
 
-        this.UpdateUIChessBoard();
+        await this.UpdateUIChessBoard();
     }
 
     private async Task OpponentHasMadeCastlingMoveHandle(
@@ -209,7 +208,7 @@
             int.Parse(rookPositionVertical),
             Enum.Parse<ChessColors>(figureColor));
 
-        this.UpdateUIChessBoard();
+        await this.UpdateUIChessBoard();
     }
 
     [JSInvokable]
@@ -262,15 +261,15 @@
 
     public string OpponentId => this.chessColor == ChessColors.White ? BlackPlayerId : WhitePlayerId;
 
+    [Parameter]
     public ChessGameLogic.ChessGame CurrentGameInProgressFromTheDatabase { get; set; }
 
     private ChessGameLogic.ChessGame ChessGame;
 
-    public bool IsOnTurn => this.chessColor == this.ChessGame.PlayerOnTurn;
+    [Parameter]
+    public bool IsOnTurn { get; set; }
 
     private Tuple<char, int> currentSelectedField = null;
-
-    public string guid = Guid.NewGuid().ToString();
 
     private ChessBoardContainer ChessBoardContainerInstance = new ChessBoardContainer();
 
@@ -295,18 +294,9 @@
             this.fieldSize = 80;
         }
 
-        this.EnableAndDisableFielsAccordingTurn();
+        await EnableAndDisableFielsAccordingTurn();
 
         this.StateHasChanged();
-
-        //do
-        //{
-        //}
-        //while (this.hasChessGameBeenSet == false);
-
-        //await EnableAndDisableFielsAccordingTurn();
-
-        //this.StateHasChanged();
 
         await base.OnAfterRenderAsync(firstRender);
     }
@@ -315,18 +305,16 @@
 
     private int fieldSize = 40;
 
-    //private bool hasChessGameBeenSet = false;
-
     [Parameter]
     public ChessColors chessColor { get; set; }
 
     public ChessBoardComponent()
     {
         this.ChessGame = new ChessGameLogic.ChessGame(ChooseFigureToProduce, HandleGameEnding);
-
     }
 
-    protected async override Task OnInitializedAsync()
+
+    protected override async Task OnParametersSetAsync()
     {
         this.CurrentGameInProgressFromTheDatabase = await Mediator.Send(new GetChessGameCurrentProgressQuery(this.WhitePlayerId, this.BlackPlayerId), new System.Threading.CancellationToken());
 
@@ -343,32 +331,9 @@
         fieldInfoPlayerOnTurn.SetValue(newChessGame, fieldInfoPlayerOnTurn.GetValue(this.CurrentGameInProgressFromTheDatabase));
 
         this.ChessGame = newChessGame;
-        this.UpdateUIChessBoard();
-        //this.hasChessGameBeenSet = true;
 
-        await base.OnInitializedAsync();
+        this.IsOnTurn = this.chessColor == this.ChessGame.PlayerOnTurn;
     }
-
-    //protected override async Task OnParametersSetAsync()
-    //{
-    //    this.CurrentGameInProgressFromTheDatabase = await Mediator.Send(new GetChessGameCurrentProgressQuery(this.WhitePlayerId, this.BlackPlayerId), new System.Threading.CancellationToken());
-
-    //    var newChessGame = new ChessGameLogic.ChessGame(ChooseFigureToProduce, HandleGameEnding);
-
-    //    var chessGameType = typeof(ChessGameLogic.ChessGame);
-
-    //    var fieldInfoProgressInfo = chessGameType.GetField("progressInfo", BindingFlags.NonPublic | BindingFlags.Instance);
-    //    var fieldInfoChessBoard = chessGameType.GetField("chessBoard", BindingFlags.NonPublic | BindingFlags.Instance);
-    //    var fieldInfoPlayerOnTurn = chessGameType.GetField("playerOnTurn", BindingFlags.NonPublic | BindingFlags.Instance);
-
-    //    fieldInfoProgressInfo.SetValue(newChessGame, fieldInfoProgressInfo.GetValue(this.CurrentGameInProgressFromTheDatabase));
-    //    fieldInfoChessBoard.SetValue(newChessGame, fieldInfoChessBoard.GetValue(this.CurrentGameInProgressFromTheDatabase));
-    //    fieldInfoPlayerOnTurn.SetValue(newChessGame, fieldInfoPlayerOnTurn.GetValue(this.CurrentGameInProgressFromTheDatabase));
-
-    //    this.ChessGame = newChessGame;
-    //    this.UpdateUIChessBoard();
-    //    //this.hasChessGameBeenSet = true;
-    //}
 
     private ChessFigureProductionType ChooseFigureToProduce()
     {
@@ -400,19 +365,18 @@
 
     public class ChessBoardContainer
     {
-        private Dictionary<char, Dictionary<int, Tuple<ChessFigureOnPositionInfo, bool>>> board =
-            new Dictionary<char, Dictionary<int, Tuple<ChessFigureOnPositionInfo, bool>>>();
+        private Dictionary<char, Dictionary<int, ChessFigureOnPositionInfo>> board = new Dictionary<char, Dictionary<int, ChessFigureOnPositionInfo>>();
 
-        public void SetInfo(char horizontal, int vertical, ChessFigureOnPositionInfo chessFigureOnPositionInfo, bool isDisabled)
+        public void SetInfo(char horizontal, int vertical, ChessFigureOnPositionInfo chessFigureOnPositionInfo)
         {
             if (this.board.ContainsKey(horizontal) == false)
             {
-                this.board[horizontal] = new Dictionary<int, Tuple<ChessFigureOnPositionInfo, bool>>();
+                this.board[horizontal] = new Dictionary<int, ChessFigureOnPositionInfo>();
             }
-            this.board[horizontal][vertical] = new Tuple<ChessFigureOnPositionInfo, bool>(chessFigureOnPositionInfo, isDisabled);
+            this.board[horizontal][vertical] = chessFigureOnPositionInfo;
         }
 
-        public Tuple<ChessFigureOnPositionInfo, bool> GetInfo(char horizontal, int vertical)
+        public ChessFigureOnPositionInfo GetInfo(char horizontal, int vertical)
         {
             return this.board[horizontal][vertical];
         }
@@ -473,7 +437,7 @@
         {
             if (currentSelectedField.Item1 == horizontal && currentSelectedField.Item2 == vertical)
             {
-                this.EnableAndDisableFielsAccordingTurn();
+                await this.EnableAndDisableFielsAccordingTurn();
             }
             else
             {
@@ -492,9 +456,9 @@
                 {
                     this.UpdateChessBoardContainerInstance();
 
-                    //this.IsOnTurn = false;
+                    this.IsOnTurn = false;
 
-                    this.EnableAndDisableFielsAccordingTurn();
+                    await EnableAndDisableFielsAccordingTurn();
 
                     await JSRuntime.InvokeVoidAsync("SendCastlingMove",
                         this.currentUser.UserId,
@@ -521,7 +485,9 @@
                 {
                     this.UpdateChessBoardContainerInstance();
 
-                    this.EnableAndDisableFielsAccordingTurn();
+                    this.IsOnTurn = false;
+
+                    await EnableAndDisableFielsAccordingTurn();
 
                     await JSRuntime.InvokeVoidAsync("SendCastlingMove",
                         this.currentUser.UserId,
@@ -538,14 +504,16 @@
                 }
 
 
-                var figureInfo = this.ChessBoardContainerInstance.GetInfo(currentSelectedField.Item1, currentSelectedField.Item2).Item1;
+                var figureInfo = this.ChessBoardContainerInstance.GetInfo(currentSelectedField.Item1, currentSelectedField.Item2);
 
                 var result = await this.ChessGame.NormalMove(currentSelectedField.Item1, currentSelectedField.Item2,
                     horizontal, vertical, figureInfo.figureType, figureInfo.figureColor);
 
                 this.UpdateChessBoardContainerInstance();
 
-                this.EnableAndDisableFielsAccordingTurn();
+                this.IsOnTurn = false;
+
+                await EnableAndDisableFielsAccordingTurn();
 
                 await JSRuntime.InvokeVoidAsync("SendNormalMove",
                     this.currentUser.UserId,
@@ -568,48 +536,43 @@
         {
             for (int j = 1; j <= 8; j++)
             {
-                this.ChessBoardContainerInstance.SetInfo(i, j, this.ChessGame.GetFigureOnPositionInfo(i, j),true);
+                this.ChessBoardContainerInstance.SetInfo(i, j, this.ChessGame.GetFigureOnPositionInfo(i, j));
             }
         }
     }
 
-    private void EnableAndDisableFielsAccordingTurn()
+    private async Task EnableAndDisableFielsAccordingTurn()
     {
         if (this.IsOnTurn == false)
         {
-            //List<BoardPosition> boardPositions = new List<BoardPosition>();
+            List<BoardPosition> boardPositions = new List<BoardPosition>();
             for (char i = 'a'; i <= 'h'; i++)
             {
                 for (int j = 1; j <= 8; j++)
                 {
-                    this.ChessBoardContainerInstance.SetInfo(i, j, this.ChessBoardContainerInstance.GetInfo(i, j)?.Item1, true);
+                    boardPositions.Add(new BoardPosition(i, j));
                 }
             }
 
-            //await JSRuntime.InvokeVoidAsync("disableButtons", boardPositions);
+            await JSRuntime.InvokeVoidAsync("disableButtons", boardPositions);
         }
         else
         {
-            //List<BoardPosition> boardPositions = new List<BoardPosition>();
+            List<BoardPosition> boardPositions = new List<BoardPosition>();
             for (char i = 'a'; i <= 'h'; i++)
             {
                 for (int j = 1; j <= 8; j++)
                 {
-                    if (this.ChessBoardContainerInstance.GetInfo(i, j).Item1 == null
-                        || this.ChessBoardContainerInstance.GetInfo(i, j).Item1.figureColor != chessColor)
+                    if (this.ChessBoardContainerInstance.GetInfo(i, j) == null
+                        || this.ChessBoardContainerInstance.GetInfo(i, j).figureColor != chessColor)
                     {
-                        this.ChessBoardContainerInstance.SetInfo(i, j, this.ChessBoardContainerInstance.GetInfo(i, j).Item1, true);
-                    }
-                    else
-                    {
-                        this.ChessBoardContainerInstance.SetInfo(i, j, this.ChessBoardContainerInstance.GetInfo(i, j).Item1, false);
+                        boardPositions.Add(new BoardPosition(i, j));
                     }
                 }
             }
 
-            this.StateHasChanged();
-            //await JSRuntime.InvokeVoidAsync("disableButtons", boardPositions);
-            //await JSRuntime.InvokeVoidAsync("enableButtons", GetBoardPositionsExceptGiven(boardPositions));
+            await JSRuntime.InvokeVoidAsync("disableButtons", boardPositions);
+            await JSRuntime.InvokeVoidAsync("enableButtons", GetBoardPositionsExceptGiven(boardPositions));
         }
     }
 }
