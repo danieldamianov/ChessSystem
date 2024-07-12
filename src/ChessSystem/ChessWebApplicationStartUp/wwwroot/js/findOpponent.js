@@ -9,7 +9,7 @@ setupConnection = () => {
         document.getElementById("usersLoggedIn").innerHTML +=
             `<li id="${user.userId}linkForInvitation" class="list-group-item d-flex justify-content-between align-items-center">
                     ${user.username}
-                    <span onclick="InviteUserToPlay('${user.userId}')" class="badge badge-primary badge-pill">Challenge</span>
+                    <span onclick="InviteUserToPlay('${user.userId}','${user.username}')" class="badge badge-primary badge-pill">Challenge</span>
              </li>`;
     });
 
@@ -19,7 +19,7 @@ setupConnection = () => {
     });
 
     connection.on("StartGameAsBlack", function (user) {
-        post(`/Game/Play`, { WhitePlayerId: user.whitePlayerId, BlackPlayerId : user.blackPlayerId, PlayerColor : "black" })
+        post(`/Game/Play`, { WhitePlayerId: user.whitePlayerId, BlackPlayerId: user.blackPlayerId, PlayerColor: "black" })
     });
 
     connection.on("StartGameAsWhite", function (user) {
@@ -75,6 +75,13 @@ function AcceptGame(opponentId) {
     connection.invoke("AcceptGame", opponentId);
 }
 
-function InviteUserToPlay(InvitedId) {
+function InviteUserToPlay(InvitedId, invitedUsername) {
     connection.invoke("InviteUserToPlay", InvitedId)
+
+    document.getElementById("usersThatCurrentUserHasInvited").innerHTML +=
+        `<li class="list-group-item d-flex justify-content-between align-items-center">
+                    You successfully invited ${invitedUsername} to play chess against you.
+                    Please wait here until the user accepts your invitation.
+                    When that happens, you will automatically be redirected to the game page and the game will start.
+        </li>`;
 }
