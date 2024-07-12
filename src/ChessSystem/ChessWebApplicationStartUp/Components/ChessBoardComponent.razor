@@ -24,7 +24,6 @@
 
 <br />
 @{
-
     var chessFieldColor = "White";
 }
 <div id="chessBoard" style="font-size: 0px;">
@@ -120,8 +119,6 @@
         Launch demo modal
     </button>
 
-
-
     <div class="modal" id="EndGameModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -132,17 +129,19 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">View Game Again</button>
-                    <a class="btn btn-primary" href="/">Home Page</a>
+                        @*
+                        // TODO:: This may be implemented later.
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">View Game Again</button>
+                        *@
+                        <a class="btn btn-primary" href="/">Home Page</a>
                 </div>
             </div>
         </div>
     </div>
-
-
 </div>
 
-@code {
+@code 
+{
 
     private static ConcurrentDictionary<string, Func<string, string, string, string, string, string, Task>> opponentHasMadeMoveHandlers
     = new ConcurrentDictionary<string, Func<string, string, string, string, string, string, Task>>();
