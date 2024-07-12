@@ -2,15 +2,18 @@
 
 @model GameReplayViewModel
 
-@{
-    ViewData["Title"] = "GameReplay";
-}
+@{ ViewData["Title"] = "GameReplay"; }
 
 <h1>GameReplay</h1>
 
 <component type="typeof(ChessWebApplicationStartUp.Components.GameReplay)" render-mode="ServerPrerendered" param-GameId="@Model.GameId"
-           param-PlayerColor="@Model.PlayerColor"/>
+           param-PlayerColor="@Model.PlayerColor" />
 
 <div>
     <a class="btn btn-primary" href="/Archive/Games">Back to all games</a>
 </div>
+
+@section Scripts{
+
+    <script src="~/js/gameReplay.js"></script>
+}

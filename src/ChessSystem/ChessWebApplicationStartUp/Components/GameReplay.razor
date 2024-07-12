@@ -4,6 +4,7 @@
 
 @inject MediatR.IMediator Mediator
 @inject BrowserService BrowserService
+@inject IJSRuntime JSRuntime
 
 @using ChessSystem.Application.Archive.Queries.ReplayGame
 
@@ -17,95 +18,103 @@
 @using Microsoft.JSInterop
 
 <h3>GameReplay</h3>
-@{
-    var chessFieldColor = "White";
-}
+@{ var chessFieldColor = "White"; }
 <div style="font-size: 0px;">
     @if (Enum.Parse<ChessColors>(this.PlayerColor) == ChessColors.White)
     {
-        @for (int vertical = 8; vertical >= 1; vertical--)
-        {
-            for (char horizontal = 'a'; horizontal <= 'h'; horizontal++)
-            {
-                if (horizontal != 'a')
-                {
-                    if (chessFieldColor == "White")
-                    {
-                        chessFieldColor = "Darkgray";
-                    }
-                    else
-                    {
-                        chessFieldColor = "White";
-                    }
-
-                }
-                var figureInfo = this.ChessGame.GetFigureOnPositionInfo(horizontal, vertical);
-
-
-                char hor = horizontal;
-                int ver = vertical;
-
-                <button disabled="disabled"
-                        id="@(horizontal.ToString() + vertical)field"
-                        style="margin:0px; border: none; width: @(fieldSize)px; height:@(fieldSize)px; background-color: @chessFieldColor">
-                    @if (figureInfo != null)
-                    {
-                        <img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
-                    }
-                    else
-                    {
-                        <img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
-                    }
-                </button>
-            }
-            <br />
-        }
-    }
-    else
+@for (int vertical = 8; vertical >= 1; vertical--)
+{
+    for (char horizontal = 'a'; horizontal <= 'h'; horizontal++)
     {
-        @for (int vertical = 1; vertical <= 8; vertical++)
+        if (horizontal != 'a')
         {
-            for (char horizontal = 'h'; horizontal >= 'a'; horizontal--)
+            if (chessFieldColor == "White")
             {
-                if (horizontal != 'h')
-                {
-                    if (chessFieldColor == "White")
-                    {
-                        chessFieldColor = "Darkgray";
-                    }
-                    else
-                    {
-                        chessFieldColor = "White";
-                    }
-
-                }
-                var figureInfo = this.ChessGame.GetFigureOnPositionInfo(horizontal, vertical);
-
-                char hor = horizontal;
-                int ver = vertical;
-
-                <button disabled="disabled"
-                        id="@(horizontal.ToString() + vertical)field" style="margin:0px; border: none; width: @(fieldSize)px; height:@(fieldSize)px; background-color: @chessFieldColor">
-                    @if (figureInfo != null)
-                    {
-                        <img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" />
-                    }
-                    else
-                    {
-                        <img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />
-                    }
-                </button>
+                chessFieldColor = "Darkgray";
             }
-            <br />
+            else
+            {
+                chessFieldColor = "White";
+            }
+
         }
-    }
+        var figureInfo = this.ChessGame.GetFigureOnPositionInfo(horizontal, vertical);
+
+
+        char hor = horizontal;
+        int ver = vertical;
+
+<button disabled="disabled"
+        id="@(horizontal.ToString() + vertical)field"
+        style="margin:0px; border: none; width: @(fieldSize)px; height:@(fieldSize)px; background-color: @chessFieldColor">
+    @if (figureInfo != null)
+    {
+<img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" /> }
+else
+{
+<img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />}
+</button> }
+<br />} }
+else
+{
+@for (int vertical = 1; vertical <= 8; vertical++)
+{
+    for (char horizontal = 'h'; horizontal >= 'a'; horizontal--)
+    {
+        if (horizontal != 'h')
+        {
+            if (chessFieldColor == "White")
+            {
+                chessFieldColor = "Darkgray";
+            }
+            else
+            {
+                chessFieldColor = "White";
+            }
+
+        }
+        var figureInfo = this.ChessGame.GetFigureOnPositionInfo(horizontal, vertical);
+
+        char hor = horizontal;
+        int ver = vertical;
+
+<button disabled="disabled"
+        id="@(horizontal.ToString() + vertical)field" style="margin:0px; border: none; width: @(fieldSize)px; height:@(fieldSize)px; background-color: @chessFieldColor">
+    @if (figureInfo != null)
+    {
+<img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{figureInfo.figureType}{figureInfo.figureColor}{chessFieldColor}").jpg" alt="Alternate Text" /> }
+else
+{
+<img style="width: @(figurePictureSize)px; height:@(figurePictureSize)px" src="/ImagesForFigures/@($"{chessFieldColor}").jpg" alt="Alternate Text" />}
+</button> }
+<br />}}
 </div>
+
 <div>
     <button class="btn btn-primary" @onclick="@(async (e) => { await MoveNextMove(); })">Next move</button>
 </div>
 
-@code {
-    public PlayedGameOutputModel GameModel { get; set; }
+<button id="modalWindowEndOfReplayTrigger" style="visibility:hidden" type="button" class="btn btn-primary" data-toggle="modal" data-target="#EndOfReplayModal">
+</button>
+
+<div class="modal" id="EndOfReplayModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">This is the end of the game.</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @* // TODO :: may be implemented in the future <button type="button" class="btn btn-primary" data-dismiss="modal">View Game Again</button>*@
+                <a class="btn btn-primary" href="/">Home Page</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code { public PlayedGameOutputModel GameModel { get; set; }
 
     [Parameter]
     public string PlayerColor { get; set; }
@@ -158,6 +167,12 @@
 
     private async Task MoveNextMove()
     {
+        if (this.MovesMade >= this.GameModel.Moves.Count)
+        {
+            await JSRuntime.InvokeVoidAsync("showModalWindowEndOfReplay");
+            return;
+        }
+
         var move = this.GameModel.Moves[this.MovesMade];
         if (move is ChessSystem.Application.Archive.Queries.PlayedGames.NormalMoveOutputModel)
         {
@@ -181,5 +196,4 @@
         }
         this.StateHasChanged();
         this.MovesMade++;
-    }
-}
+    } }
